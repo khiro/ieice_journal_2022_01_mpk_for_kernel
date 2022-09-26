@@ -17,10 +17,18 @@ The user process of the adversary exploits the kernel code containing
 vulnerabilities (i.e., vulnerable kernel code), thereby corrupting the memory.
 %resulting in memory corruption.
 %
+The kernel vulnerability is reported by the Common Vulnerabilities and Exposures
+(CVE). The CVE has the Common Platform Enumeration that indicates the naming of
+systems, software, and packages.
+%
+Until August 2022, xx CVE with CPE of Linux and CVE description contains kernel
+memory vulnerabilities were issued in the CVE of National Vulnerability Databse
+(NVD)\cite{nvd}, as shown in \figref{fig:linux_memory_cve}.
+
 % It achieves the illegal modification of privileged information and alters kernel
 % data of the security mechanism to take full administrator privileges.
 %
-Thus, privileged information can be modified and kernel data of the security
+Therefore, privileged information can be modified and kernel data of the security
 mechanism can be altered to gain full administrator privileges.
 %  bypass security functions.
 % %
@@ -30,9 +38,9 @@ mechanism can be altered to gain full administrator privileges.
 % 攻撃事例として，アクセス制御に関するカーネルデータを改ざんの後，管理者権限に昇
 % 格し，制限の回避が試みられる\cite{nexus5exploit,grsecurity}．
 % From and actual attack case, 
-By modifying the kernel data related to mandatory access control (MAC), the user
-acquires administrator privileges and circumvents the MAC restrictions
-\cite{nexus5exploit,grsecurity}.
+The actual kernel memory corruption cases indicate that the modifying the kernel data
+related to mandatory access control (MAC), the user acquires administrator
+privileges and circumvents the MAC restrictions \cite{nexus5exploit,grsecurity}.
 
 % オペレーティングシステム（OS）カーネルへの攻撃として，権限情報を管理者
 % に改ざんする特権奪取攻撃が課題とされている．
@@ -231,7 +239,7 @@ The limitation of the KDPM is a little difficult to support frequently modified 
 
 \begin{figure}[tb]
   \centering        
-  \includegraphics[bb=0 0 972 809, scale=.260]{./imgs/001_screenshot_2021-07-26_17.18.08.png}
+  \includegraphics[bb=0 0 972 809, scale=.240]{./imgs/001_screenshot_2021-07-26_17.18.08.png}
   % \vspace{-2.0ex}  
   \caption{
     %
