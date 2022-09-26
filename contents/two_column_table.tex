@@ -1,0 +1,90 @@
+\begin{table}[t]
+\hspace{-22.0ex}
+\begin{tabular}{rl}    
+  %\centering
+   \begin{minipage}{0.8\hsize}    
+    %  \caption{Overhead of MKM mechanism on the Linux kernel ($\mu$s)}
+    \centering
+    \caption{System call invocation overhead of Implementation 1 ($\mu$s)}
+  %  \vspace{-2.5ex}
+    \scalebox{1.0}{
+  
+      \begin{tabular}{lrrr}
+        \hline \noalign{\smallskip}
+        \begin{tabular}{l}
+          {\bf System call}
+        \end{tabular}
+        &
+        \begin{tabular}{l}
+          {\bf Vanilla kernel}
+        \end{tabular}
+        &
+        \begin{tabular}{l}
+          {\bf Implementation 1}
+        \end{tabular}
+        &
+        \begin{tabular}{l}
+          {\bf Overhead}
+        \end{tabular}
+        \\
+        \noalign{\smallskip}
+        \hline
+        \noalign{\smallskip}
+  fork+/bin/sh & 227111.28  & 236738.69  & 9627.41 (4.24\%)  \\
+  fork+execve  & 12780.0566 & 13931.6703 & 1151.6136 (9.01\%)    \\
+  fork+exit    & 10837.0729 & 11285.5603 & 448.4874 (4.14\%)    \\
+  open/close   & 1302.5639  & 1334.5312  & 41.9672 (2.95\%)     \\
+  read         & 168.8898   & 180.4594   & 11.5696 (6.85\%) \\
+  write        & 164.2567   & 176.4273   & 12.1705 (7.41\%)     \\
+  fstat        & 195.0063   & 203.7508   & 8.7445  (4.48\%)     \\
+  stat         & 613.7426   & 631.9393   & 18.1966 (2.96\%)     \\
+        
+  \noalign{\smallskip}
+  \hline
+  \noalign{\smallskip}
+      \end{tabular}
+    }    
+      \label{tb:evaluation_qemu_lmbench1}
+
+   \end{minipage}
+   \hspace{8mm}
+   \begin{minipage}{0.7\hsize}
+    \centering
+    \caption{PKS operations overhead of Implementation 2 (ns)}
+  %  \vspace{-2.5ex}
+    \scalebox{1.0}{
+  
+      \begin{tabular}{lr}
+        % \hline
+        \hline \noalign{\smallskip}
+        % \hline
+        \begin{tabular}{l}
+          {\bf Instruction}
+        \end{tabular}
+        &
+        \begin{tabular}{l}
+          % {\bf Our proposed mechanism}
+          {\bf Implementation 2}
+         \end{tabular}
+          \\
+          \noalign{\smallskip}          
+          \hline
+          \noalign{\smallskip}
+          %Total        & 349.260 \\
+          % Pkey read    & 0.xxx  \\
+          % Pkey write   & 30.5263  \\
+          % PKRS read    & 22.1052  \\
+          % PKRS write   & 1347.8965  \\
+          Pkey write   & 30.5  \\
+          PKRS read    & 22.1  \\
+          PKRS write   & 1347.9  \\
+          
+        \noalign{\smallskip}          
+        \hline
+        \noalign{\smallskip}          
+      \end{tabular}
+    }    
+      \label{tb:evaluation_qemu_cpubench2}
+  \end{minipage}
+\end{tabular}
+\end{table}

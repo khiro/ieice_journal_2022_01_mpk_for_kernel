@@ -1,0 +1,889 @@
+% # -*- coding: utf-8 -*-
+\section{Discussion}  \label{section:discussion}
+%\subsection{評価に対する考察}
+% \subsection{Tracing and Identification Capability}
+%\subsubsection{Vulnerability Identification}
+\subsection{Security Capability Consideration}
+% 提案するセキュリティ機構を適用したカーネルにおいて，特権奪取攻撃に利用可能なカー
+% ネル脆弱性を用いた PoC コードに対し，権限情報へ PKS を適切に設定することで，権限
+% 情報の改ざんを捕捉し，保護可能なことを示した．
+We demonstrated that the kernel with the KDPM can detect
+and prevent PoC codes through a kernel vulnerability with a privilege
+escalation attack and an LKM with a defeat of security mechanisms.
+% that can be used in
+% privilege-grabbing attacks by appropriately setting PKS to the authorization
+% information, thereby 
+%
+%
+% 評価において，権限情報を格納したカーネルコードの書込み制限の操作を権限
+% 変更許可システムコールにのみ許可し，通常システムコールでは権限情報の読
+% 込みのみ許可した場合においても，カーネルおよびユーザプロセスの動作には
+% 影響を及ぼしていないことを確認した．
+%
+In addition, we confirmed that the kernel and user process operations were not
+affected by the operation that restricts the writing of kernel data. 
+%
+% The evaluation results 
+The evaluation result confirms that the KDPM can
+dynamically control read restrictions by appropriately setting the PKS.
+%
+The KDPM only allows system calls for permissions to change privileges
+%of privilege change permission and kernel
+and kernel codes for modifying access control information.
+%
+Therefore, the KDPM prevents the illegal modification of privileged information
+and kernel code related to access control.
+
+%
+% Additionally, the KDPM mitigates the threat of unknown kernel vulnerabilities
+% (e.g., zero-day vulnerability attack). Because the KDPM ensures that protected
+% kernel data cannot be corrupted using the PKS if the vulnerable kernel code is
+% not in write-permitted system call list or write-permitted kernel code list.
+%released. Because the KDPM manages the small number of the write-permitted
+Additionally, the KDPM mitigates the threat from the latest kernel
+vulnerabilities (e.g., zero-day attack) before the kernel patch is released.
+%
+% write-permitted 
+Because the KDPM manages a small number of write-permitted system calls and
+kernel codes. It ensures that the system call or kernel code
+of a zero-day attack can be manually removed from the write-permitted lists
+for the protected kernel data to reduce the potential of a kernel attack.
+%potential.
+
+%\violetuline{
+%  
+Moreover, analyzing the security capability of the implementations requires the
+inspection of memory access sequences from the attack of the actual memory
+corruption kernel vulnerability that performs the illegal modification of kernel
+data for additional evaluation.
+%
+%}
+% Because the KDPM inserts the system call or kernel code of zero-day attack into
+% the write-permitted system call list or the write-permitted kernel code list.
+%
+% It ensures that the prevention of memory corruption to the protected kernel data
+% whenever the system call or kernel code of zero-day vulnerability is in those lists.}
+%  to corrupt the protected kernel data.
+%
+% It ensures that the system call or kernel code of zero-day vulnerability is
+% needed to be in those lists to corrupt the protected kernel data.}
+
+
+% . vulnerable
+% kernel code of memory integrity before memory corruption occurs owing to kernel
+% subverting.
+
+
+% containing authorization information 
+% was allowed for
+% only reading of authorization information was allowed for
+% normal system calls.
+%
+% 評価結果より，提案するセキュリティ機構を用いることで，動作中カーネルに
+% おいて，予め指定した仮想アドレスに対し，権限情報Protection key の設定，
+% ならびにレジスタ操作により，読書き制限を動的に制御可能である．
+% The evaluation results show that the proposed security mechanism can dynamically
+% control read restrictions by setting the authorization information Protection
+% key and operating registers for a pre-specified virtual address in the running
+% kernel.
+
+\subsection{Performance Consideration}
+% 性能評価結果より，提案するセキュリティ機構の実現方式において，カーネル処理，お
+% よびPKSによる読書き制御にオーバヘッドを要することを示した． PKS 操作にかかる時
+% 間は実現方式1および2において共通の処理であり，カーネル処理への影響となる． the
+% proposed security mechanism 
+The performance evaluations reveal that the kernel with the
+implementations requires overhead in kernel processing and read control by the
+PKS. The duration required for the PKS operations of Implementations 1 and 2 are
+the same.
+% and affects kernel processing.
+
+% %
+% 実現方式ごとの負荷の差異として，実現方式1においては，ユーザプロセスによるシス
+% テムコール呼出し毎に書込み許可システムコール番号かの判定を行うため，システム
+% コール実行時間に影響し，ユーザプロセスに対する負荷が発生する．
+%
+%As a difference of performance costs for each implementation, the method of
+The difference of performance costs for each implementation, Implementation 1
+determines whether a system call number is allowed to be written. 
+%for each system call made by 
+The user process affects the execution time of the system call and generates
+privileged information of the user process.
+%
+% 一方， 実現方式2においては，セキュリティ機能の呼出毎に書込み許可カーネルコード
+% の判定行うのみである．カーネル処理への影響は発生するが，ユーザプロセスへの直接
+% 的な負荷はアクセス制御の判定が必要となる場合に限定されると考えている．
+% On the other hand
+Meanwhile, Implementation 2 determines the write-permitted kernel code for
+processing each access control mechanism.
+% the security function.
+%
+% Although 
+We consider that Implementation 2 has an impact on kernel processing when
+access control decisions are necessary.
+% direct load on user processes will be limited to cases 
+%
+
+% \violetuline{
+%  
+To inspect the performance costs of the implementations, we consider the
+measurements of overheads for practical applications or an evaluation of
+other benchmark software, such as UnixBench and SPEC.
+%
+% }
+
+
+% vkTracer identifies the invocation of a vulnerable kernel code under
+% the execution of a PoC code without any infection. It also
+% generates a profile that contains the necessary data, including a
+% virtual address range and function name, from the kernel image and
+% kernel debug information. In addition, it does not have any
+% effect on the behavior of the user process.
+
+% From the viewpoint of data collection for vulnerable kernel code invocation,
+% %reduction,
+% it is challenging for the dynamic analysis method to cover the entirety
+% of the relationship between the application and the kernel.
+% %
+% vkTracer requires only the PoC code, which is typically a short source
+% code. It is possible to identify the execution of the vulnerable
+% kernel code from the source code file.
+% %
+% Specifically, one of the PoC codes demonstrated in this paper had 143 lines,
+% whereas the vulnerable kernel code had 192 lines. Therefore, vkTracer
+% can correctly generate profiles for the restriction to extract the
+% reduction target of the vulnerable kernel code.
+
+
+% \subsection{Performance Evaluation}
+% The implementation of vkTracer requires additional overhead for the kernel.
+% %
+% The identification cost for the vulnerable kernel code requires the analysis of
+% the kernel image and debug information. 
+% %
+% It takes a few seconds after the PoC code is executed. It depends on
+% the size of the kernel components despite the necessary cost of vkTracer for the
+% accuracy of the kernel vulnerability's profile.
+  
+% %
+% The tracing cost of vkTracer requires the registration time and
+% additional callback processing costs of \verb|tracepoints| and
+% \verb|kprobes| for the running kernel.
+% %
+% Although \verb|tracepoints| uses the embedded callbacks of static
+% placements in the kernel, \verb|kprobes| has a high performance cost
+% because the dynamic modification of the kernel code inserts probe
+% functions into the running kernel.
+% %
+
+% %
+% Both tracing features increase the performance cost by requiring
+% additional kernel processing time.
+% %
+% To measure this, LMbench was used to calculate the cost of the overhead that
+% occurs with the actual latency in the kernel layer.
+% %
+% Meanwhile, ApacheBench was used to indicate the acceptable overheads as nginx
+% implemented the cache mechanism that stores files at the first HTTP
+% request.
+% %
+% Therefore, the tracing performance cost of vkTracer depends on the number of
+% interactions between the user process and kernel processing.
+
+% %
+% To achieve a good kernel performance, vkTracer narrows several tracing points,
+% thereby avoiding the registration time and callback executions for tracing at the
+% kernel layer.
+
+
+\subsection{Limitation}
+\subsubsection{Design Limitation:}
+% 提案するセキュリティ機構では，特権奪取攻撃を想定し，権限情報を PKSによる保護対
+% 象とした．
+% %
+% セキュリティ機構に関するカーネルデータも保護可能であると考えており，アクセス制
+% 御ポリシや計算機の資源制御リスト等の攻撃対象となるカーネルデータを調査し，保護
+% 可能か検討を進めたい．
+%
+% また，提案するセキュリティ機構では，システムコール単位で権限情報Protection key
+% を管理し，システムコール発行時に制限操作レジスタの読書きを必要とする．保護対象
+% カーネルデータ毎に適切な制限操作レジスタの操作タイミングは異なると考えており，
+% 保護対象を増やす場合，性能負荷への影響を考慮して検討したい．
+
+% 提案するセキュリティ機構の実現方式においては，権限情報およびセキュリティ機能とし
+% て強制アクセス制御に関するカーネルデータを保護可能とした．
+%
+
+% ユーザプロセスの権限情報以外のカーネルデータや強制アクセス制御の SELinux 以外で
+% は，各実現方式においても適用対象とする保護対象カーネルデータや適切な制限操作レジ
+% スタの操作タイミングは異なると考えている．
+%
+% 提案するセキュリティ機構のさらなる汎用化のため，保護対象とすべきカーネルデータの
+% 検討，ならびに保護対象を追加した場合，性能負荷への影響を考慮して検討する必要があ
+% ると考えている．
+
+% 従来研究として，カーネルのページテーブル分割によるカーネルデータ保護が提案され
+% ており\cite{asi}，CPUでの仮想アドレス変換キャッシュを格納する translation
+% lookaside buffer （TLB） 利用の高速化が必要とされる．
+%
+% 特定レジスタ操作のみで指定した仮想アドレスの読書き制限を制御可能であり，ページ
+% テーブル分割，ならびにTLB管理を伴わず，実装複雑性の削減と性能負荷低減が期待さ
+% れる\cite{pks}． %から実装の複雑性の削減と性能負荷を下げることが可能だと考えて
+% いる．提案提案するセキュリティ機構では，PKS を用いてカーネルデータ保護を実現し
+% たが，仮想環境では実性能負荷の評価は困難である．PKSに対応したCPU %ハードウェア
+% にてベンチマークソフトウェアを利用した測定を進める予定である．
+
+
+%\reduline{
+% Herein, the design limitations of vkTracer are considered. 
+% vkTracer focuses on the behavior of a specific PoC code to identify an already
+% known kernel vulnerability.
+% %
+% Although it invokes the vulnerable kernel code and reports it to the CVE
+% database and developer communities (e.g., Linux kernel mailing list)
+% \cite{cvedetails,kernel-ml}, 
+% %
+% it would further improve vkTracer's capability if it also supports
+% identification of undiscovered vulnerable kernel codes for latest attacks.
+
+% PKS can be used in the kernel as a lightweight, easy-to-implement kernel data
+We consider that the PKS is lightweight for protecting kernel data.
+%
+%  we believe  On the other hand
+However, if multiple kernel data share a Pkey, 
+%it is necessary to require 
+the effects of the write available timing during asynchronous processing should
+be determined due to interrupts and exceptions in the kernel. 
+% with 
+% omission of and of the exclusion process when
+% 
+
+%If a kernel vulnerability is discovered and used in an attack, the vulnerable
+% If a kernel vulnerability is discovered and succeeded an attack, the vulnerable
+% kernel code might be represented with a write-permitted system call or
+% write-permitted kernel code for the modification of the protected kernel data.
+
+If a kernel vulnerability is discovered and an attack is successful, the
+vulnerable kernel code may have contained a write-permitted system call or
+write-permitted kernel code. This is a case of circumventing of the KDPM, which
+allows the modification of protected kernel data.
+
+%\reduline{
+The design of the KDPM retains the static information in the list of write-permitted system
+calls and that of write-permitted kernel codes for the kernel. %It is hard to
+Customizing both lists is difficult and requires additional permissions for the
+running kernel or kernel modules. We consider the modification of both lists
+through a kernel component (e.g., kernel module or extended Berkley Packet
+Filter). 
+% }
+
+ 
+% If an attacker executes an arbitrary code in the kernel mode, the KDPM
+% protection may be defeated.
+% %
+% The control flow integrity (CFI) is effective in preventing illegal code
+% execution by verifying the order of kernel code invocations. 
+% %
+% We recommend applying the CFI to the kernel with the KDPM to prevent hardware
+% security defeat.
+
+% can work together 
+
+% and a combination with other security
+% mechanisms is necessary.
+
+% CFI is effective in preventing illegal kernel code calls by verifying that
+% execution follows the order of legitimate code calls. We consider that the
+% applying of CFI to the kernel can work together with the proposed security
+% mechanism for the prevention of hardware security defeating.
+
+%  to prevent the CPU and other hardware security functions from being disabled.
+
+\subsubsection{Implementation Limitation:}
+% 提案するセキュリティ機構の実現方式で
+% 利用する PKS は， 16個のProtection key を指定可能である．0番目のProtection key
+% はPTEの初期値として利用されるため，読書き制限の設定は難しい．保護対象カーネル
+% データは15個のProtection keyにて制限管理を行わなければならない．
+% %
+% The PKS used in the proposed security mechanism implementation allows 16
+% protection keys to be specified; 
+The limitation of the PKS is that the number of Pkeys is 16. The 0th
+Pkey is used as the initial value of the PTE.
+% It is difficult to set a read limit. 
+The kernel data to be protected must be managed using 15 Pkeys.
+%
+% PKS にて，PTEに指定するProtection key，ならびに制限管理レジスタはカーネルモー
+% ドにおいて操作可能である．攻撃者がカーネルモードにて任意のコードを実行した場
+% 合，提案するセキュリティ機構保護を回避される可能性があり，他のセキュリティ機構
+% との組合せは必要である．
+% %
+% %
+% %
+% CFIは，正規のコード呼出し順に沿う実行か検証し，不正コード呼出し防止に有効であ
+% る．カーネルへのCFI適用は，CPU等ハードウェアセキュリティ機能の無効化防止とし
+% て，提案するセキュリティ機構と連携可能と考えている．
+%
+% 先行提案と合わせ，我々のセキュリティ機構では，書込み許可システムコール，ならび
+% に書込み許可カーネルコードに対して，Pkeyを利用したカーネルデータの書込み制限を
+% 管理している．
+% %
+% Pkey 数に制限があることから，保護対象とするカーネルデータの識別子数に上限があ
+% る．保護対象カーネルデータの種別数に制約を受けるため，提案手法の適用において
+% は，適切な保護対象カーネルデータの分類検討が必要である．
+% %
+% また，保護対象カーネルデータの種別毎に制限操作レジスタの操作処理の追加が必要で
+% あり，性能負荷に加え，カーネルの変更が求められる． 
+% %
+% The limited number of protection key 
+% places an upper limit on the number of kernel data identifiers to be protected. 
+As the number of types of kernel data to be protected is limited, an appropriate
+classification of kernel data should be considered when applying the KDPM.
+
+% In addition, each type of kernel data to be protected requires an additional
+% In addition, 
+Additionally, Implementation 2 requires an additional kernel process for the restriction
+of kernel data, which adds to the performance load and requires kernel
+modifications. 
+%
+%\reduline{
+  %
+  Additionally, the timer of Implementation 2 may induce the kernel instability
+  %effect 
+  owing to the write permission being forcefully disabled before the
+  write-permitted kernel code is terminated. We require the consideration that the
+  investigation for the time of kernel code execution to adjust the actual value
+  of the timer setting.
+  %
+  %}
+
+% 提案手法において，PKS はレジスタ操作のみで Pkey を指定したページの読書き制限を
+% 制御可能であり，
+% PKS はカーネルにおいて，軽量かつ実装容易性を備えたカーネルデータの保
+% 護機能として利用可能である．
+% %
+% 一方，カーネルにおける割込みや例外による非同期処理時の書込み制限の処理漏れ，複
+% 数の保護対象カーネルデータにて，Pkeyを共有した場合における排他処理の影響につい
+% て検討が必要であると考えている．
+
+
+% The implementation of vkTracer relies on the Linux \verb|kprobes|, 
+% which supports available symbol information for the kernel and
+% Linux \verb|tracepoints|, which supports static placement in the kernel code.
+% %
+% To cover the entire kernel behavior, the dynamic tracing of kernel
+% data (i.e., variable read and write) is necessary for additional
+% security capability.
+
+\subsection{Portability}
+% 提案するセキュリティ機構の他OSへの移植可能性として，
+% Protection key の利用に，OSにてページテーブルによる仮想記憶空間，およ
+% びPTEの実装が求められるため，
+% %
+% FreeBSD 等，Intel CPU に対応した OS では，提案するセキュリティ機構を適
+% 用可能であると考えている\cite{bsdpage}．
+% As for 
+% The consideration of 
+The portability of the KDPM to other OSs must be considered. The KDPM relies on
+the PKS, which requires the implementation of virtual memory space with a PTE in
+the OS that supports an Intel CPU.
+%
+% Therefore, the proposed security mechanism is applicable to OSs that 
+
+
+% The Linux implementations of vkTracer are a reference for the kernel layer.
+% %
+% Table \ref{tb:portability_consideration_os} outlines the portability of vkTracer
+% for different OSs. The implementation of vkTracer in other OS kernels depends on
+% the functionality of the OS kernel for kernel tracing.
+% %
+% For example, \verb|ktrace| and \verb|dtrace|
+% %
+% functionalities are available for kernel tracing in the FreeBSD and XNU kernels \cite{ktrace,dtrace}.
+% %
+% Meanwhile, Windows supports kernel loggers and tracing mechanisms \cite{ntkernel,wintracing}.
+% %
+% Therefore, the tracing of kernel behavior is available and supports
+% the implementation of vkTracer on modern OS kernels.
+
+% also be beneficial for vkTracer to support the
+%% The consideration of design limitation of vkTracer.
+%%   %  
+%% vkTracer focuses on the behavior of specific PoC code to identify the
+%% already known kernel vulnerability.
+%%   %
+%% Although it invokes the vulnerable kernel code to be reported at the
+%% CVE and developers' community (e.g., Linux kernel mailing list)
+%%   %}
+%% \cite{cvedetails,kernel-ml}, vkTracer will need to support the
+%% identification of an undiscovered vulnerable kernel code for the
+%% latest attacks.
+
+%The design limitations is that
+%Itthe
+%
+%% \blueuline{  
+%%   Additionally, the restriction of KPRM also requires a
+%%   specific vulnerable kernel code and protected kernel data to be
+%%   registered as a restricted kernel page for the adversary's user
+%%   processes using the profile of PoC code.  }
+%% %We consider two limitations of KPRM. The first limitation is that
+%% %the KPRM kernel delivers the already known kernel vulnerability prevention
+%% %that requires a specific vulnerable kernel code to be registered as a
+%% %restricted kernel page for the adversary's user processes.
+%% %
+%% \blueuline{  
+%%   The second limitation is the registering capability of vulnerable
+ %%   kernel code and the benign user process list are statically managed
+%%   at the kernel boot time.
+%%   %in the kernel code.
+%%   %  
+%%   To deliver quickly response for the kernel vulnerability, the
+%%   dynamically registering of vulnerable kernel code and the
+%%   controlling of the benign user process that is the straightway
+%%   design.
+%% %  . These 
+%% %disclosure.
+%% %  KPRM kernel requires the manually updating of the benign user
+%% %  process list.
+%% %  modification of the kernel for the 
+%% }
+%
+%The KPRM adopts the registering capability of vulnerable kernel code
+%and the dynamically controlling of the benign user process that is in
+%progress. These deliver to quick response for the kernel vulnerability
+%disclosure.
+
+%% \subsubsection{Security Limitation}
+%% \reduline{The security limitations must be considered.
+%%   %
+%%   The adversary's user process can still invoke the actual vulnerable
+%%   kernel code (e.g., CVE-2017-16995 in section} \ref{subseciton:evaluation_restricted}
+%% %
+%% \reduline{) and modify the kernel data on the normal kernel page.
+%%   The KPRM does not directly protect the defeating on the original
+%%   kernel address space.}
+%% %
+%% \reduline{  
+%%   The KPRM relies on the restricted kernel page to achieve the
+%%   prevention of kernel memory corruption.
+%%   %  
+%%   Therefore, the KPRM assumes that the vulnerable kernel codes and attack target
+%%   kernel data are suitably registered on restricted kernel page.
+%%   %
+%%   %Therefore, vulnerable kernel code  and kernel drivers should be
+%%   %suitably isolated in the MKM mechanism.
+%% }
+
+%  To cover the whole of kernel behavior, the dynamically tracing of
+%  kernel data (i.e., variable read and write) is necessary for the
+%  additional security capability.
+%}
+
+%% \blueuline{
+%% The limitations of the restriction of KPRM implementations are considered.
+%% Implementation 1 adopts an additional kernel address space with page
+%% table switching for restricted kernel page handling.
+%% Although the page table switching requires the performance overhead at the kernel layer,
+%% %
+%% implementation 1 utilizes PCID that covers 4,096 IDs for the
+%% performance improvement owing to hardware limitations. To overcome the
+%% maximum number of the PCID, implementation 1 applies the least
+%% recently used algorithms for the user process creation.
+%% }
+%% %Additionally, PCID covers 4,096 IDs for the performance improvement
+%% %
+%% \blueuline{  
+%% Additionally, implementation 2 shares the kernel page table for every
+%% user process that might cause misbehavior in terms of kernel stability
+%% with page access restriction.
+%% %
+%% Because kernel completely manages interruptions when page faults
+%% happen from the running kernel tasks that have to be avoided an
+%% affection at the kernel layer.  
+%% %  Additionally, implementation 2 shares the kernel page table for every
+%% %  user processes that might cause misbehavior in terms of kernel
+%% %  stability with page access restriction.
+%%   %
+%% %  Because kernel completely manages interruptions when page faults are happen
+%% %  from the running kernel tasks that have to be avoided an affection at the kernel layer.
+%% %
+%% The benchmark software can not cover all the kernel features. To
+%% evaluate the kernel stability, it is necessary to verify the kernel
+%% feasibility when the kernel code and kernel data are protected on the
+%% or the testing environment of KPRM kernel before the deployment.
+%% }
+
+
+%The Linux implementations of vkTracer is a reference at the kernel layer.
+%with x86\_64 architecture
+%
+%shows that the applicability of the vkTracer in comparison to other OS
+%kernels is considered that OS kernel must satisfy the kernel tracing.
+%and the page table structure to manage virtual memory
+%are available for kernel tracing in FreeBSD and XNU kernel 
+%
+%On the other hand
+%Additionally, Windows supports kernel logger and tracing mechanism 
+%Therefore, the tracing of kernel behavior is available and support
+%for implementations of vkTracer on modern OS kernels.
+  %kernels supports the tracing and manages kernel code and kernel data on a page table structure.
+%
+%% \reduline{  
+%%   Modern OS kernel manages the page table entries and page table
+%%   combination for handling the user and kernel virtual memory region
+%%   that is already implemented in FreeBSD, XNU kernel, and Windows in
+%% }
+%% \cite{bsdpage,windowspage,xnukernel}.
+%
+  %}
+% ktrace
+% https://www.freebsd.org/cgi/man.cgi?ktrace(1)
+% dtrace tools
+% https://www.brendangregg.com/dtrace.html
+
+% NT kernel logger trace
+% https://docs.microsoft.com/en-us/windows-hardware/drivers/devtest/nt-kernel-logger-trace-session
+% Event Tracing for Windows 
+% https://docs.microsoft.com/en-us/windows-hardware/drivers/devtest/adding-event-tracing-to-kernel-mode-drivers
+
+%% \reduline{
+%% In this study, the portation of restriction of  KPRM is carefully
+%% examined to other OS kernels.
+%% %
+%% FreeBSD has implemented virtual address address space}
+%% (e.g., \verb|vmspace|) that
+%% has \verb|vm_map| and \verb|vm_map_entry| constructs the page table, then \verb|vm_page|
+%% \reduline{
+%% is page object at the kernel layer} in \cite{bsdvm}
+%% %
+%% \reduline{
+%% Moreover, the XNU kernel has also similar implementations of page table structure
+%% for user and kernel modes in}
+%% \cite{xnukernel}.
+
+%% \reduline{  
+%%   KPRM required the kernel tracing and the granularity of kernel page
+%%   handling at the kernel layer.
+%%   %
+%%   Both kernels supports the tracing and manages kernel code
+%%   and kernel data on a page table structure.  The restricted kernel
+%%   page approach is available and support for implementations of KPRM.
+%% }
+
+
+% \begin{table}[hb]
+%  \centering
+
+% \caption{
+% %
+%   Portability of vkTracer for OSs ($\checkmark$ is supported; $\bullet$ is available on x86\_64).
+% %
+% }
+% %\vspace{-0.5ex}  
+% \scalebox{1.00}{
+% %  \begin{tabular}{c|cc}
+% \begin{tabular}{ccc}
+% %\hline
+% \hline
+% \noalign{\smallskip}
+% %\begin{tabular}{c}
+% %  {\bf Feature}
+% %\end{tabular}
+% %{\bf OS}  & {\bf Kernel tracing} & {\bf Page table structure} & {\bf vkTracer}\\
+% \begin{tabular}{c}
+%     {\bf OS}
+% \end{tabular}
+% &
+% \begin{tabular}{c}
+%     {\bf Kernel tracing}
+% \end{tabular}
+% &
+% \begin{tabular}{c}
+%    {\bf vkTracer}
+% \end{tabular}
+% \\
+
+% \noalign{\smallskip}
+% \hline
+% \noalign{\smallskip}
+% %% Linux       & \checkmark & \checkmark  & \checkmark  \\
+% %% FreeBSD     & \checkmark & \checkmark  & $\bullet$ \\
+% %% XNU kernel  & \checkmark & \checkmark  & $\bullet$ \\
+% %% Windows  & \checkmark & \checkmark  & $\bullet$ \\
+% Linux       & \checkmark   & \checkmark  \\
+% FreeBSD     & \checkmark   & $\bullet$ \\
+% XNU kernel  & \checkmark   & $\bullet$ \\
+% Windows  & \checkmark      & $\bullet$ \\
+
+% %Windows     & \checkmark & \\
+% %Virtual Memory Monitoring       & \checkmark & \checkmark & \checkmark  & \checkmark & \checkmark\\
+% %Page table isolation  &  \checkmark   &             & \checkmark  & \checkmark\\
+% %MKM mechanism         &  \checkmark   & $\triangle$ &             & $\triangle$\\
+% %% System Call Argument Inspection &            & \checkmark &             & \checkmark\\
+% %% In Kernel Interception          &            & \checkmark & $\triangle$ & \checkmark\\
+% %% Kernel Integrity                & \checkmark &            & \checkmark  & $\triangle$ \\
+% %% Cloud Environment Deployment    &            & $\triangle$& $\triangle$ & \checkmark\\
+% %Relation Visualizing            & \checkmark &             & $\triangle$ & \checkmark\\
+% %Web API & x & &  & \\
+% %Local Deployment           &  &  & $\triangle$ & \checkmark\\
+% \hline
+% \end{tabular}
+% }
+% \label{tb:portability_consideration_os}
+% %\vspace{-1.0ex}  
+% \end{table}
+
+
+% Microsoft Windows Hardware Developer
+% Virtual address spaces
+% https://docs.microsoft.com/en-us/windows-hardware/drivers/gettingstarted/virtual-address-spaces
+
+% The Design and Implementation of the FreeBSD Operating System
+% 5.2. Overview of the FreeBSD Virtual-Memory System
+% https://flylib.com/books/en/2.849.1/
+
+% XNU
+% https://github.com/apple/darwin-xnu/tree/a1babec6b135d1f35b2590a1990af3c5c5393479/osfmk/vm
+
+%% Here, we consider the applicability of the KPRM to other OSs. The Linux
+%% implementation of KPRM ported to the kernel of another OS adopts the
+%% page table approach to manage virtual memory. Moreover, FreeBSD
+%% manages the page table entries and page table combination for handling
+%% the user and kernel virtual memory region \cite{bsdpage}.
+%
+
+%% \subsubsection{Architecture}
+%% \reduline{
+%% The consideration of other CPU architectures can be used to validate the use
+%% of page table structure for the virtual memory}
+%% (Table \ref{tb:portability_consideration_arch}).
+%% %
+%% \reduline{
+%% %
+%% The x86\_64 architecture indicates that certain hardware
+%% specifications (e.g., 4 / 5 level paging) support the restricted kernel
+%% page of KPRM implementations.
+%% %page table isolation.
+%% %
+%% ARM has translation table base registers (TTBR0 / TTBR1)
+%% and the exception levels (EL0 / 1 / 2 / 3) that provide
+%% page table structure for each privilege level in} \cite{arm-ttbr}.
+%% %
+%% \reduline{
+%%   %
+%%   Additionally, RISC-V supervisor address translation and
+%%   protection (satp) register that specify the virtual address length
+%%   and translation modes (Sv32 / Sv39 / Sv48) for page table structure
+%%   in
+%%   %
+%% } \cite{risc-v-mmu}.
+%% \reduline{
+%%   Therefore, both CPU architectures can be realized the restriction
+%%   of KPRM that is available as separation granularity of kernel page.
+%% }  
+
+%% \begin{table}[hb]
+%%   \centering
+
+%% \caption{
+%% %
+%%   Portability consideration of KPRM mechanism for architectures ($\checkmark$ is supported;
+%%   $\bullet$ is available).
+%% %
+%% }
+%% %\vspace{-0.5ex}  
+%% \scalebox{0.95}{
+%% %  \begin{tabular}{c|ccc}
+%% \begin{tabular}{cccc}    
+%% %\hline
+%% \hline %\noalign{\smallskip}
+%% %\begin{tabular}{c}
+%% %  {\bf Feature}
+%% %\end{tabular}
+%% {\bf Arch}  & {\bf Page table register} & {\bf Paging} & {\bf MKM}\\
+%% %\noalign{\smallskip}
+%% \hline
+%% %\noalign{\smallskip}
+
+%% x86\_64   & CR3      & 4 / 5 level paging & \checkmark   \\
+%% ARM       & TTBRs    & TTBRn\_ELm         & $\bullet$    \\
+%% RISC-V   & satp      & Sv32 / Sv39 / Sv48 & $\bullet$  \\
+%% \hline
+%% \end{tabular}
+%% }
+%% \label{tb:portability_consideration_arch}
+%% %\vspace{-1.0ex}  
+%% \end{table}
+%\reduline{
+  %% vkTracer identified the invocation of vulnerable kernel code under
+  %% the execution of the PoC code without any infection.
+  %% %  
+  %% vkTracer generates the profile that contains the necessary data with
+  %% virtual address range and function name from the kernel image and
+  %% kernel debug information.
+  %% %for the restriction of the KPRM.
+  %% %
+  %% Additionally, vkTracer does not any affect for the behavior of
+  %% the user process.
+  %
+  %KPRM transparency continues to hook the execution of kernel code
+  %before system call invocation at the kernel layer.
+%}
+
+%\reduline{
+
+%  From the viewpoint of the collection of kernel attack surface reducing,
+%  the dynamically analysis method it is difficult to cover the entirety of the
+%  relationship between application and kernel.
+  %
+  %% vkTracer only requires the PoC code that is usually a small source
+  %% code. It is available to identify the execution of the vulnerable
+  %% kernel code from the source code file. More specifically, one of the
+  %% demonstrated PoC code is 143 lines and the vulnerable kernel code is
+  %% 192 lines.
+  %% %
+  %% Therefore, vkTracer can correctly generate the profile for the
+  %% restriction to extract the reducing target of vulnerable kernel
+  %% code.
+  %
+  %% It narrows down the focus to the detail of PoC code that whether invokes the
+  %% vulnerable kernel code from the differential between the normal kernel behavior
+  %% and the compromised kernel behavior at the KPRM tracing environment.
+%}
+
+%% \subsubsection{Kernel Resilience}
+%% \reduline{
+%%   The KPRM kernel successfully registered the vulnerable
+%%   kernel code and kernel data to the restricted kernel page
+%%   using the generated profile.
+%%   }
+%% \blueuline{
+%%   After that, the KPRM kernel smoothly prevented the PoC of the eBPF
+%%   kernel vulnerability attack that tries to invoke the vulnerable
+%%   kernel code and modify the credential information. 
+%%   %
+%%   The KPRM kernel prohibits the access to the restricted kernel page.
+%%   Because the page fault indicates the access violation from the
+%%   access and execution request of the user process at the kernel
+%%   layer.
+%%   %  
+%%   It is available that the KPRM kernel catches the page fault before
+%%   the malicious program exploits the kernel vulnerability, then
+%%   modifies the kernel data.
+%%   %
+%%   Therefore, the KPRM kernel can protect the kernel data and disable
+%%   invocation of the vulnerable kernel code by the malicious program.
+%% }
+%
+
+%
+%% \blueuline{  
+%%   The combination of the vulnerable kernel code identification and the
+%%   kernel page restriction that realize the design of KPRM achieves
+%%   kernel resilience.}
+%% %
+%% \blueuline{It assures that the elimination of kernel address space
+%%   adopts the restricted kernel page of the vulnerable kernel code,
+%%   %the attack target kernel code, or kernel data for the execution of
+%%   the attack target kernel data for the execution of the adversary's user process.  }
+%% %
+%% \blueuline{  
+%%   Additionally, the KPRM addresses the threat of already known kernel
+%%   vulnerabilities to maintains kernel memory integrity before the
+%%   occurrence of memory corruption by kernel subverting.}
+%% %
+
+% It takes a few seconds after the finishing of PoC code execution. It depends on
+%the profile of the kernel vulnerability.
+%in the user process.
+
+%\blueuline{
+%%   The implementation of vkTracer requires
+%%   the additional overhead for the kernel.
+%%   %The overhead measurement result indicates that  
+%% %}
+%% %
+%%   %\reduline{
+%%   The tracing cost of vkTracer requires the registration time
+%%   and additional callback processing cost of tracepoints and kprobes
+%%   for the kernel.
+%%   %
+%%   Although tracepoints uses the already embedded callbacks of static
+%%   placements in the kernel, the kprobe has more performance cost due
+%%   to dynamically modification of the kernel code to insert the probe
+%%   functions to the running kernel.
+%%   %
+%%   To achieve better performance, vkTracer narrows the number of kprobe
+%%   points.
+%%   %
+%%   It avoids the registration time and the callback executions at the
+%%   tracing at the kernel layer.
+  %
+%}
+%
+
+%the benchmark measurement results indicate
+%
+%\blueuline{
+  %
+  %The consideration of tracing measurement that correctly calculates the cost of the overhead of two KPRM implementations.
+  %
+%}
+
+%% \reduline{  
+%%   The different overhead costs of two KPRM implementations indicate
+%%   that the KPRM implementation 1 requires the page table switching
+%%   requires the CR3 register update and TLB flush cost.
+%%   The KPRM implementation 2 does not require the page table switching.
+%% }
+%% %
+%% \blueuline{
+%%   Although the KPRM implementation 1 adopts the PCID of TLB for
+%%   the overhead reducing, it remains the CPU cycles for the CR3 update
+%%   without TLB flush.
+%% }
+%% %
+%% \blueuline{
+%%   The common overhead cost of KPRM implementations
+%%   that require the searching of restricted kernel pages of the kernel page
+%%   table while page table walk.
+%%   %
+%%   Additionally KPRM implementations forcefully unmap restricted kernel pages
+%%   for additional processing time at the kernel layer.
+%% }  
+
+%% \reduline{
+%%   The inspection of KPRM implementations achieve better performance.
+%%   Although the kernel page table size is not reduced at the kernel,
+%%   %
+%%   the improvement of implementations removes restricted
+%%   kernel pages from the kernel page table at a process creation.
+%%   %
+%%   It avoids the page table walk at the time of the system call invocation timing.
+%%   %
+%%   The consideration of additional improvement is to suppress the
+%%   number of restricted kernel pages at types of system call invocation
+%%   for the affection of overhead.
+%%   %and 
+%% }
+%%   %the implementations depend on  for the page table walk.
+  %
+
+  
+  %property of multiple points of KPRM for
+
+  
+%We are continuing to inspect property of multiple points of KPRM for
+%better performance.
+%
+%
+%
+
+%In addition, the page table switching requires the CR3 register update
+%and TLB flush cost. KPRM implementation 1 adopts the PCID of TLB for
+%the overhead reducing, which only requires the CR3 update without TLB
+%flush.
+%
+%We consider that 
+%
+

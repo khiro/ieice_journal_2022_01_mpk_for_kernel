@@ -1,0 +1,47 @@
+% -*- coding: utf-8; mode: latex; -*-
+\begin{table}[t]
+    \centering
+    %  \caption{Overhead of MKM mechanism on the Linux kernel ($\mu$s)}
+    \caption{System call invocation overhead of Implementation 1 ($\mu$s)}
+  %  \vspace{-2.5ex}
+    \scalebox{0.85}{
+  
+      \begin{tabular}{lrrr}
+        \hline \noalign{\smallskip}
+        \begin{tabular}{l}
+          {\bf System call}
+        \end{tabular}
+        &
+        \begin{tabular}{l}
+          {\bf Vanilla kernel}
+        \end{tabular}
+        &
+        \begin{tabular}{l}
+          {\bf Implementation 1}
+        \end{tabular}
+        &
+        \begin{tabular}{l}
+          {\bf Overhead}
+        \end{tabular}
+        \\
+        \noalign{\smallskip}
+        \hline
+        \noalign{\smallskip}
+  fork+/bin/sh & 227111.28  & 236738.69  & 9627.41 (4.24\%)  \\
+  fork+execve  & 12780.0566 & 13931.6703 & 1151.6136 (9.01\%)    \\
+  fork+exit    & 10837.0729 & 11285.5603 & 448.4874 (4.14\%)    \\
+  open/close   & 1302.5639  & 1334.5312  & 41.9672 (2.95\%)     \\
+  read         & 168.8898   & 180.4594   & 11.5696 (6.85\%) \\
+  write        & 164.2567   & 176.4273   & 12.1705 (7.41\%)     \\
+  fstat        & 195.0063   & 203.7508   & 8.7445  (4.48\%)     \\
+  stat         & 613.7426   & 631.9393   & 18.1966 (2.96\%)     \\
+        
+  \noalign{\smallskip}
+  \hline
+  \noalign{\smallskip}
+      \end{tabular}
+    }    
+      \label{tb:evaluation_qemu_lmbench1}
+  %  \vspace{-2.0ex}
+  \end{table}
+  

@@ -1,0 +1,372 @@
+% # -*- coding: utf-8 -*-
+\section{Related Work}  \label{section:related_works}
+% \begin{figure*}[t]
+% %  \begin{center}
+%   \centering
+%   \hspace*{-4.5ex}
+%     %\includegraphics[scale=.275]{./imgs/002_screen_shot_2019-08-04_15.19.54.eps}
+%     \includegraphics[bb=0 0 1346 735, scale=.300]{./imgs/A01X_08_screen_shot_2021-08-25_11.30.14.png}
+% %  \end{center}
+% %  \vspace{-1.0ex}
+%   \caption{
+%     %
+%     Comparison of the tracing mechanism design.
+%     %
+%   }
+% %  \vspace{-2.0ex}  
+%   \label{fig:kernel_tracing_mechanisms}
+% %  \vspace{-2.0ex}
+% \end{figure*}
+
+
+% {\bf アプリケーションにおけるMPKを利用したデータ保護}\\
+{\bf User Process Data Protection using the MPK:}
+%\subsubsection{User Process Data Protection with the MPK:}
+% libmpk はユーザプロセスでの保護対象データの操作を柔軟化の
+% ため，PSU 管理の抽象化を提案している \cite{libmpk}．
+% アプリケーションにおける MPK を利用したデータ保護として，
+% libmpk ユーザプロセスにおいて，PSUを利用した保護対象データの操作を
+% 柔軟にするための抽象化ライブラリを提案している \cite{libmpk}．
+For data protection using the MPK in applications, libmpk provides a flexible
+library that supports user processes. This can manipulate the protected data
+using the PSU \cite{libmpk}.
+% A library is proposed to make it flexible 
+% %
+% MPK を利用したデータ保護として，ERIM は PSU を用いてアプリケーション向
+% けに保護対象データを異なるユーザプロセスへ分離する手法を提案している
+% \cite{erim}．
+% ERIM はPSUを利用してアプリケーションにおいて，複数のユーザプロセスに保護対象データを
+% 分離して管理する手法を提案している\cite{erim}．
+% %
+ERIM is proposed as a separation method for the protected user process data into
+different user processes using PSUs \cite{erim}.
+
+% {\bf カーネルにおけるMPKを利用したデータ保護}\\
+{\bf Kernel Data Protection using the MPK:}
+%\subsubsection{Kernel Data Protection with the MPK:}
+% また，xMP はカーネルの仮想記憶空間を構成する複数のページをドメイン単位
+% として Protection key 毎に分割し，仮想マシンモニタ（VMM）から
+% 管理する機構を提案している \cite{xmp}．
+%
+% カーネルにおける MPK を利用したカーネルコードおよびカーネルデータの保護として，
+% xMP は複数のドメインを用意し，カーネルの仮想記憶空間を構成する複数のページを各ド
+% メインに割当て，Pkey により，仮想マシンモニタ（VMM）から管理する機構を提案してい
+% る\cite{xmp}．
+To protect the kernel code and kernel data using the MPK in the kernel, xMP
+proposes a security mechanism that provides multiple domains. These contain
+pages of kernel memory space that are allocated using the PKU. The virtual
+machine monitor (VMM) manages domains via Pkeys \cite{xmp}.
+% comprising the
+% kernel virtual storage space are allocated to each domain, and 
+% %
+% libhermitMPK はカーネルコードとデータを複数の Pkey に分割管理し，Pkey単位で
+% 管理することで不正な読書きから保護する機構を提案している\cite{libhermitmpk}．
+Additionally, libhermitMPK proposes a security mechanism to protect against
+unauthorized reading and writing by dividing and managing the kernel code and
+data into multiple Pkeys\cite{libhermitmpk}.
+% and managing them on a per-Pkey basis 
+%
+% libhermitMPK は複数の Protection key にカーネルコードとデータを分割し保護する機
+% 構を提案している\cite{libhermitmpk}．
+
+% {\bf 仮想記憶空間の分離によるカーネルデータの保護}
+% Kernel page table isolation （KPTI）はユーザプロセスによるサイドチャネ
+% %ル攻撃からのカーネルモードのカーネルデータの参照を防止するため，ユーザ
+% ル攻撃からカーネルデータの参照を防止するため，ユーザモード用の仮想記憶
+% 空間に一部のカーネルコードおよびカーネルデータ，大部分をカーネルモード
+% 用の仮想記憶空間に配置した \cite{gruss17ssos}．
+% %
+% また，Proclocal はユーザプロセス毎にカーネルの仮想記憶空間に占有の記憶
+% 領域を割当て \cite{proclocal} ，Address space isolation （ASI）
+% \cite{asi} は仮想マシン実行専用のカーネルの仮想記憶空間を備え，仮想化
+% に関するカーネルデータの保護を実現している．
+
+
+% {\bf 不正コード実行防止}\\
+{\bf Prevention of Malicious Code Execution:}
+%\subsubsection{Prevention of Malicious Code Execution:}
+% カーネルにおける不正なカーネルコードの実行防止として，コード呼出し順を検査する
+% CFI \cite{abadi05ccs}の適用が進められている\cite{cfi-lwn}．
+% また，カーネルへのCFI適用のため，KCoFI では，独自アーキテクチャとして非同期処理
+% 発生時におけるコード呼出順の整合性保存機構を提案している\cite{criswell14sp}．
+% 脆弱性を利用した攻撃による不正コード実行に対し，コード呼出し順を検査
+% する control flow integrity（CFI）が提案されている \cite{abadi05ccs}．
+% %カーネルでは，割込み制御等の非同期処理への対応が必
+% %要なため，予め決められたコード呼出し順での CFI は困難である．
+% KCoFI では，カーネルへのCFI適用のため，独自アーキテクチャとして非同期
+% 処理発生時におけるコード呼出順の整合性保存機構を提案している
+% \cite{criswell14sp}．
+To prevent illegal kernel code execution in the kernel, the control flow
+integrity (CFI) \cite{abadi05ccs}, which verifies the order of program function
+calls, is applied \cite{cfi-lwn}. 
+% it is being 
+%
+To apply the CFI to the kernel, KCoFI is proposed as a security mechanism for
+preserving the integrity of the order of invoking  kernel codes as the original
+architecture \cite{criswell14sp}.
+% when asynchronous processing occurs 
+
+
+% {\bf Fault Tolerance}  %The stability of kernel behavior requires the
+% A stable kernel behavior requires the main kernel feature to be protected from
+% identified malicious or buggy device drivers.
+% %
+% The user space driver includes a fault-tolerance mechanism that separates the
+% device driver execution from the main kernel processing
+% \cite{herder09dsn,butt09acsac}.
+% %
+% iKernel adopts a virtual machine monitor that separates buggy devices on virtual
+% machines \cite{tan07dasc}.
+% %
+% SIDE provides a dedicated page table for each driver with interaction
+% mechanisms between the kernel and drivers \cite{sun13dsn}.
+
+% %\subsection{Memory Protection}
+% %% \end{figure}
+% {\bf Attack Surface Reduction}
+% %
+% Reducing the kernel attack surface restricts the visible virtual
+% memory region for user processes.
+% %git 
+% %% The design was proposed by Dautenhahn {\it et al}.
+
+% %% %
+% PerspicuOS demonstrates privilege minimization by manually isolating the
+% kernel mechanism for hardware management \cite{dautenhahn15asplos}.
+% %
+% kRazor manages the list of kernel codes that are visible for user processes
+% \cite{kurmus14dimva}.
+% %
+% KASR handles and controls the kernel page table to reduce the set of
+% kernel codes and data for each user program \cite{zhang18arxiv}.
+
+% Multik customizes the kernel image to create a profile that
+% contains the necessary kernel code for each traced application \cite{kuo19arxiv}.
+% %
+% KHide restricts the granularity of software diversity techniques for
+% kernel code and kernel data with hardware virtualization \cite{gionta16cns}.
+
+% {\bf Kernel Vulnerability Countermeasures}
+% Kernel vulnerability countermeasures prevent the invocation of
+% vulnerable kernel codes or restrict illegal kernel code behaviors.
+% %
+% KCoFI corresponds with control-flow integrity for kernel processing, which
+% requires asynchronous behavior to handle interruptions and context switches
+% \cite{criswell14sp}.
+% %
+% eXclusive Page Frame Ownership manages the attribution separation of
+% the page between the user and kernel modes to protect the direct
+% mapping region attacks \cite{kemerlis14usenix}.
+% %
+% kR\^{}X controls the exclusive mechanism across the access and
+% execution privileges of the kernel code and kernel data \cite{pomonis17eurosys}.
+
+
+%PerspicuOS that demonstrates privilege minimization to manually
+%isolate the kernel mechanism for hardware management
+%to assign for kernel isolation mechanism 
+%KASR that handles and controls kernel page table to reduce a set of
+%kernel code and kernel data for each user program execution
+%\cite{zhang18arxiv}.
+%
+%\cite{kurmus14dimva,zhang18arxiv}.
+%kRazor and KASR prepare a set of kernel code and kernel data for each
+%user program execution 
+%
+
+
+%% Additionally, the Multik that customizes kernel image to create the
+%% profile contains the necessary kernel code for each traced application
+
+%% %
+%% KHide restricts the granularity of software diversity techniques for
+%% kernel code and kernel data with hardware virtualization
+%%   \cite{gionta16cns}.
+ %
+
+%The study conducted in \cite{gionta16cns}, \reduline{the authors proposed that
+ 
+
+%{\bf Flow Integrity:}
+%\reduline{
+%The memory protection of kernel that requires the flow integrity for
+%the prevention of memory corruption.}
+%The flow integrity for the prevention of memory corruption
+%
+%The control flow integrity (CFI) taht prevents the malicious behavior
+%behind the benign program flow \cite{abadi05ccs}.
+%
+%
+%Additionally, in \cite{?}, \reduline{
+%  the authors proposed the data flow integrity that
+%  verifies the benign relationship between data definition and usage for the running program.
+%}
+
+%
+%\reduline{To mitigate memory corruption, the randomization and
+%  granular privilege handling for the kernel resilience to enforce the
+%  runtime kernel protection.}
+%Kernel memory protection is 
+%approach that realizes mitigation of memory corruption.
+%The memory corruption
+
+%memory modification.
+%proposes the control flow
+%enforcement, the randomization, and granular privilege handling for
+%the runtime kernel protection.
+%the kernel resilience to enforce the
+
+%KCoFI corresponds with CFI for the kernel processing that requires the
+%asynchronous behavior to handle the interruption and context switch
+%\cite{criswell14sp}.
+%
+%In \cite{davi16ndss}, \reduline{ the authors demonstrated the
+%% The randomizing protection of page table structure camouflages the
+%% position of the kernel page table from malicious activity
+%% \cite{davi16ndss},
+%  the randomization of 
+%position that protects the entire 
+%
+%
+%% XPFO manages the attribution separation of the page between the
+%% user and the kernel modes to protect direct mapping region attacks
+%% \cite{kemerlis14usenix}.
+  %protects the
+%kernel to manage the page attribution distinction between the user and
+%the kernel modes through direct mapping region attacks.
+%
+%% kR\^{}X that controls the exclusive mechanism across
+%% with the access and the execution privilege of the kernel code and
+%% kernel data \cite{pomonis17eurosys}.
+
+%% Additionally, xMP provides switching of the visible virtual memory
+%% region between the user and the kernel modes for the guest OS with the
+%% hypervisor \cite{proskurin20sp}.
+
+%provides the exclusive mechanism between access and execution of
+%the kernel code and kernel data.
+%
+
+%%   the minimum mapping of  kernel memory for the generation of 
+%%   profiles the necessary kernel code generated for
+%%   the customized kernel image for each application
+%%   authors designed 
+%% Multik that reduces the available kernel code to
+%% create the minimum mapping of kernel memory for each
+%% application.
+
+%Moreover, Multik profiles the necessary kernel code generated for a
+%customized kernel image for each application \cite{kuo19arxiv}.
+
+
+%% \reduline{[N-0X]
+%%   Kernel security researches have yielded multiple
+%%   %software and hardware memory security mechanisms
+%%   memory isolation and memory protection mechanisms against
+%%   potential threats and practical attack techniques
+%% }
+%% %
+%% Figure \ref{fig:kernel_protection_taxonomy}
+%% %
+%% \reduline{indicates an overview of the kernel memory security research
+%%   taxonomy, summarizing previous security mechanisms.  }
+
+%% \begin{figure}[hb]
+%%   \begin{center}
+%%     \hspace{-6.0ex}
+%%     \includegraphics[bb=0 0 1749 914, scale=.151]{./imgs/A01X_06_screen_shot_2021-08-26_16.39.34.png}
+%%     %  \vspace{-4.5ex}
+%%   \end{center}    
+%%   \caption{
+%%     %
+%%     Overview of the taxonomy of kernel memory security mechanism.
+%%     %Overview of kernel protection taxonomy.
+%%     %
+%%   }
+
+%%   \label{fig:kernel_protection_taxonomy}
+%% %\vspace{-5.0ex}        
+
+%% \subsection{Memory Isolation}
+%% \reduline{
+%%   The runtime memory separation techniques adopt the memory isolation
+%%   using hardware or software against directory attack threats from the
+%%   kernel or user modes.
+%% }
+
+%% {\bf Isolation at Hardware:}
+%% %
+%% \reduline{
+%%   The hardware features support a memory isolation mechanism.
+%% }
+%% %The CPU features support a memory isolation mechanism. A trusted
+%% %
+%% The study conducted in \cite{lee19arxiv,marcela19arxiv},
+%% \reduline{ 
+%% a trusted execution environment (TEE) executes the kernel in the secure
+%% memory region to mitigate kernel attacks from a non-secure memory
+%% region.}
+%% %
+%% Additionally, in \cite{ge14most} the authors proposed the Sprobes taht
+%% adopts CPU security features and a TEE for the determining of kernel
+%% integrity.
+%% %
+%% In \cite{gravani19arxiv},
+%% \reduline{ 
+%% the authors proposed the IskiOS adopts a CPU
+%% memory protection feture that restricts a specific memory region
+%% related to the kernel virtual memory.}
+%% %
+
+%% The approach with virtualization, in \cite{hua18atc}, \reduline{ the
+%%   authors adopt hardware virtualization is available for the
+%%   separation of the kernel virtual memory to achive low overhead.}
+%% %
+%% The study conducted in \cite{gionta16cns}, \reduline{the authors proposed that
+%% KHide restricts the granularity of software diversity techniques for
+%% kernel code and kernel data with hardware virtualization.}
+%% %
+%% Moreover, the authors in \cite{proskurin20sp} \reduline{ designed taht xMP provides
+%% switching of the visible virtual memory region between the user and
+%% the kernel modes for the guest OS with the hypervisor.}
+
+%\subsection{Memory Isolation}
+%% {\bf Isolation at Software.}
+%% %
+%% %\reduline{The memory isolation in the kernel security and dependancy.}
+%% %
+%% %
+%% %
+%% %\reduline{
+%% To mitigate meltdown side-channel attacks, KPTI that provides
+%% dedicated page tables for the user and kernel modes
+%% \cite{gruss17ssos}
+%% %
+%% and the another approach with virtualization is available for the
+%% separation of the kernel virtual memory to achive low overhead
+%% \cite{hua18atc}.
+
+%User space driver contains fault tolerance mechanism that separates
+%the device drivers execution from main kernel processing
+%
+%In 
+%\reduline{
+%iKernel adopts virtual machine monitor that separates buggy devices on virtual machines 
+%
+%In 
+%\reduline{
+%SIDE makes the dedicated
+%page table for each driver with interaction mechanisms between kernel
+%and drivers 
+%
+%virtual address separation or kernel code
+%behavior restrictions 
+
+%
+%% Moreover, the authors in \cite{proclocal} depevelod Proclocal that
+%% allocates dedicated pages \reduline{to preserve} the kernel data for
+%% each user process.
+%% %
+%% In \cite{sci}, the authors developed SCI that creates an isolated page
+%% table to execute \reduline{kernel codes of} system calls during kernel
+%% processing.

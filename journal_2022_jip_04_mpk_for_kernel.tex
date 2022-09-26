@@ -1,0 +1,285 @@
+%\documentclass[english]{ipsj}
+%\documentclass[english,preprint]{ipsj}
+%\documentclass[english,preprint,JIP]{ipsj}
+\documentclass[english,sigrecommended,JIP]{ipsj}
+
+%\usepackage{graphicx}
+%\usepackage[dvipdfmx]{graphicx}
+\usepackage{latexsym}
+
+\usepackage[hyphens]{url}
+\usepackage{xpatch}
+
+\def\Underline{\setbox0\hbox\bgroup\let\\\endUnderline}
+\def\endUnderline{\vphantom{y}\egroup\smash{\underline{\box0}}\\}
+\def\|{\verb|}
+
+\usepackage{enumitem, kantlipsum}
+
+\usepackage{tikz}
+\usepackage{amsmath}
+\usepackage{amssymb}
+
+\usepackage{minipage}
+\usepackage{ulem}
+\usepackage{xcolor}
+\usepackage{graphicx}
+\usepackage{multirow}
+
+\newcommand\reduline{\bgroup\color{red}\markoverwith{\textcolor{black}{\rule[-0.5ex]{2pt}{0.4pt}}}\ULon}
+\newcommand\blueuline{\bgroup\color{blue}\markoverwith{\textcolor{black}{\rule[-0.5ex]{2pt}{0.4pt}}}\ULon}
+\newcommand\violetuline{\bgroup\color{violet}\markoverwith{\textcolor{black}{\rule[-0.5ex]{2pt}{0.4pt}}}\ULon}
+\newcommand\magentauline{\bgroup\color{magenta}\markoverwith{\textcolor{black}{\rule[-0.5ex]{2pt}{0.4pt}}}\ULon}
+%\newcommand\magentauline{\bgroup\color{magenta}\markoverwith{\textcolor{black}{}}\ULon}
+\newcommand\cyanuline{\bgroup\color{cyan}\markoverwith{\textcolor{black}{\rule[-0.5ex]{2pt}{0.4pt}}}\ULon}
+\newcommand\orangeuline{\bgroup\color{orange}\markoverwith{\textcolor{black}{\rule[-0.5ex]{2pt}{0.4pt}}}\ULon}
+
+\newcommand{\red}[1]{\textcolor{red}{#1}}
+\newcommand{\blue}[1]{\textcolor{blue}{#1}}
+\newcommand{\green}[1]{\textcolor{green}{#1}}
+
+%\usepackage{extpfeil}
+
+\renewcommand\UrlFont{\color{blue}\rmfamily}
+
+\hyphenpenalty=10000\relax
+\exhyphenpenalty=10000\relax
+\sloppy
+
+\setcounter{volume}{30}% vol25=2017
+\setcounter{number}{1}%
+\setcounter{page}{1}
+
+%%\received{2020}{12}{31}
+%\rereceived{2011}{10}{1}   % optional
+%\rerereceived{2011}{10}{31} % optional
+%%\accepted{2021}{12}{31}
+
+\usepackage[varg]{txfonts}%%!!
+\makeatletter%
+\input{ot1txtt.fd}
+\makeatother%
+
+\begin{document}
+
+%\title{MKM: Multiple Kernel Memory for Protecting Page Table Switching Mechanism Against Memory Corruption}
+%\title{Design and Implementation of Kernel Memory Isolation for Container Resources}
+% \title{Designing and Implementing of Kernel Memory Isolation Against Side-Channel Attack with Speculative Execution}
+
+% \title{Mitigation of Side-Channel Attack with Speculative Execution Using Kernel Memory Isolation}
+% \title{Mitigating Foreshadow Side-Channel Attack Using Dedicated Kernel Memory Mechanism}
+% \title{vkTracer: Vulnerable Kernel Code Tracing to Generate The Profile of Kernel Vulnerability}
+% \title{Identification of Vulnerable Kernel Code\\ Using Kernel Tracing Mechanism}
+\title{KDPM: Kernel Data Protection Mechanism\\ Using a Memory Protection Key}
+
+
+
+% \affiliate{kobe}{Department of Electrical and Electronic Engineering, Graduate School of Engineering, Kobe University, Hyogo, 657--8501, Japan}
+\affiliate{kobe}{Graduate School of Engineering, Kobe University, Hyogo, 657--8501, Japan}
+% \affiliate{okayama}{Graduate School of Natural Science and Technology, Okayama University, Okayama, 700--8530, Japan}
+\affiliate{okayama}{Faculty of Natural Science and Technology, Okayama University, Okayama, 700--8530, Japan}
+
+
+\author{Hiroki Kuzuno}{kobe}[kuzuno@port.kobe-u.ac.jp]
+\author{Toshihiro Yamauchi}{okayama}[yamauchi@okayama-u.ac.jp]
+% \author{Toshihiro Yamauchi}{okayama}[\violet{yamauchi@okayama-u.ac.jp}]
+
+\input{contents/abstract}
+
+\maketitle
+
+\footnotetext{This paper is an extended version of a paper published
+  in the 23rd World Conference on Information Security Applications (WISA 2022) \cite{kuzuno22wisa}.}
+
+\input{contents/introduction}
+
+\input{contents/background}
+
+\input{contents/threatmodel}
+
+\input{contents/approach}
+
+\input{contents/implementation}
+
+\input{contents/evaluation}
+
+\input{contents/discussion}
+
+\input{contents/related_works}
+
+\input{contents/comparison}
+
+\input{contents/conclusion}
+
+\input{contents/acknowledgment}
+
+\begin{thebibliography}{99}
+
+  \bibitem{nexus5exploit}
+  % Exploit Database, Nexus 5 Android 5.0 - Privilege Escalation, \url{https://www.exploit-db.com/exploits/35711/}, (2015). (accessed 2018-08-10).
+  Exploit Database, Nexus 5 Android 5.0 - Privilege Escalation. \url{https://www.exploit- db.com/exploits/35711/}. Accessed 21 May 2019    
+
+\bibitem{grsecurity}
+  %grsecurity, super fun 2.6.30+/RHEL5 2.6.18 local kernel exploit, \url{https://grsecurity.net/~spender/exploits/exploit2.txt}, (2009) (accessed 2018-08-10).
+  grsecurity: super fun 2.6.30+/RHEL5 2.6.18 local kernel exploit. \url{https://grsecurity.net/~spender/exploits/exploit2.txt}. Accessed 21 May 2019  
+
+
+\bibitem{abadi05ccs}
+%  Abadi, M., Budiu, Mihai., Erlingsson, U. and Ligatti, J.: Control-Flow Integrity Principles, Implementations, the 12th ACM Conference on Computer and Communications Security (CCS), pp. 340--353, (2005).
+    %    Abadi, M., et al.: Control-Flow Integrity Principles, Implementations, the 12th ACM Conference on Computer and Communications Security (CCS), pp. 340--353, (2005).
+  %Abadi, M., et al.: Control-Flow Integrity Principles, Implementations, \textit{Proc. 12th ACM Conference on Computer and Communications Security}, pp. 340--353 (2005).
+    %M. Abadi, M. Budiu, U, Erlingsson, and J. Ligatti, ``Control-flow integrity principles, implementations,''
+   %in {\it Proc. the 12th ACM Conference on Computer and Communications Security}, pp. 340-353, Nov. 2005, \url{https://dl.acm.org/doi/10.1145/1102120.1102165}
+    % {\it ACM Transactions on Information and System Security}, vol. 13, no. 1, pp. Nov. 2009, \url{https://doi.org/10.1145/1609956.1609960}
+  %Abadi, M., Budiu, M., Erlingsson, U., Ligatti, J. 2005. Control-flow integrity principles, implementations. In Proceedings of the 12th ACM Conference on Computer and Communications Security. ACM, 340-353. %\url{https://doi.org/10.1145/1609956.1609960}
+  Abadi, M., Budiu, M., Erlingsson, U., Ligatti, J.: Control-flow integrity principles, implementations, and applications. In: Proceedings of the 12th ACM Conference on Computer and Communications Security, pp. 340-353, ACM (2005). \url{https://doi.org/10.1145/1609956.1609960}
+
+\bibitem{criswell14sp}
+  %J. Criswell., N. Dautenhahn., and V. Adve, ``KCoFI: complete controlflow integrity for commodity operating system kernels,'' in {\it Proc. 2014 IEEE Security and Privcaty}, pp. 292–307, May. 2014, \doi{https://doi.org/10.1109/SP.2014.26}
+  %Criswell, J., et al.: KCoFI: Complete Control-Flow Integrity for Commodity Operating System Kernels. In Proceedings of IEEE Security and Privacy, pp. 292–307 (2014).
+  % Criswell, J., Dautenhahn, N. and Adve, V.: KCoFI: Complete Control-Flow Integrity for Commodity Operating System Kernels. \textit{Proc. IEEE Security and Privacy}, pp. 292–-307 (online), \doi{https://doi.org/10.1109/SP.2014.26} (2014).  
+  %Criswell, J., Dautenhahn, N. and Adve, V.: KCoFI: Complete Control-Flow Integrity for Commodity Operating System Kernels. \textit{Proc. IEEE Security and Privacy}, pp. 292–-307 (2014).  
+  Criswell, J., Dautenhahn, N., Adve, V.: KCoFI: Complete Control-Flow Integrity for Commodity Operating System Kernels. In: Proceedings of the IEEE Security and Privacy, pp. 292-307, IEEE (2014).  \url{https://doi.org/10.1109/SP.2014.26}
+
+  \bibitem{shacham04ccs}
+%  Shacham, H., Page, M., Pfaff, B., Goh, E., Modadugu, N. and Boneh, D.: On the effectiveness of address-space randomization. the 11th ACM Conference on Computer and Communications Security (CCS), pp. 298--307, (2004).
+  %Shacham, H., et al.: On the effectiveness of address-space randomization. In: Proceedings of the 11th ACM Conference on Computer and Communications Security, pp. 298-307, ACM (2004).
+  %Shacham, H., Page, M., Pfaff, B., Goh, E., Modadugu, N. and Boneh, D. 2004. On the effectiveness of address-space randomization. In Proceedings of the 11th ACM Conference on Computer and Communications Security. ACM, 298-307. %\url{https://doi.org/10.1145/1030083.1030124}
+  %Shacham, H., et al.: On the effectiveness of address-space randomization, \textit{Proc. 11th ACM Conference on Computer and Communications Security}, pp. 298--307, (2004).  
+  Shacham, H., Page, M., Pfaff, B., Goh, E., Modadugu, N. and Boneh, D.: On the effectiveness of address-space randomization. In: Proceedings of the 11th ACM Conference on Computer and Communications Security, pp. 298-307, ACM (2004). \url{https://doi.org/10.1145/1030083.1030124}
+
+  \bibitem{yamauchi21ijis}
+    % 赤尾洋平, 山内利宏.：システムコール処理による権限の変化に着目した権限昇格攻撃の防止手法", コンピュータセキュリティシンポジウム2016，pp.542--549 (2016)．
+    %Toshihiro Yamauchi, Yohei Akao, Ryota Yoshitani, Yuichi Nakamura and Masaki Hashimoto,
+      %  Yamauchi, T., et al.: Additional Kernel Observer to Prevent Privilege Escalation Attacks by Focusing on System Call Privilege Changes, the 2018 IEEE Conference on Dependable and Secure Computing (DSC), (2018).
+      % Yamauchi, T., et al.: Additional kernel observer: privilege escalation attack prevention mechanism focusing on system call privilege changes, \textit{International Journal of Information Security}, vol. 20, pp. 461--473 (2021).
+  Yamauchi, T., Akao, Y., Yoshitani, R, Nakamura, Y., Hashimoto M.: Additional kernel observer: privilege escalation attack prevention mechanism focusing on system call privilege changes. In: International Journal of Information Security, vol. 20, no. 13, pp. 461-473, Springer (2021). \url{https://doi.org/10.1007/s10207-020-00514-7}
+
+% \bibitem{smap-smep}
+%   Intel, 8th and 9th Generation Intel® Core™ Processor Families and Intel® Xeon®E Processor Families
+%   Datasheet, Volume 1 of 2. Revision 006, (2020). (accessed 2018-08-10).
+  %\url{https://www.intel.com/content/dam/www/}\\
+  %\url{public/us/en/documents/datasheets/}\\
+  %\url{8th-gen-core-family-datasheet-vol-1.pdf} (accessed 2020-12-8).
+%  Mulnix D. Intel® Xeon® Processor D Product Family Technical Overview.  
+%\url{https://software.intel.com/en-us/articles/intel-xeon-processor-d-product-family}\\
+  %\url{-technical-overview}. (accessed 2018-08-10).
+
+% \bibitem{kemerlis14usenix}
+% %  Kemerlis, P, V., Polychronakis, M. and Keromytis, D, A.: ret2dir - Rethinking Kernel Isolation, the 23rd USENIX Conference on Security Symposium, pp. 957--972, (2014).
+%   Kemerlis, P, V., et al.: ret2dir - Rethinking Kernel Isolation, the 23rd USENIX Conference on Security Symposium, pp. 957--972, (2014).
+  %Kemerlis, P, V., et al.: ret2dir: rethinking kernel isolation. In: Proceedings of the 23rd USENIX Conference on Security Symposium, pp. 957-972, USENIX (2014).
+  %ret2dir - Rethinking Kernel Isolation, USENIX Security 2014.
+  %the 23rd USENIX Conference on Security Symposium, (2014).
+  %Kemerlis, P, V., Polychronakis, M. and Kemerlis, D, A. 2014. ret2dir: Rethinking Kernel Isolation. In Proceedings of the the 23rd USENIX Conference on Security Symposium. USENIX, 957-972. %\url{https://dl.acm.org/doi/10.5555/2671225.2671286}
+
+%% \bibitem{asi}  
+%%   %Marsden, G.: Improve Security with Address Space Isolation (ASI), \url{https://blogs.oracle.com/linux/improve-security-with-address-space-isolation-asi}, (2019). (accessed 2019-08-08).
+  %%   Marsden, G.: Improve security with address space isolation, \url{https://blogs.oracle.com/linux/improve-security-with-address-space-isolation-asi}. (accessed 2019-08-08).
+
+% \bibitem{kzn21css}
+%   葛野弘樹, 山内利宏
+%   カーネルにおけるMemory Protection Keyを用いた権限情報保護機構の提案
+%   コンピュータセキュリティシンポジウム2021論文集, Vol.2021, pp.647-654, (2021)．
+
+
+  
+\bibitem{qemu}
+    % Bonzini, P.: [PATCH] target/i86: implement PKS, available from \url{https://lore.kernel.org/qemu-devel/20210127093540.472624-1-pbonzini@redhat.com/}. (accessed 2021-08-18).
+    Bonzini, P.: [PATCH] target/i86: implement PKS. \url{https://lore.kernel.org/qemu-devel/20210127093540.472624-1-pbonzini@redhat.com/}. Accessed 18 August 2021.
+
+\bibitem{intel-mpk}
+  %Chapter 4.6 Access Rights,
+  % Intel Corporation.: Intel(R) 64 and IA-32 Architectures Software Developer’s Manual,
+  % available from \url{https://www.intel.co.jp/content/www/jp/ja/architecture-and-technology/64-ia-32-architectures-software-developer-system-programming-manual-325384.html}, (accessed 2021-08-18).
+  Intel Corporation.: Intel(R) 64 and IA-32 Architectures Software Developer’s Manual. \url{https://www.intel.com/content/www/us/en/developer/articles/technical/intel-sdm.html}. Accessed 18 August 2021.
+
+
+  \bibitem{chen11linux}
+  %Chen, H., Mao, Y., Wang, X., Zhow, D., Zeldovich, N. and Kaashoek, F, M.: Linux kernel vulnerabilities - state-of-the-art defenses and open problems, the 2nd Asia-Pacific Workshop on Systems (APSys), (2011).
+    %  Chen, H., et al.: Linux kernel vulnerabilities - state-of-the-art defenses and open problems the 2nd Asia-Pacific Workshop on Systems (APSys), (2011).
+    %Chen, H., Mao, Y., Wang, X., Zhow, D., Zeldovich, N., Kaashoek, F, M, ``Linux kernel vulnerabilities - state-of-the-art defenses and open problems,'' in {\it Proc. of the Second Asia-Pacific Workshop on Systems}, pp. 1-5, ACM (2011). \url{https://doi.org/10.1145/2103799.2103805}
+
+    %H. Chen, Y. Mao, X. Wang, D. Zhow, N. Zeldovich, and M. F. Kaashoek, ``Linux kernel vulnerabilities - state-of-the-art defenses and open problems,''
+    %in {\it Proc. the Second Asia-Pacific Workshop on Systems}, pp. 1-5, Jul. 2011, \url{https://doi.org/10.1145/2103799.2103805}
+    %Chen, H., et al.: Linux kernel vulnerabilities - state-of-the-art defenses and open problems.
+    %\textit{Proc. Second Asia-Pacific Workshop on Systems}, pp. 1--5 (2011).
+    %\url{https://doi.org/10.1145/2103799.2103805}      
+    Chen, H., Mao, Y., Wang, X., Zhow, D., Zeldovich, N., Kaashoek, F, M.: Linux kernel vulnerabilities - state-of-the-art defenses and open problems. In: Proceedings of the Second Asia-Pacific Workshop on Systems, pp. 1-5, ACM (2011). \url{https://doi.org/10.1145/2103799.2103805}    
+
+  \bibitem{CVE-2016-4997}
+  % CVE-2016-4997,
+  % available from \url{https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2016-4997}. (accessed 2019-05-12).
+  % [Online]. Available: 
+  CVE-2016-4997. \url{https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2016-4997}. Accessed 10 May 2019.
+  
+\bibitem{CVE-2016-9793}
+  % CVE-2016-9793,
+  % available from \url{https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2016-9793}. (accessed 2019-05-12).
+  % [Online]. Available: \url{https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2016-9793}.
+  % Accessed on: Jun. 10, 2019.
+  CVE-2016-9793. \url{https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2016-9793}. Accessed 10 Jun 2019.
+
+\bibitem{CVE-2017-1000112}
+  % CVE-2017-1000112,
+  % available from \url{https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2017-1000112}. (accessed 2019-05-12).
+  % [Online]. Available: \url{https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2017-1000112}.
+  % Accessed on: Jun. 10, 2019.
+  CVE-2017-1000112. \url{https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2017-1000112}. Accessed 10 Jun 2019.
+    
+  \bibitem{CVE-2017-16995}
+    % CVE-2017-16995, available from \url{https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2017-16995}, (accessed 2019-06-10).
+    CVE-2017-16995. \url{https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2017-16995}. Accessed 10 Jun 2019
+    %CVE-2017-16995,
+    %[Online]. Available: \url{https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2017-16995}.
+    %Accessed on: Jun. 10, 2019.
+
+    \bibitem{CVE-2017-6074}
+    % CVE-2017-6074, 2017, [Online]. Available:  \url{https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2017-6074}. % Accessed on: Sep. 16, 2021. 
+    CVE-2017-6074, 2017. \url{https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2017-6074}. Accessed 16 Sep 2021
+  
+% \bibitem{pks}
+%     Gleixner, T.: 
+%     PKS: Add Protection Keys Supervisor (PKS) support,
+%     available from \url{https://lwn.net/Articles/826091/}. (accessed 2021-08-18).
+
+
+
+
+
+\bibitem{libmpk}
+    % Park, S., et al.: libmpk: Software Abstraction for Intel Memory Protection Keys (Intel MPK),
+    % \textit{Proc. 2019 USENIX Annual Technical Conference}. pp. 241--254 (2019).    
+    Park, S., Lee, S., Xu, W., Moon, H., Kim, T.: libmpk: Software Abstraction for Intel Memory Protection Keys (Intel MPK),
+    In: Proceedings of the 2019 USENIX Annual Technical Conference, pp. 241-254, USENIX (2019). \url{https://dl.acm.org/doi/10.5555/3358807.3358829}.
+\bibitem{erim}
+  % Vahldiek-Oberwagner, A., et al.: ERIM: Secure, Efficient In-process Isolation with Protection Keys (MPK), In: Proceedings of the 28th USENIX Conference on Security Symposium, pp. 1221--1238, (2019).
+  % Vahldiek-Oberwagner, A., et al.: ERIM: Secure, Efficient In-process Isolation with Protection Keys (MPK), \textit{Proc. 28th USENIX Conference on Security Symposium}, pp. 1221--1238, (2019).
+  Vahldiek-Oberwagner, A., Elnikety, E., Duarte, O., N., Sammier, M., Druschel, P., Garg, D.: ERIM: Secure, Efficient In-process Isolation with Protection Keys (MPK). In: Proceedings of the 28th USENIX Conference on Security Symposium, pp. 1221-1238, USENIX (2019). \url{https://dl.acm.org/doi/10.5555/3361338.3361423}
+
+\bibitem{xmp}
+  %S. Proskurin, M. Momeu, S. Ghavamnia, V. P. Kemerlis and M. Polychronakis, "xMP: Selective Memory Protection for Kernel and User Space," 2020 IEEE Symposium on Security and Privacy (SP), 2020, pp. 563-577, doi: 10.1109/SP40000.2020.00041.
+  % Proskurin, S., et al.: xMP: Selective Memory Protection for Kernel and User Space, \textit{Proc. 2020 IEEE Symposium on Security and Privacy}, pp. 563--577 (2020).
+  Proskurin, S., Momeu, M., Ghavamnia, S., Kemerlis, P., V., Polychronakis, M.: xMP: Selective Memory Protection for Kernel and User Space.
+  In: Proceedings of the 2020 IEEE Symposium on Security and Privacy, pp. 563-577,  IEEE (2020). \url{https://doi.org/10.1109/SP40000.2020.00041}
+
+\bibitem{libhermitmpk}
+  % Sung, M., et al.: Intra-Unikernel Isolation with Intel Memory Protection Keys,
+  %VEE '20: Proceedings of the 16th ACM SIGPLAN/SIGOPS International Conference on Virtual Execution EnvironmentsMarch 2020 Pages 143–156https://doi.org/10.1145/3381052.3381326
+  %\textit{Proc. 16th ACM SIGPLAN/SIGOPS International Conference on Virtual Execution Environments}, pp. 143--156 (2020).
+  Sung, M., Olivier, P., Lankes, S., Ravindran, B.: Intra-Unikernel Isolation with Intel Memory Protection Keys.
+  In: Proceedings of the 16th ACM SIGPLAN/SIGOPS International Conference on Virtual Execution Environments, pp. 143-156, ACM (2020). \url{https://doi.org/10.1145/3381052.3381326}
+
+\bibitem{cfi-lwn}
+% Edge, J.: Control-flow integrity for the kernel, \url{https://lwn.net/Articles/810077/}.  (accessed 2022-01-08).
+Edge, J.: Control-flow integrity for the kernel. \url{https://lwn.net/Articles/810077/}.  Accessed 8 Jan 2022
+%%   Hillenbrand, M. 2019. Process-local memory allocations for hiding KVM secrets, \url{https://lwn.net/Articles/791069/}.  (accessed 2019-08-08).
+
+\bibitem{cvedetails}
+Linux Vulnerability Statistics. \url{https://www.cvedetails.com/vendor/33/Linux.html}. Accessed 5 July 2019
+\end{thebibliography}
+
+
+\input{contents/profile}
+
+\end{document}

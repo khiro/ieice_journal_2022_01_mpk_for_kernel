@@ -1,0 +1,211 @@
+% # -*- coding: utf-8 -*-
+\section{Conclusion}  \label{section:conclustion}
+%
+% 本稿では，特定のカーネルデータへの読書き制限を制御し，権限情報を保護を可能とす
+% るセキュリティ機構を提案した．提案したセキュリティ機構においては，CPUの提供す
+% るメモリ保護機構として， PKSを用いた PTE への読書き制限を動作中のカーネルにお
+% いて制御可能とした．
+% 提案したセキュリティ機構では，CPUの提供するメモリ保護機構であるMPK PKSを用いるこ
+% とで動作中のカーネルにおいて指定したカーネルデータの書込み制限を制御可能としてい
+% る．
+
+An adversary can achieve privilege escalation and the defeat of security
+mechanisms by corrupting the kernel memory.
+% through kernel memory corruption.
+%
+KCoFI, KASLR, and AKO are kernel attack countermeasures that mitigate and
+prevent the threat of kernel attacks.
+%
+However, vulnerable kernel codes can still modify the kernel data at the kernel layer.
+
+%
+In this paper, we proposed a novel security design of a KDPM that manages write
+restrictions on specific kernel data.
+%and enables protection of authorization information. 
+The KDPM enables the kernel to control write privileges on PTEs using the MPK PKS
+in the running kernel by the CPU.
+% It can control the write limit of specified kernel data in the running kernel by the CPU.
+%
+% 提案したセキュリティ機構において，カーネルデータへの書込み制限を動的制御するセ
+% キュリティ機構の設計を整理し，権限情報を保護するための実現方式1，ならびにカー
+% ネルのセキュリティ機能を保護する実現方式2について機能考察と既存研究との比較考
+% 察を進め，性能評価を行った．
+% We designed the proposed security mechanism and 
+We compared the KDPM with existing approaches.
+% that dynamically controls write
+% restrictions on kernel data, 
+% existing research and evaluated the performance of Scheme 1, which protects
+% authorization information, and Scheme 2, which protects the kernel security
+% functions.
+%
+% 実現したセキュリティ機構においては，システムコール単位で権限情報の読書き制限を
+% 制御し，攻撃を行うユーザプロセスに対して，権限情報への書込み制限を実現した．
+% また，カーネルコード単位で強制アクセス制御のカーネルデータに対する読書き制限を
+% 制御し，攻撃を行うユーザプロセスによる強制アクセス制御の無効化の制限を実現した．
+%
+From the two implementations of the KDPM, Implementation 1 protects the
+privileged information of the user process to prevent privilege escalation,
+whereas Implementation 2 protects the kernel data of the MAC to prevent the
+defeat of security mechanisms.
+% functions.
+
+% write restriction of authorization
+% information is controlled on a per-system-call basis, and write restriction to
+% authorization information is realized for the attacking user process. In
+% addition, the kernel code unit controls the read restrictions on the kernel data
+% of the forced access control, thereby restricting the invalidation of the forced
+% access control by the user process that is attacking the kernel.
+%
+% 本稿では，メモリ破壊攻撃への対策として，我々の提案しているカーネルデータへの書
+% 込み制限を動的制御するセキュリティ機構の設計を整理し，権限情報を保護するための
+% 実現方式1，ならびにカーネルのセキュリティ機能を保護する実現方式2について機能考
+% 察と既存研究との比較考察を進め，性能評価を行った．
+%
+% Vulnerable kernel codes can open a system to attacks via kernel memory
+% corruption, which can be used for privilege escalation or the defeat
+% of security features.
+% %
+% Although kRazor and KASR accomplish attack surface reduction
+% using kernel code tracing methods to reduce kernel codes visible to
+% benign user processes,
+% %
+% these approaches require the preparation of sets of kernel code lists
+% for the stable operation of benign applications and the
+% analysis of full kernel behavior.
+
+% vkTracer, however, presents a novel approach for the tracing and
+% identification of vulnerable codes.
+% %
+% It involves the collection of an invoked vulnerable kernel code
+% with a virtual address and function name from the user process of a
+% PoC code.
+% %
+% Subsequently, vkTracer provides a profile of vulnerable kernel
+% codes.
+% %
+% Therefore, it only requires a short program (PoC) code and dynamically analyzes
+% parts of the running kernel and kernel debug information. vkTracer responds to
+% the latest kernel vulnerabilities to restrict the kernel attack surface.
+%
+% 評価においては，提案手法を実現したLinuxに対し，特権奪取攻撃に利用可能
+% なカーネル脆弱性を評価用に導入し，ユーザプロセスからの特権奪取攻撃によ
+% る権限情報の書込み制限を実現可能であることを示した．
+%
+% 性能評価においては，実現方式1を実装したLinuxにて，システムコール呼出しに対して
+% は， 2.96\% から 9.01\% のオーバヘッドに留まること，
+% %
+% ならびに MPK PKS操作にかかる負荷は 22.1 ns から 1347.9 ns のオーバヘッドとなるこ
+% とを明らかにした．
+%
+In the evaluation, we introduced a kernel vulnerability that can be exploited for
+privilege escalation attacks and demonstrated the restriction capability for the
+writing of privileged information of the user processes.
+%
+%  into Linux, which implements the proposed method, for
+% evaluation, and showed that it is feasible to restrict the writing of privilege
+% information by privilege-grabbing attacks from user processes.
+% %
+The performance evaluation showed that the overhead for invoking system call 
+on Linux with Implementation 1 ranged from 2.96\% to 9.01\%, and the PKS
+operations overhead on Linux with Implementation 2 ranged from 22.1 ns to 1347.9
+ns.
+
+%
+In future studies, to prevent vulnerable kernel code execution and illegal
+modification of kernel data due to the principle of security risk and
+performance overhead, researchers can provide the design of lightweight security
+mechanism that combines the verification of kernel code execution sequence and
+the write protection of kernel data at the adequate timing to mitigate kernel
+attacks.
+% ensure sufficient attack prevention on the running kernel.
+%
+% The evaluation results show that the proposed method supports several types of kernel
+% vulnerabilities in identifying vulnerable kernel codes.
+% %
+% The performance cost of PoC code tracing was from 5.2683 s to 5.2728 s for
+% each kernel vulnerability.
+% %
+% Moreover, the performance overhead of the maximum system call
+% invocations was 3.7197 $\mu$s.
+% %
+% The overhead to a web client program averages from 0.37 \% to 0.56
+% \% for HTTP download access of 100,000 HTTP sessions.
+%%   %
+%vkTracer represents 2.459 \% to 2.193 \% as the dynamic kernel tracing
+%overhead. 
+%% The vulnerable kernel codes induce kernel memory corruption
+%%   that causes the privilege escalation or the defeating of security
+%%   features.
+%%   %
+%%   However, although kRazor and KASR are attack surface reduction with
+%%   tracing kernel code methods of benign user process to reduce the
+%%   visible kernel codes,
+%%   %leads kernel memory corruption of 
+%%   %
+%%   these approaches prepare set of kernel code list for the stable
+%%   working of benign applications, which require the analyzing of full
+%%   kernel behavior.
+  %kernel.
+  %and statically assing of kernel image.
+%}
+%the security mechanisms of the novel
+
+
+%and protect privilege data from memory corruption.
+%}
+%
+%% \blueuline{
+%%   Additionally,
+%%   The performance overhead of the maximum system call invocations
+%%   was 0.703 $\mu$s.
+%%   %
+%%   The overhead to a web client program averages
+%%   from 1.188 \% to 4.093 \% for HTTP download access of
+%%   100,000 HTTP sessions.
+%%   %
+%%   The implementations of KPRM represents 2.459 \% and 2.193 \% as the
+%%   kernel compiling time overhead.}
+%% \blueuline{[N-09]
+%%   The effect of kernel memory corruption that leads to the 
+%%   the privilege escalation or the defeats security features.
+%%   %
+%%   The kernel protection mechanisms focus on mitigating and preventing
+%%   the actual thret for the running kernel.
+%% %
+%%   %The kernel adopts several countermeasures, including stack monitoring,
+%%   The stack monitoring,  CFI, KASLR, KPTI, Proclocal, and SCI
+%%   are kernel attack prevention countermeasures.
+%%   %
+%%   However, vulnerable kernel code, and kernel code or kernel data
+%%   still share the kernel address space.
+%
+%\reduline{
+  %then automatically identify virtual address and function name of vulnerable kernel code.
+  %and kernel data for the adversary's user process.
+  %
+  %% %the restricted kernel pages to manage vulnerable kernel code and attack target kernel code.
+  %% the restricted kernel pages to manage vulnerable kernel code and attack target kernel data.
+  %% %
+  %% The KPRM dynamically unmap restricted kernel pages from the kernel
+  %% page table for the adversary's user process with the profile of
+  %% vulnerable kernel code list.
+%\reduline{
+%% In this paper, the novel security mechanisms of vkTracer
+%% presents the collecting and identifying of invoked vulnerable kernel code
+%% with virtual address and function name from the user process of PoC code.
+%% %}  
+%% %
+%% %\reduline{
+%% %}
+%%   %\reduline{
+%% Subsequently, vkTracer provides the profile of vulnerable kernel codes.
+%%   Therefore, vkTracer only requires the small program code as PoC code and
+%%   dynamically analyzes parts of running kernel and kernel debug information.
+%%   %with target kernel vulnerability.
+%%   %the adversary's user process cannot invoke vulnerable kernel code
+%%   %and access restricted kernel data on the running kernel.
+%%   It quickly corresponds for the latest kernel vulnerability to
+%%   restrict the kernel attack surface.
+%% %It completely mitigate the kernel memory corruption.
+%% %}
+%% %

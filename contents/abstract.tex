@@ -1,0 +1,378 @@
+% # -*- coding: utf-8 -*-
+\begin{abstract}
+  % オペレーティングシステムカーネルへの攻撃として，カーネル脆弱性を利用したメモ
+  % リ破壊によるカーネルデータの改ざんが知られており，特権昇格攻撃やセキュリティ
+  % 機能の無効化が可能とされている．
+  % オペレーティングシステムカーネルへの攻撃として，カーネル脆弱性を利用
+  % して権限情報を管理者権限に改ざんする特権奪取攻撃が知られている．
+  % A known attack on operating system kernels is the modification of kernel data
+  The kernel data of an operating system kernel can be modified
+%  faces the modification of kernel data 
+  through memory corruption by exploiting kernel vulnerabilities. 
+  %
+  % It achieves that 
+  Memory corruption allows privilege escalation and defeats security mechanisms.
+  %
+  % メモリ破壊により，
+  % %
+  % カーネルへの攻撃困難化として， KCoFIでは，カーネルコードの呼出し順序の検査を行
+  % い，カーネルコードの実行順序の保証， KASLRによるカーネルコード，およびカーネル
+  % データの仮想アドレス配置のランダム化がある．また，AKOでは，特権奪取を行う際の
+  % 権限情報の変化に着目し，意図しないタイミングでの権限情報の変化検知を行い，書き
+  % 戻す事を可能とした．
+  % To make it difficult to attack the kernel, 
+  % KCoFI 
+  The kernel control flow integrity verifies and guarantees the order of
+  invoking kernel codes.
+  %invocations to guarantee the sequence of kernel code execution, 
+  The kernel address space layout randomization randomizes the virtual address
+  layout of the kernel code and data. 
+  %
+  % In addition, 
+  The additional kernel observer focuses on the unintended privilege
+  modifications to restore the original privileges.
+  % , when performing privilege
+  % revocation, the focusing on changes in authorization information, the system
+  % detects changes in authorization information at unintended times and writes
+  % them back to the The new system enables the user to restore the original
+  % settings.
+  % %
+  % KASLRはカーネルコード，およびカーネルデータの仮想アド
+  % レスのランダム化を行うことで攻撃困難化を実現する．
+  % カーネルにおける攻撃対策として，KCoFIでは，カーネルコードの呼出し順序
+  % の検査を行い，KASLRはカーネルコード，およびカーネルデータの仮想アド
+  % レスのランダム化を行うことで攻撃困難化を実現する．
+  % %
+  % また，AKOでは，特権奪取を行う際の権限情報の変化に着目し，意図しない
+  % タイミングでの権限情報の変化検知を行い，書き戻す事を可能とした．
+  % %
+  % しかし，これら既存手法のセキュリティ機構では，カーネルデータへの書込みは禁止
+  % されない．攻撃を行うユーザプロセスによる権限情報の書込み制限は行わないことか
+  % ら，依然としてカーネル脆弱性の利用に成功した場合，権限情報の改ざんは可能であ
+  % る．
+  % カーネル脆弱性の利用に成功した場合，カーネルデータは依然として改ざん可能であ
+  % り，特権昇格やセキュリティ機能が無効化される可能性は存在する．
+  % However, these existing security mechanisms do not prohibit writing to kernel
+  % data. It is still possible to overwrite
+  However, these existing security mechanisms do not prevent writing to the
+  kernel data. Therefore, kernel data can be overwritten by exploiting kernel
+  vulnerabilities. Additionally, privilege escalation and the defeat of security
+  mechanisms are possible.
+  %
+
+  % Vulnerable kernel codes are a threat to an operating system kernel. An
+  % adversary's user process can forcefully invoke a vulnerable kernel
+  % code to cause kernel memory corruption or denial of service (DoS) on
+  % a running kernel.
+  % %
+  % Attack mitigation strategies, including prevention and isolation
+  % mechanisms require modifying kernel design and performance cost.
+  % %
+  % Moreover, approaches to reduce the vulnerability of kernel codes, such as
+  % kRazor and KASR, analyze entire applications and kernel behavior to generate
+  % the necessary kernel code for each application.
+  % %
+  % However, these approaches do not determine the kernel codes even if they are
+  % invoked at the exploitation of the kernel. Moreover, the running kernel still
+  % contains the vulnerable kernel codes, which are the main threat.
+  % %
+  % In addition, the detail of vulnerable kernel codes is not provided from the
+  % common vulnerabilities and exposures (CVE).
+  % %
+  %
+  % 我々はカーネルにおいて特定のカーネルデータを保護するセキュリティ機構を提案し
+  % ており，Memory Protection Key （MPK）を利用し，カーネルデータへの書込み制限
+  % 制御を可能としている．    
+  %
+  % 本稿では，既存手法の課題を解決するため，特定のカーネルデータへの書込みを制限
+  % し，権限情報の保護に利用可能なセキュリティ機構を提案する．
+  %
+  % 提案するセキュリティ機構では，Memory Protection Key を利用し，カーネルデータ
+  % の仮想アドレスに対する書込み制限の制御を行う．
+  %
+  % 提案したセキュリティ機構では，ユーザプロセスの権限情報の保護機能，セキュリ
+  % ティ機能に関するカーネルコードの保護機能を提供する．提案しているセキュリティ
+  % 機構の拡張性を検討し，書き込み制限対象領域の細粒度化と負荷低減のための機能に
+  % ついて考察を進めた．
+  %
+  % In this paper, 
+  %We propose a novel security mechanism that restricts the writing of specific
+  We propose a kernel data protection mechanism (KDPM), which is a novel
+  security design that restricts the writing of specific kernel data. 
+  %
+  This mechanism protects privileged information and the security mechanism to
+  overcome the limitations of existing approaches.
+  %  the security inadequacy of existing approaches.
+  %in order to solve the problems of existing approaches.
+  %
+  The KDPM adopts a memory protection key (MPK) to control the write
+  restriction of kernel data. 
+  %
+  % The proposed security mechanism provides protection capability for user
+  % process authorization information and kernel code related to security
+  % functions. 
+  %  
+  % the proposed security mechanism dynamically restricts writing
+  %
+  The KDPM with the MPK ensures that the writing of privileged information for user
+  processes is dynamically restricted during the invocation of specific system
+  calls. 
+  % the dynamic restriction of the writing of privileged information of user processes 
+  %
+  %In addition, 
+  To prevent the security mechanisms from being defeated, the KDPM dynamically
+  restricts the writing of kernel data related to the mandatory access control
+  during the execution of specific kernel codes.
+  %
+  % The extensibility of the proposed security mechanism was examined, and the
+  % granularity of the write-restricted area and functions to reduce the load were
+  % discussed.
+  % %
+  % % 攻撃を行うユーザプロセスによる，特権奪取時の権限情報の改ざんを防ぐため，実行
+  % % 中のカーネルにおいて，ユーザプロセスに対して，動的に権限情報の書込み制限を実
+  % % 現．ならびに，セキュリティ機能の無効化を防ぐため，カーネルに対して動的に強制
+  % % アクセス制御に関するカーネルデータの書込み制限を実現する．
+  % %
+  % In order to prevent user processes from falsifying privilege information
+  % during privilege seizure, the kernel dynamically restricts writing of
+  % privilege information to user processes during execution. In addition, to
+  % prevent the disabling of security functions, the kernel dynamically restricts
+  % the writing of kernel data related to mandatory access control to the kernel.
+  % %
+  % 攻撃を行うユーザプロセスによる，特権奪取時の権限情報の改ざんを防ぐため，実行
+  % 中のカーネルにおいて，動的にカーネルデータの書込み制限を実現する．本稿では，
+  % 既存手法の課題を解決するため，特定のカーネルデータへの書込みを制限し，権限情
+  % 報の保護に利用可能なセキュリティ機構を提案する．
+  % %  
+  % 提案するセキュリティ機構では，Memory Protection Key を利用し，カーネルデータ
+  % の仮想アドレスに対する書込み制限の制御を行う．
+  % %
+    %
+  % To address the threat of kernel vulnerabilities, this study proposes a
+  % vulnerable kernel code tracing mechanism (vkTracer), which employs an
+  % alternative viewpoint using a proof-of-concept (PoC) code that contains the
+  % starting points of a kernel attack process.
+  % %
+  % vkTracer analyzes the user process of the PoC code to hook the invocation of
+  % the vulnerable kernel codes on the running kernel. 
+  % %
+  % It employs the kernel tracing features (i.e., \verb|kprobe| and
+  % \verb|tractpoints|) to attach the kernel while the user process invokes
+  % vulnerable kernel codes.
+  % %
+  % Moreover, vkTracer extracts the whole kernel component's information using
+  % running and static kernel image and debug section.
+  % %
+  % It ensures that vkTracer identifies the virtual address range and function
+  % name of the invoked kernel code; then, it creates a profile of kernel
+  % vulnerability.
+  % %
+  % Therefore, the kernel attack surface is reduced, or the kernel is isolated
+  % from the effect of vulnerable kernel codes (i.e., CVE registered kernel
+  % vulnerability) using the profile generated by vkTracer without kernel
+  % reconfiguration.
+  % %
+  % %
+  % 提案方式は，MPKを利用可能なエミュレータ上の Linux にて実現しており， Linuxに
+  % て実現している．評価のため特権奪取に利用可能なカーネル脆弱性を導入した環境に
+  % おいて，攻撃を行うユーザプロセスによる権限情報の書込み防止可能性について評価
+  % した．
+  Further, the KDPM is implemented on the latest Linux with an MPK emulator. 
+  % For the purpose of evaluation, 
+  We also evaluated the possibility of preventing the writing of privileged
+  information. 
+  % by the attacking user process through a kernel vulnerability that can
+  % achieve privilege escalation. in an environment where a kernel vulnerability
+  % that can be used to steal privileges has been introduced.
+  %
+  % 権限情報保護機能の性能評価として，システムコール呼出しに対して 2.96\% から
+  % 9.01\% のオーバヘッドであること，ならびにMPK操作にかかる性能負荷を計測した．
+  The KDPM showed an acceptable performance cost, measured by the overhead, which 
+  was from 2.96\% to 9.01\% of system call invocations, whereas the performance load
+  on the MPK operations was 22.1 ns to 1347.9 ns.
+  %
+  % The evaluation results indicated that vkTracer could trace PoC code
+  % executions (e.g., kernel memory corruption and DoS), identify vulnerable
+  % kernel codes, and generate kernel vulnerability profiles.
+  % %
+  % Furthermore, the implementation of vkTracer revealed that the
+  % identification overhead ranged from 5.2683 s to 5.2728 s on the PoC
+  % codes,
+  % %
+  % the maximum system call latency was 3.7197 $\mu$s, and the acceptable overhead
+  % of 100,000 Hypertext Transfer Protocol sessions via the web client program
+  % ranged from 0.37 \% to 0.56 \%. 
+\end{abstract}
+
+%reducing the vulnerable of a kernel code include
+  %These approaches show that it is difficult to avoid only the vulnerable kernel
+  %Existing approaches to reducing the vulnerable of a kernel code include
+  %kRazor and KASR, which analyze applications and kernel behavior to
+  %generate necessary kernel code for each application.
+  %kRazor and KASR analyze applications and kernel behavior for the
+  %generation of necessary kernel code for each application for
+  %kernel attack surface reduction.
+  %vkTracer dynamically analyzes the user process of the PoC code to
+
+  %
+  %However, for stability, it is necessary to trace the entire kernel
+  %code invocation for kernel attack surface reduction;
+  %% vkTracer dynamically analyzes the user process of PoC
+  %% code to hook the invocation of vulnerable kernel code on the
+  %% running kernel.  Moreover, vkTracer identifies the virtual address
+  %% range and function name of the invoked kernel code using kernel
+  %% debug information; then it creates a profile of kernel vulnerability.
+  %
+  %
+   %approaches for kernel attack surface reduction can
+
+  %Therefore, the approaches of kernel attack surface reduction can
+  %exclude only vulnerable kernel code using vkTracer's profile.
+    %an adversary's user process can not execute 
+    %}  
+  %employ the reference of unmapped kernel page to on the running kernel.
+  %
+  %\reduline{  
+  %applications,
+  %% The evaluation results demonstrated vkTracer successfully
+  %% generate the profiles of kernel vulnerability that were introduced
+  %% from PoC code attacks (e.g., kernel memory corruption and DoS).
+    %that may lead to 
+    %}
+    %\reduline{
+  %In addition, the implementations of vkTracer indicated
+  %the tracing overhead latency
+    %
+
+    %
+    %Moreover, vkTracer represents 2.459 \% and 2.193 \% as the dynamic
+    %kernel tracing overhead.
+      %the web client program  access
+    %%   overhead of 100,000 Hypertext Transfer Protocol sessions.
+    %}
+  %and prevents actual
+  %that 
+  %
+  %% \reduline{
+  %%   %In addition, the performance results of the KPRM indicated limited
+  %%   %kernel processing overhead in benchmarks and a low impact on user
+  %%   %applications.
+  %%   In addition, the implementations of KPRM indicates that the
+  %%   maximum system call overhead latency is 0.703 $\mu$s, while the
+  %%   the web client program was from 1.188 \% to 4.093 \% access
+  %%   overhead of 100,000 Hypertext Transfer Protocol sessions.
+  %%   %
+  %%   Moreover, the implementations of KPRM attained 2.459 \% and 2.193
+  %%   \% as the kernel compiling time overhead.  }
+
+%%   software benchmarks and a low impact on user
+%% applications.
+  
+%%   low kernel processing overhead in 
+
+%%   can protect the
+%%   kernel code and kernel data from a proof-of-concept kernel
+%%   vulnerability that could
+%%   %
+%%   In addition, the performance results of the MKM indicated
+%%   low kernel processing overhead in benchmarks and user applications.  
+
+%% %
+%% We implemented KPRM on the latest Linux kernel
+%% %
+%% and showed that it successfully thwarts actual proof-of-concept kernel
+%% vulnerability attacks that may cause kernel memory corruption.
+%% %
+%% In addition, the KPRM performance results indicated limited kernel
+%% processing overhead in software benchmarks and a low impact on user
+%% applications.
+
+%% \begin{keywords}
+%%   Kernel vulnerability, Dynamic analysis, System security, Operating system
+%% \end{keywords}
+
+% \begin{IEEEkeywords}
+%   Kernel vulnerability, Dynamic analysis, System security, Operating system
+% \end{IEEEkeywords}
+
+  %}
+    %that %is small program and
+    %the invocation placement of vulnerable kernel code within 
+    %that relies on 
+    %}  
+    %the vulnerable kernel
+    %code list as a profile, then accept profile to dynamically unmaps
+    %the kernel page of vulnerable kernel code. This also protects
+    %attack target kernel data.
+  %% \blueuline{[N-01]
+  %% An adversary's user process compromises the operating system (OS)
+  %% kernel. The vulnerable kernel code leads kernel memory corruption.
+  %% %
+  %% It could overwrite the kernel data containing privilege information
+  %% of user process or the kernel code related to security features
+  %% (i.e., mandatory access control).
+  %% %
+  %% %The operating system (OS) comprises a mechanism for sharing the kernel
+  %% %address space with each user process.
+  %% %
+  %% Operating systems researcheres have proposed kernel protection
+  %% methods.
+  %% %
+  %% The approachees of multiple kernel address space divide one kernel
+  %% address space to protect kernel memory from memory corruption (e.g.,
+  %% Process-local memory and system call isolation).
+  %% %
+  %% %While user processes create their own kernel address space,
+  %% These methods have still kept the vulnerable kernel code on the
+  %% kernel memory.
+  %% }
+  %% %
+  %オペレーティングシステムへの攻撃として，カーネル脆弱性を
+  %利用したメモリ破壊による特権奪取や競合条件の発生による動作停止が指摘
+  %されている．
+  %
+    %\reduline{
+    %OS researcheres have proposed kernel attack surface reduction
+    %that provides the minimizing of visible kernel code to mitigate
+    %the invocation of vulnerable kernel code from the user process
+    %(e.g., kRazor and KASR).
+    %
+  %These methods
+  %Existing approaches for kernel attack surface reduction include
+  %Further, these need to trace the entirety of the invocation kernel
+  %codes for the stability; it is difficult to only avoid the
+  %vulnerable kernel code that is main threat in the kernel memory.
+    %that is still located in the kernel memory.
+    %when the application and kernel update.
+    %latest kernel vulnerability is disclosed, it 
+    %}
+  %
+  %This is because the discovered vulnerable kernel code 
+  %
+  %% \blueuline{  
+  %% To comprises a kernel, adversaries focus on the invocation of latest
+  %% vulnerable kernel code that relies on the starting points of the
+  %% kernel attack process.
+  %% %
+  %% An adversary's user process can involve malicious code that elevates
+  %% from user mode to kernel mode.
+  %% %
+  %% Herein, to prevent such subversion attacks, we present the kernel
+  %% page reducing mechanism (KPRM), which employs an alternative
+  %% design and approaches for novel kernel attack surface reduction.
+  %% %
+  %% The objective of KPRM mechanism focuses on the prohibition of
+  %% vulnerable kernel code execution and prevents writing to the kernel
+  %% data from an adversary's user process.
+  %% }
+  
+  %
+  %This removes
+  %The KPRM manages the reference of the unmapped kernel page from the kernel
+  %page table at the system call invocation.
+  %
+    %Additionally, the KPRM achieves that identification and unmapping of
+    %vulnerable kernel code to prevent exploit the kernel through latest
+    %kernel vulnerability.
+  %
+    %\reduline{

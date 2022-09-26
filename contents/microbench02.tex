@@ -1,0 +1,41 @@
+% -*- coding: utf-8; mode: latex; -*-
+\begin{table}[t]
+    \centering
+    %  \caption{Overhead of MKM mechanism on the Linux kernel ($\mu$s)}
+    \caption{Overhead of PKS operations (ns)}
+  %  \vspace{-2.5ex}
+    \scalebox{1.0}{
+  
+      \begin{tabular}{lr}
+        % \hline
+        \hline \noalign{\smallskip}
+        % \hline
+        \begin{tabular}{l}
+          {\bf Instruction}
+        \end{tabular}
+        &
+        \begin{tabular}{l}
+          % {\bf Our proposed mechanism}
+          {\bf Implementation 2}
+         \end{tabular}
+          \\
+          \noalign{\smallskip}          
+          \hline
+          \noalign{\smallskip}
+          %Total        & 349.260 \\
+          % Pkey read    & 0.xxx  \\
+          % Pkey write   & 30.5263  \\
+          % PKRS read    & 22.1052  \\
+          % PKRS write   & 1347.8965  \\
+          Pkey write   & 30.5  \\
+          PKRS read    & 22.1  \\
+          PKRS write   & 1347.9  \\
+          
+        \noalign{\smallskip}          
+        \hline
+        \noalign{\smallskip}          
+      \end{tabular}
+    }    
+      \label{tb:evaluation_qemu_cpubench2}
+  %  \vspace{-2.0ex}
+  \end{table}

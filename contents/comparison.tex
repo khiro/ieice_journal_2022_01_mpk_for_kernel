@@ -1,0 +1,574 @@
+% # -*- coding: utf-8 -*-
+%\subsection{Comparison with Related Work}
+%\subsubsection{Design Comparison}
+
+
+\subsection{Comparison}
+% 既存研究\cite{proclocal, asi, libhermitmpk, xmp}との比較を表\ref{tb:comparing_of_future}に示す．
+Table \ref{tb:comparing_of_future} presents a comparison of the KDPM with existing
+security mechanisms \cite{xmp,libhermitmpk,criswell14sp}.
+%  is shown in 
+%
+% 先行研究\cite{proclocal, asi, libhermitmpk, xmp}との比較を
+% \tabref{tb:comparing_of_future}に示す．
+%
+% 特定のユーザプロセスのみ利用可能なカーネルデータを作成するため， Proclocalで
+% は，カーネルの仮想記憶空間にユーザプロセス毎の記憶領域を割当て，特定ユーザプロ
+% セスのみ参照可能とし，カーネルデータを保護する．
+% In order to make kernel data available only to specific user processes,
+% Proclocal allocates a storage area for each user process in the virtual storage
+% space of the kernel and allocates a storage area for each user process in the
+% virtual storage space of the kernel. The kernel data is protected by making it
+% available for reference only in the kernel process.
+% %
+% また，ASIでは専用の仮想記憶空間を生成し，保護対象のカーネル機能に関するカーネ
+% ルコード，カーネルデータを配置する．
+% ASI also creates a dedicated virtual storage space, and the kernel functions to
+% be protected are stored in the virtual storage space. The kernel code and kernel
+% data are placed.
+% %
+% Proclocal および ASI の保護対象カーネルデータは，ユーザプロセス毎に管理され，
+% 他ユーザプロセスと共有しない．また，カーネルの仮想記憶空間のページ参照制御や切
+% 替えが要求され，複雑な実装が必要となる．
+% Kernel data protected by Proclocal and ASI is managed on a per-user-process
+% basis and is not shared with other user processes. In addition, the page
+% reference control of the kernel virtual memory space and the switching This
+% requires a complex implementation.
+% %
+% 提案するセキュリティ機構では，PSKを利用し，PTEとレジスタ操作のみでカーネルデー
+% タ保護を実現する．複雑なページ操作やカーネルの仮想記憶空間の切替えを伴わ
+% ず，TLBミスを抑制し，性能負荷は少ないと考えられる．
+% The proposed security mechanism utilizes PKS, and only PTE and register
+% manipulation are required for kernel data. Data protection is achieved. It does
+% not involve complex page operations or kernel virtual memory space switching.
+% The performance load is expected to be low because TLB errors are suppressed.
+
+% %
+% libhermitMPK は，カーネルを2つの領域（Safe/Unsafe）に分割し，領域毎にPkeyを割
+% 当て管理する．実行中カーネルコードは同一領域に属したカーネルデータのみ参照可能
+% とし，カーネルデータを保護する． 
+Furthermore, libhermitMPK separates the kernel into two regions (i.e.,
+Safe/Unsafe) using Pkeys \cite{libhermitmpk}.
+% and allocates a Pkey for each region. 
+% The system manages the allocation. 
+The running kernel code can only read and write to kernel data belonging to the
+same region.
+%, protecting the kernel data. 
+%
+% また，xMP はVMMからゲストOSカーネルの仮想記憶空間を複数ドメイン領域に分割，ド
+% メイン毎にProtection keyを割当て，カーネルコード，カーネルデータ保護を行う．
+In addition, xMP manages the kernel memory space of the guest OS kernel into
+multiple domains using Pkeys. The kernel codes and kernel data are assigned
+forcefully for each domain through the VMM \cite{xmp}.
+%are assigned to each main to protect kernel code and kernel data.
+% libhermitMPK，および xMP では，カーネル脆弱性とカーネルデータに同一Protection
+% key を割当てた場合，カーネルデータは改ざんの可能性がある．さらに，xMP で
+% は，VMM 上ゲストOSは MPK 利用を制限される． libhermitMPK，および xMP におい
+% て，脆弱なカーネルコードとカーネルデータが同一の領域ならびにドメインに配置され
+% た場合，Pkey は共有されることから，カーネルデータは改ざんされる可能性がある．
+Although libhermitMPK and xMP show that kernel data can be overridden if the
+same Pkey is assigned to a vulnerable kernel code and overhead using
+the VMM,
+% kernel vulnerabilities and kernel data. 
+% xMP restricts the guest OS on VMM from using MPK. 
+% Furthermore, libhermitMPK and xMP, vulnerable kernel code and kernel data are
+% placed in the same area and domain. In this case, the kernel data can be
+% tampered with because the pkey is shared.
+% %
+% 提案するセキュリティ機構では，システムコール単位で Protection key の書込み制限
+% を制御する．ゼロデイ攻撃など，新たなカーネル脆弱性を介した攻撃に対しても，書込
+% み制限対象システムコールを経由した場合，保護対象カーネルデータを改ざん防止す
+% る．
+% 提案するセキュリティ機構では，保護対象カーネルデータのみに Pkeyを割当て，
+% 書込み制限を制御する．カーネルに脆弱性が発見され，攻撃に利用される場合，脆弱な
+% カーネルコードが書込み許可システムコールや書込み許可カーネルコードでなければ保
+% 護対象カーネルデータの改ざんは防止される．
+% the KDPM assigns Pkeys only to the protected kernel data to control granularity
+the KDPM assigns Pkeys only to the protected kernel data to separately control
+system calls and kernel codes from the write restrictions of the kernel data.
+% the KDPM assigns Pkeys only to the protected kernel data to separately control 
+% system calls and kernel data from kernel data of write restrictions. 
+
+KCoFI adopts the CFI for kernel processing that corresponds with the
+asynchronous behavior to handle the interruption and context switch of tasks
+\cite{criswell14sp}. Although KCoFI prevents the invocation of illegal kernel
+code, kernel memory corruption is not covered.
+%
+If an attacker executes an arbitrary code in the kernel mode, the KDPM
+protection may be defeated.
+%
+We recommend applying the CFI to the kernel with the KDPM to prevent hardware
+security defeat. 
+%
+Therefore, the CFI verifies the order of invocation of kernel codes to prevent
+the illegal execution of the kernel code, which attempts to controls hardware
+registers. The kernel with the KDPM preserves the kernel data protection.
+
+
+% If an attacker executes an arbitrary code in the kernel mode, the KDPM
+% protection may be defeated.
+% %
+% We recommend applying the CFI to the kernel with the KDPM to prevent hardware
+% security defeat. It achieves the prevention of illegal code execution by
+% verifying the order of kernel code invocations.
+
+
+
+% If an attacker executes an arbitrary code in the kernel mode, the KDPM protection may be defeated.
+
+% We recommend applying the CFI to the kernel with the KDPM to prevent hardware security defeat. It achieves that the verifying the order of kernel code invocations and kernel data protection to prevent illegal kernel code execution, which attempts to controls hardware registers.
+
+
+% The kernel CFI is effective in preventing illegal code execution by verifying
+% the order of kernel code invocations. 
+%
+
+
+%
+%  is prevented.
+
+
+\begin{table}[t]
+  \centering
+%\vspace{-1.2ex}  
+\caption{
+  %
+  %Comparison of memory protection approaches with the MPK
+  Comparison of kernel protection approaches
+  and types of target vulnerability (C.: code execution, M.: memory corruption) \cite{cvedetails}
+  %
+}
+%\vspace{-1.2ex}
+%\vspace{-1.5ex}  
+%\scalebox{0.78}{
+\scalebox{0.6}{
+% \hspace*{-12.0ex}  
+\begin{tabular}{lcccc}
+%\hline
+\hline \noalign{\smallskip}
+\begin{tabular}{c}
+  {\bf Feature}
+\end{tabular}
+& 
+\begin{tabular}{c}
+  {\bf libhermitMPK \cite{libhermitmpk}}
+\end{tabular}
+& 
+\begin{tabular}{c}  
+  {\bf xMP \cite{xmp}}
+\end{tabular}
+& 
+\begin{tabular}{c}  
+  {\bf KCoFI \cite{criswell14sp}}
+\end{tabular}
+& 
+\begin{tabular}{c}  
+  {\bf KDPM}
+\end{tabular}
+\\
+\noalign{\smallskip}
+\hline
+\noalign{\smallskip}
+
+Protection     & Entire kernel        & Entire kernel  & Kernel behavior& Kernel data  \\
+Granularity    & Kernel code          & VM             & Kernel code    & System call \& Kernel code\\
+%Implementation & Unikernel            & VMM monitoring & In-kernel      & In-kernel  \\
+Implementation & In-kernel            & VMM monitoring & In-kernel      & In-kernel  \\
+Limitation     & Kernel code security & VMM overhead   & Original Architecture       & Pkey number \\
+Target Vulnerability  & M.                   & M.             & C.             & M. \\
+\hline
+\end{tabular}
+}
+\label{tb:comparing_of_future}
+ \vspace{-2.0ex}
+\end{table}
+
+
+
+% libhermitMPK は，Protection keyを利用し，2つ
+% の領域（Safe / Unsafe）にカーネルを分割する．実行中カーネルコードは同一領域に
+% 属したカーネルデータのみ参照可能とし，カーネルデータを保護する．
+% %
+% カーネルコードと同一領域に属するカーネルデータへの読書きのみに制限することで
+% カーネルデータ保護を実現している．
+% %
+% xMPは，カーネルの仮想記憶空間を複数ドメイン領域に分割，ドメイン毎にPkeyを設定
+% し，カーネルコード，カーネルデータを割当てることでカーネルの保護実現する． xMP
+% においては，ドメインの適用をVMMからゲストOSに行う．
+% %
+
+
+% Regarding tracing capabilities, Table
+% \ref{tb:comparing_of_design} presents a comparison
+% of the gap in the tracing techniques between vkTracer and previous
+% mechanisms \cite{kurmus14dimva,zhang18arxiv}.
+% %
+% %\reduline{
+% These designs and implementations support the setting of suitable
+% tracing methods for a kernel component.
+% %
+% To complement the remaining tracing capabilities of the kernel
+% components, vkTracer and previous mechanisms had to correspond with the
+% update of the kernel code for the collection behavior of the running
+% kernel with the tracing target user process.
+% %
+% In this case, it is still necessary to maintain the identification for vulnerable
+% kernel code invocation.
+
+
+% \begin{table}[hb]
+%   \centering
+% %\vspace{-1.2ex}  
+% \caption{
+% %
+%   %The comparison of feature among Blockchaifn.info, WalletExplorer.com, Bitiodine, and our proposed system.
+%   %
+%   %攻撃面最小化における
+%   %カーネルコードの追跡と特定手法の比較
+%   %Comparison of kernel attack surface designs.
+%   Comparison of tracing approaches for kernel code invocation
+%   %Comparison of the tracing approach for reducing kernel attack surface.
+%   %Gap comparison of the attack mitigation technique
+%   %($\checkmark$: supported; $\triangle$: partially supported)．
+%   %among existing systems and proposed system
+% %
+% }
+% %\vspace{-1.2ex}
+% %\vspace{-1.5ex}  
+% %\scalebox{0.78}{
+% %  \hspace*{-5.0ex}
+% \scalebox{1.00}{
+% \begin{tabular}{lcccc}
+% %\hline
+% \hline \noalign{\smallskip}
+% \begin{tabular}{c}
+%   {\bf Design}
+% \end{tabular}
+% &
+% \begin{tabular}{c}
+%   {\bf kRazor} \cite{kurmus14dimva}
+% \end{tabular}
+% &
+% \begin{tabular}{c}  
+%   {\bf KASR} \cite{zhang18arxiv}
+% \end{tabular}
+% &
+% \begin{tabular}{c}  
+%  {\bf vkTracer}
+% \end{tabular}  
+%   \\
+%        \noalign{\smallskip}
+%        \hline
+%        \noalign{\smallskip}
+% {\small Target}     & AP     & AP and kernel &  PoC code  \\
+% {\small Tracing}    & Kernel tracing & VMM tracing & Kernel tracing  \\
+% {\small Limitation} & \multicolumn{2}{c}{AP and kernel update} & Kernel update \\
+% \hline
+% \end{tabular}
+% }
+% \label{tb:comparing_of_design}
+% %\vspace{-3.3ex}
+% \end{table}
+
+% Figure \ref{fig:kernel_tracing_mechanisms} shows a design comparison of
+% the traditional kernel memory layout and the memory layout of the kernel under
+% tracing mechanisms \cite{kurmus14dimva,zhang18arxiv}.
+% %
+% kRazor and KASR collect a minimum set of executable kernel functions
+% from the application and kernel behavior \cite{kurmus14dimva,zhang18arxiv}.
+% %
+% kRazor dynamically hooks kernel code invocations for the traced user
+% process requirement, whereas KASR traces the kernel code and kernel data from
+% the virtual machine manager (VMM) to inspect the kernel memory on the guest VM.
+% %
+% Although kRazor and KASR focus on minimizing executable kernel
+% functions for benign applications, vkTracer needs only the PoC code
+% and the vulnerable kernel code. It is a small and fast countermeasure
+% to achieve a flexible kernel resilience capability.
+
+% However, vkTracer is limited in that it still has to hook many
+% invocations of the kernel code. Moreover, vkTracer cannot trace
+% access to the kernel data. 
+% %
+% Actual kernel vulnerability and tracing kernel mechanisms remain problems for
+% future approaches.
+
+%This remains to be a problem of actual
+%From the point of tracing capabilities, 
+%With regard to
+%Additionally, 
+%% These designs and implementations support setting a suitable tracing
+%% of a kernel component.
+%% %
+%% To complement the remaining tracing capabilities of the kernel components,
+%% %
+%% vkTracer and previous mechanisms must correspond with the updating of
+%% kernel code for the collection behavior of the running kernel with
+%% the tracing target user process.
+%% %
+%% It is still a necessary process to keep the identification for vulnerable
+%% kernel code invocation.
+%}
+%
+%% Moreover, kRazor dynamically hooks kernel code invocations for a
+%% traced user process requirement.
+%% %
+%% Moreover, KASR 
+%% %
+%% %statically unmaps the
+%% traces kernel code and kernel data from VMM to inspect the kernel
+%% memory on the guest VM.
+%% %
+%% Although kRazor and KASR focus to provide a minimization of executable
+%% kernel functions for the benign applications,
+%% %
+%% %vkTracer needs to be combined with PoC code and vulnerable kenrel
+%% vkTracer only needs PoC code and the vulnerable kernel code.  It is
+%% small and fast countermeasure to achieve a flexible of kernel
+%% resilience capability.
+%and more granularity approaches 
+
+%
+%%   The limitation of vkTracer still hooks a lot of invocation of kernel
+%%   code. Additionally, vkTracer cannot traces the access of kernel
+%%   data.
+%%   %page except for 
+%% %
+%%   It remains the problem of the actual kernel vulnerability and
+%%   tracing kernel mechanisms for the future approach.
+  %on the running kernel.
+  %attack surface of kernel protection methods
+  %for the mapping of the suitable page table.
+%
+%  For the future approach,
+%  for kernel
+%  code and kernel data (e.g., read only, and execution) for the remaining kernel components.
+  
+%  KPRM does not provide an access control mechanisms for kernel
+%  code and kernel data (e.g., read only, and execution) for the remaining kernel components.
+%
+%The approach of KPRM need to be combined with more granularity approach to achieve a more
+%flexible management of kernel resilience capability.
+%}
+
+
+
+
+
+%between attack target kernel codes and 
+    %%   reducing the attack surface of the system.
+  %These secu kernel memory layer attack  are
+    %%   similar to the MKM capability,    
+%%  
+%%  separate specific kernel components earliest stage of kernel protection
+%%  method through system calls invocation or kernel feature
+%%   processing. Additionally, MKM does not support the kernel code
+%%   reducing method for the user process, it will be combined with the
+%%   MKM approach to enable more flexible adjustment of page table
+%%   assignment.  }
+%% %
+%% %Finally, although MKM may struggle to set a suitable inspection
+%% %point on a kernel, users can manage effective kernel monitoring by
+%% %considering a collaboration of existing methods.
+%% %
+%% %% through system calls or the insertion of a
+%% %% kernel function flow. Finally, despite KMO struggling to set
+%% %% a suitable inspection point on a kernel, users might manage effective
+%% %% kernel monitoring by considering a collaboration of existing methods.
+%% %
+%% \cyanuline{  
+%%   We believe that users can deploy that MKM assigns their kernel
+%%   feature by considering a separation from vulnerable kernel codes in
+%%   reducing the attack surface of the system. 
+  %The implementation of MKM enables the separated mapping of page
+%the security techniques of MKM enables the separated mapping of page
+  %
+  
+%Additionally, MKM does not provide an executable kernel code
+
+%However,
+%% I remains on the actual attack surface of previous kernel protection methods.
+%% %
+%% The limitation of MKM must correspond with the updating of
+%% security features' kernel code for the mapping of the suitable
+%% page table.
+%% %
+%% It is a necessary process to keep the isolation between attack target
+%% kernel codes and vulnerable kernel codes.
+  %
+%% For the future approach, MKM does not provide an
+%% executable kernel code reduction mechanism for user
+%% processes. MKM’s approach needs to be combined with a kernel code
+%% reduction approach to achieve a more flexible means of kernel attack
+%% surface minimization.
+  
+%% \subsubsection{Feature Comparison}
+%% Table
+%% \ref{tb:comparing_of_future}
+%% %  
+%% \blueuline{[N-08]
+%%   shows a comparison of the
+%%   security features of KPRM with those of four six
+%%   kernel memory protection mechanisms in}
+%% \cite{dautenhahn15asplos,gionta16cns,pomonis17eurosys,proskurin20sp,proclocal,sci}.
+%% %
+%% \blueuline{
+%%   %
+%% To provide most kernel protection requirements, KPRM satisfies the
+%% security capability for kernel code and kernel data, whereby the page
+%% reference management is controlled to mitigate the actual attack from
+%% user process for the running kernel.
+%% %
+%% }
+%% %
+
+%% In \cite{dautenhahn15asplos},
+%% %
+%% \blueuline{PerspicuOS designs a nested kernel components that supports
+%%   a privilege deduction to ensure isolation between trusted and
+%%   untrusted kernel components.}
+%% %
+%% In \cite{gionta16cns}, \blueuline{ KHide adopts hardware
+%%   virtualization feature to enforce the granularity of diversification
+%%   for kernel code and kernel data for the kernel deployment on the
+%%   guset OS environment.  }
+%% %
+%% Moreover, kR\^{}X in \cite{pomonis17eurosys} \blueuline{ supports the
+%%   design of exclusive privilege management that directly controls the
+%%   separation of readable and executable privilege for kernel code and
+%%   kernel data on the kernel memory.  }
+%% %
+%% These approaches provide static customized kernel page tables.
+%% \blueuline{To dynamically prevent illegal memory corruption}, KPRM
+%% manages the kernel page reference to isolate the vulnerable kernel
+%% %code and attack target kernel code or kernel data for the adversary's
+%% code and attack target kernel data for the adversary's user processes for the running kernel.
+
+%% Another approach, xMP in \cite{proskurin20sp} provides dynamic
+%% switching of the customized visible memory region between the user
+%% mode and the kernel mode for the guest OS with hypervisor.
+%% %
+%% %KPRM provides more granularity for a region of kernel address space
+%% \blueuline{KPRM restrict the adversary's user processes that refer a
+%%   limited region of kernel memory at the kernel layer without
+%%   hypervisor.}
+%% %Additionally, as well as easy porting to other OSs in the kernel layer.}
+
+%% %In \cite{proclocal}, Proclocal reserves the kernel page to allocate
+%% In \cite{proclocal},
+%% %
+%% \blueuline{
+%%   Proclocal provides the dedicated kernel page to allocate
+%%   the preserved kernel memory region for the user process} and SCI in
+%% \cite{sci}
+%%   prepares \blueuline{temporarily page tables} to execute the kernel code
+%%   during system call processing.
+%%   %
+%%   \blueuline{
+%%     %
+%%     Although KPRM covers the similar security capabilities
+%%     with the combination of Proclocal and SCI, Proclocal can protect
+%%     kernel data of specific kernel components and the memory isolation
+%%     of SCI still requires full kernel page mapping.
+%%     %
+%%     The combination of Proclocal and SCI can not prevent the
+%%     vulnerable kernel code invocation when the user process can start
+%%     the attack at the kernel layer.
+%%   }
+%%   %
+%%   From the design and architecture of KPRM that supports more granularity for the control of the kernel memory.
+%%   %
+%%   \blueuline{ KPRM completely isolates vulnerable kernel code from
+%%     %attack target kernel code or kernel data. It relies on the
+%%     attack target kernel data. It relies on the
+%%     unmapping of the kernel page of vulnerable kernel code at the
+%%     starting point of the kernel attacking flow to the adversary's
+%%     user process.}
+  
+%% %% We believe that the design and architecture of KPRM provide more
+%% %% granularity for the control of the kernel address space. It is
+%% %% possible to focus on completely isolating kernel page mapping of
+%% %% vulnerable kernel code from attack target kernel code or kernel data
+%% %% at the starting point of the kernel attacking flow to the adversary's
+%% %% user process.
+
+%% \begin{table*}[t]
+%%   \centering
+%% %\vspace{-1.2ex}  
+%% \caption{
+%% %
+%%   %
+%%   %Granularity of kernel memory protection comparison ($\checkmark$: supported; $\triangle$: partially supported).
+%%   Comparison of kernel memory protection features ($\checkmark$ is supported; $\triangle$ is partially supported).
+%% %
+%% }
+%% %\vspace{-1.2ex}
+%% %\vspace{-1.5ex}  
+%% %\scalebox{0.78}{
+%%   \hspace*{-8.0ex}
+%% \scalebox{1.00}{
+%% \begin{tabular}{lccccccc}
+%% %\hline
+%% \hline \noalign{\smallskip}
+%% \begin{tabular}{c}
+%%   {\bf Feature}
+%% \end{tabular}
+%% & {\bf PerspicuOS \cite{dautenhahn15asplos}}
+%% & {\bf KHide} \cite{gionta16cns}
+%% & {\bf kR\^{}X} \cite{pomonis17eurosys}
+%% & {\bf xMP \cite{proskurin20sp}}
+%% & {\bf Proclocal} \cite{proclocal}
+%% & {\bf SCI}\cite{sci}
+%% & {\bf KPRM}\\
+%%        \noalign{\smallskip}
+%%        \hline
+%%        \noalign{\smallskip}
+       
+%% {\small Kernel data protection}       & $\triangle$  & $\triangle$ & \checkmark  & \checkmark  & \checkmark & & \checkmark  \\
+%% {\small Kernel code restriction}       & $\triangle$  & \checkmark & \checkmark   &             & & \checkmark & \checkmark  \\       
+%% {\small Page reference management}     &              & $\triangle$ &             &            & \checkmark & $\triangle$ & \checkmark \\
+%% {\small Access restriction for user process} &          &             & \checkmark  & \checkmark & $\triangle$ & \checkmark & \checkmark \\
+
+
+
+%% \hline
+%% \end{tabular}
+%% }
+%% \label{tb:comparing_of_future}
+%% %\vspace{-3.3ex}
+%% \end{table*}
+
+%\reduline{
+%%The security capabilities of reducing kernel attack surface are similar among the KPRM and other kernel security designs that focus on shrinking of the kernel memory visible mechanisms.}
+%
+%% Figure \ref{fig:kernel_protection_cover_range} shows a design
+%% comparison of traditional kernel memory, KPRM, and those of kernel
+%% memory restriction mechanisms proposed in \cite{kurmus14dimva,zhang18arxiv}.
+%
+%\reduline{The traditional kernel memory keeps the whole of kernel
+%  code and kernel data are still an attack surface at the running
+%  kernel.}
+%
+%\reduline{
+%a minimization of executable
+%kernel function, these approaches do not provide separation mechanisms
+%of vulnerable kernel code from the kernel memory.
+%these approaches do not provide separation mechanisms
+%of vulnerable kernel code from the kernel memory.
+%
+%% To dynamically restrict the visible range of specific kernel code,
+%% kernel data, and vulnerable kernel code to the same page table, the
+%% KPRM architecture smoothly controls the reference of the specific
+%% kernel codes to execute kernel feature processing for the running
+%% kernel.}
+%or
+
+%\reduline{
+%and the user process can not access the
+%effectively separated region of the kernel considering each threat
+%model on the running kernel.
+%
+%
+%users can manage the effective separation of the kernel that considering for each threat model on the running kernel.
+%
+%To complement the remaining attack mitigation of kernel components,

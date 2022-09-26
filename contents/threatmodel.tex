@@ -1,0 +1,307 @@
+% # -*- coding: utf-8 -*-
+% \section{Precondition} \label{seciton:threatmodel}
+\section{Threat Model} \label{seciton:threatmodel}
+\subsection{Environment}
+% 提案するセキュリティ機構の想定する脅威モデルとして，攻撃者の目標は特権
+% 奪取とする．
+% %
+% 攻撃シナリオとして，攻撃者はカーネル脆弱性を利用するユーザプロセスを実
+% 行し，脆弱なカーネルコードから権限変更を行うカーネル関数の呼出し，また
+% は権限情報の改ざんを行い，特権奪取を試みる．
+% %
+% 脅威モデルの利用環境において，提案するセキュリティ機構を用いることで攻
+% 撃シナリオに沿った攻撃者の特権奪取攻撃の防止を行う．
+% %
+% 脅威モデルにおける攻撃者の要件，および利用環境を以下にまとめる．
+
+
+% 本稿において，提案するセキュリティ機構の想定する脅威モデルとして，攻撃者の目標は
+% 特権奪取およびカーネルの提供するセキュリティ機能の無効化とする．
+% In this paper, the 
+We assumed a threat model for the KDPM.
+%
+The adversary acquires administrator privileges and disables the MAC in the
+target environment as follows:
+
+% \subsection{攻撃対象環境}
+% 想定する脅威モデルにおける攻撃者および攻撃対象環境は以下とする．
+% The attacker and target environment in the assumed threat model are as follows.
+
+\begin{itemize}[topsep=0pt]%\topsep=-1.0ex \itemsep=-1.0ex \parskip=1.0ex
+  \item Adversary: An adversary gains normal user privileges, attempts
+  privilege escalation, and defeats the MAC via the PoC code that exploits kernel
+  vulnerabilities.
+% \item 攻撃者： 一般ユーザ権限にて，カーネル脆弱性を利用するPoCコードを
+%   介して特権奪取およびセキュリティ機能の無効化を試行可能．
+% \item 攻撃者： 一般ユーザにて，特権奪取可能なカーネル脆弱性を利
+%   用するPoCコードをユーザプロセスとして実行．
+
+\item Kernel: A kernel contains kernel vulnerabilities that can be exploited for
+privilege escalation and defeating the MAC. Existing security
+mechanisms (e.g., KCoFI, KASLR, and AKO) are not applied.
+% Security features (e.g., forced access control) are provided enabled. 
+
+% \item カーネル：特権奪取とセキュリティ機能の無効化に利用可能なカーネル脆弱性を含
+%   む．セキュリティ機能（例，強制アクセス制御）は有効化して提供する．
+% \item カーネル：特権奪取攻撃に利用可能なカーネル脆弱性を含む，既存のセ
+%   キュリティ機構（例，KASLR，CFI，およびAKO）の適用は行わない．
+
+  \item Kernel vulnerability: A kernel vulnerability is the presence of a vulnerable
+  kernel code that exploits kernel memory corruption.
+  %  kernel vulnerability invoked by a user process run by an attacker. The vulnerable kernel code can write to
+  % any virtual address.
+% \item カーネル脆弱性：攻撃者の実行するユーザプロセスより呼出されるメモリ破壊可能
+% なカーネル脆弱性．脆弱なカーネルコードから任意の仮想アドレスに対して，書込み可
+% 能．
+% \item カーネル脆弱性：攻撃者を行うユーザプロセスより特権奪取に利用可能
+%   なカーネル脆弱性．脆弱なカーネルコードから任意の仮想アドレスを指定し，
+%   権限変更を行うカーネル関数を呼出し可能．また，権限情報情報を含むカー
+%   ネルコードへの書込みが可能．
+
+  \item Attack targets: Attack targets are kernel data related to
+  privileged information of user process (e.g., user id) and kernel data of the MAC (e.g., function
+  pointers and access policies).
+% \item 攻撃対象：カーネルデータのうち，ユーザプロセスの権限情報，およびセキュリ
+% ティ機能に関するカーネルデータ．
+% \item 攻撃対象： 特権奪取攻撃を行うユーザプロセスの攻撃対象は権限情報
+%   の仮想アドレス（例．ユーザプロセスの権限情報）．
+
+\end{itemize}
+
+
+% \subsection{Environment}
+
+% The assumed environment of vkTracer involves an adversary that attempts
+% to access vulnerable kernel codes using a PoC code.
+% %
+% vkTracer assumes this environment in preparation for an eventual
+% deployment to a production environment. This environment, involving
+% the adversary and kernel capability, comprises the following:
+
+% %\vspace{-1.2ex}    
+% \begin{itemize}%\itemsep=-1.0ex \parskip=1.0ex
+
+% \item {\bf Adversary}:
+% An adversary uses a normal user account and PoC codes that exploit kernel vulnerabilities.
+
+% \item  {\bf Kernel}:  
+% A kernel contains kernel vulnerabilities, which are directly used by
+% PoC codes. A kernel provides internal tracing features for kernel
+% code invocation, static kernel image, and debug information.
+
+% \item {\bf Kernel vulnerability}: A kernel vulnerability that has already
+%   been discovered or demonstrated. Vulnerable kernel codes are
+%   identified as a known piece of kernel vulnerability.
+
+% \end{itemize}
+%\vspace{-1.2ex}
+
+\subsection{Scenario} \label{subsection:attack_scenario}
+% \subsection{攻撃シナリオ}
+% 想定する攻撃者の攻撃シナリオは，攻撃対象となるカーネルに対して，カーネル脆弱性を
+% 利用するPoCコード利用するユーザプロセスを実行し，脆弱なカーネルコードを介するこ
+% とで攻撃対象の改ざんを行う．
+The adversary induces the attack that executes the PoC code as the user
+process exploits the vulnerable kernel code. 
+%
+The following are the details of an attack:
+% More specifically, 
+% a kernel vulnerability 
+% against the target kernel. 
+% The attack target is then tampered with via the vulnerable kernel code.
+% %
+% 例として，強制アクセス制御の無効化攻撃では，アクセス制御箇所を関数ポインタの改ざ
+% んにより，アクセス制御判定を行わないカーネルコードへ置換える．
+% %
+% カーネルの提供する強制アクセス制御が働かなくなることから，管理者権限への制限を排
+% 除する．その後，特権奪取攻撃により，ユーザ権限を管理者権限に書換え，計算機の完全
+% な制御を可能とする．
+%%%%%%%%%
+% More specifically, the user process of the adversary forcefully disables MAC
+% by replacing the function pointer of the kernel code with one that does not
+% make access decisions; and
+%
+% then rewrites user privileges to administrator privileges, enabling full control
+% of the computer.
+%%%%%%%%%%%%%
+% , thereby eliminating restrictions on administrative
+% privileges. 
+% privilege escalation attack
+
+\begin{enumerate}[topsep=0pt]%\itemsep=-1.0ex \parskip=1.0ex  
+  \item Privilege escalation attack\\
+    %
+    The user process of the adversary forcefully rewrites user privileges to
+    gain administrator privileges for attaining full control of the computer.
+  \item Defeating security mechanisms\\
+    %
+    The user process of the adversary forcefully disables the MAC by replacing the
+    function pointer of the kernel code with one that does not make access
+    decisions.
+
+  
+\end{enumerate}
+
+
+% As an example, 
+% in a forced access control override attack, the access control
+% point is replaced with kernel code that does not make access control decisions
+% by tampering with the function pointer.
+% The kernel-provided 
+
+
+% \subsection{Scenario} \label{subsection:attack_scenario}
+% In the assumed scenario, vkTracer prepares the tracing and
+% identification of the vulnerable kernel code.
+% %
+% First, vkTracer attaches to the PoC code of an adversary's user
+% process, which accesses and executes the invocation of the vulnerable
+% kernel code. 
+% %
+% %
+
+% If successful, the adversary's user process can subsequently cause damages,
+% including privilege escalation via memory corruption and DoS via UAF or critical
+% section on the running kernel.
+% %
+% vkTracer forcibly hooks on to the vulnerable kernel code during the kernel
+% attack process.
+% %
+% Then, vkTracer gathers the entire vulnerable kernel code invocation
+% list from the tracing environment.
+% %
+% Finally, vkTracer generates the profile of vulnerable kernel code
+% information (e.g., virtual address range and kernel function name).
+
+%In the tracing and identification scenario, vkTracer prepares the
+
+  %  An adversary uses normal user account and the PoC codes that exploit kernel vulnerabilities.
+
+  %\blueuline{the PoC code that
+   % exploits} kernel vulnerability \blueuline{to achieve the privilege
+  %escalation attack}.
+
+  %% A kernel contains the kernel vulnerabilities that are
+  %% directory used from the PoC codes. A kernel provides internal tracing
+  %% feature of kernel code invocation, static kernel image, and debug information.
+
+  %% the sharing of the kernel address space for
+  %% every user process.  \blueuline{The kernel address space contains the vulnerable kernel
+  %% code, attack target kernel data.}
+  %code, attack target kernel code, and kernel data.
+
+%  It is already discovered or demonstrated kernel vulnerability.
+  %  A vulnerable kernel code is identified as a known piece of kernel vulnerability.
+  
+  %
+  %\blueuline{The PoC code as an user process that invokes the vulnerable kernel code.}
+  %
+  %It modifies any kernel code or kernel data that is present in the
+  %kernel address space to lead the privilege escalation attack.}
+
+%% \item {\bf Attack target}: It contains the security feature of 
+%%   %\reduline{the kernel data or the parts of} kernel code (i.e., \reduline{an access control policy and
+%%   \reduline{the kernel data of} kernel code (i.e., \reduline{an access control policy and
+%%     an function pointer of} MAC)
+%%   and privilege information of kernel data (i.e., user identifier).
+%%   %
+%%   These are the key points of the administrator's privilege
+%%   restriction on the kernel.
+  %
+
+
+%after the adversary's user process attains administrator
+%privilege or the kernel is stopped in the tracing environment.
+
+%% The tracing scenario of vkTracer to achieve the
+%% tracing and identifying of vulnerable kernel code.
+%% %
+%% vkTracer attaches the PoC code of adversary's user process that
+%% accesses and executes the invocation of vulnerable kernel code.
+%% %
+%% After that, the adversary's user process can lead memory corruption
+%% for the privilege escalation and UAF or critical section for the DoS
+%% on the running kernel.
+  
+%% %
+%% Subsequently, vkTracer forcibly hooks the vulnerable kernel codes
+%% while the process of kernel at
+%% %
+%% Finally, vkTracer gathers the whole of vulnerable kernel
+%% code list after the adversary's users process has administrator
+%% privilege or the stopping of kernel in the tracing environment.
+
+%that modifies the
+%privilege information of the kernel data for privilege escalation.
+
+%  the privilege escalation
+%  that requires kernel memory corruption.
+%Therefore, the adversary's user process alters the security features
+%of the kernel code \blueuline{to defeat the administrator privilege restriction.}
+%
+
+%% \subsection{Preparation}
+%% \blueuline{
+%%   The preparation of the KPRM's resilience that 
+%%   requires the two building process collects the necessary information
+%%   to protect security features and privilege information
+%%   from the attack scenario on the attack environment.
+%% }
+
+%% %
+%% \reduline{  
+%%   The building process, KPRM has prepared profiles of vulnerable kernel code
+%%   information (e.g., virtual address range and kernel function name).
+%%   %
+%%   A tracing of KPRM traps PoC code execution to identify vulnerable kernel code
+%%   to generate a profile.
+%%   %
+%%   %Moreover, attack target of kernel code and kernel data for the additional
+%%   %Moreover, attack target of kernel data for the additional profiles information.
+%%   Moreover, attack target of kernel data for the additional information.
+%% }
+%% %
+%%   %KPRM has prepared a list of vulnerable kernel code, attack target of
+%% %% \blueuline{  
+%% %%   The remaining building process, KPRM has adopted profiles of kernel code to
+%% %%   restrict vulnerable kernel code and protect attack target of kernel
+%% %%   data at the KPRM kernel booting.
+%% %% }
+%% %% %
+%% %% \blueuline{
+%% %%   To cover the kernel attack from any user process,
+%% %%   KPRM restricts all user processes on the running kernel.
+%% %% }
+%% %% %  that contain the  adversary's user process.
+%% %% %Additionally, 
+%% %% %
+%% %% \blueuline{ KPRM supports a benign user process list that reduces the
+%% %%   performance overhead for not malicious applications.
+%% %%   %
+%% %%   The administrator can manually register the flag of benign to avoid
+%% %%   the restriction of KPRM after the execution of user process.
+%% %% }
+
+%% %
+%% \reduline{
+%% Additionally, the use case of KPRM assumes that building process is performed on the testing environment before the user deploys the KPRM for the production environment.
+%% }
+
+
+
+%To reduce the performance overhead, KPRM manages a benign user process
+%list. It manually registers the flag of benign to avoid the
+%restriction of KPRM for each user process on the running kernel.
+
+%\subsection{Use case}
+%% %
+%% An tracing environment for vkTracer that requires an adversary should
+%% access the vulnerable kernel code with PoC code.
+%%   %
+%% vkTracer assumes the tracing environment is performed on the
+%% preparation before the deployment for the production environment.
+%%   %
+%% The tracing environment of adversary and kernel capability are as follows:
+%}
+  %preparation to prevents the an adversary's behavior with an attack
+  %scenario.
