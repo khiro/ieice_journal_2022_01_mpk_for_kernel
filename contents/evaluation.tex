@@ -178,7 +178,8 @@ measurement program that required 165 lines for Linux kernel 5.3.18.
 % vkTracer was implemented on the Linux x86\_64 CPU kernel.
 %
 To evaluate the security capability, a kernel vulnerability was introduced into
-the Linux kernel using a PoC code \cite{CVE-2017-6074} that leads to privilege
+% the Linux kernel using a PoC code \cite{CVE-2017-6074} that leads to privilege
+the Linux kernel using a PoC code \cite{CVE-2017-16995} that leads to privilege
 escalation via memory corruption through the system call number 350.
 %
 % One kernel vulnerability 
@@ -190,7 +191,7 @@ defeat the MAC on the running kernel:
   
   %\item {\bf Memory Corruption}: The vulnerable kernel code 1 is
 \item {\bf Privilege escalation:} Vulnerable kernel code 1 refers to
-  CVE-2017-6074 \cite{CVE-2017-6074}, which was implemented as a system call
+  CVE-2017-16995 \cite{CVE-2017-16995}, which was implemented as a system call
   \verb|sys_kvuln01|.
   %, \verb|support_sys_kvuln01_01|, and \verb|support_sys_kvuln01_02|.
   %

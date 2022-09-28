@@ -1,0 +1,137 @@
+\begin{table}[t]
+    \centering
+    %\caption{Chen らによるカーネルの脆弱性を用いた攻撃の影響種別 \cite{chen11linux}}
+    %\caption{Affection of kernel vulnerability attack \cite{chen11linux}.}
+    \caption{Top CWE of kernel memory vulnerability \cite{nvd} %\cite{chen11linux}
+    }
+    % ($\checkmark$ is supported; $\triangle$ is partially supported)}
+    \scalebox{0.65}{  
+    \begin{tabular}{llcc}
+      %  \hline
+        \hline \noalign{\smallskip}
+      %  \hline
+      \begin{tabular}{c}
+        {\bf Type}
+      \end{tabular}
+      &
+      \begin{tabular}{c}
+        {\bf Content}
+      \end{tabular}
+      &
+      \begin{tabular}{c}
+        {\bf CVE}
+      \end{tabular}
+      &
+      \begin{tabular}{c}
+        {\bf PoC}
+      \end{tabular}
+      \\
+       %影響                  & 内容\\
+    %    Types             & Content & CVE & PoC\\
+       \hline \noalign{\smallskip}
+      %  \hline
+      CWE-200 	& Exposure of Sensitive Information to an Unauthorized Actor	&125	&6\\
+      NVD-CWE-Other 	& Other	&87	&5\\
+      CWE-119 	&Improper Restriction of Operations within the Bounds of a Memory Buffer	&82	&3\\
+      CWE-401 	&Missing Release of Memory after Effective Lifetime	&78	&0\\
+      CWE-399 	&Resource Management Errors	&52	&1\\
+      CWE-20 	&Improper Input Validation	&44	&1\\
+      CWE-787 	&Out-of-bounds Write	&31	&1\\
+      CWE-416 	&Use After Free	&20	&0\\
+      CWE-125 	&Out-of-bounds Read	&19	&1\\
+      %CWE-362 	&Concurrent Execution using Shared Resource with Improper Synchronization ('Race Condition')	&18	&3\\
+      CWE-362 	&Concurrent Execution using Shared Resource ('Race Condition')	&18	&3\\
+      CWE-189 	&Numeric Errors	&17	&0\\
+      CWE-264 	&Permissions, Privileges, and Access Controls	&17	&2\\
+      CWE-190 	&Integer Overflow or Wraparound	&16	&0\\
+      CWE-909 	&Missing Initialization of Resource	&14	&0\\
+      CWE-400 	&Uncontrolled Resource Consumption	&12	&0\\
+      CWE-772 	&Missing Release of Resource after Effective Lifetime	&11	&0\\
+      NVD-CWE-noinfo 	&Insufficient Information	&11	&1\\
+      \hline \noalign{\smallskip}
+      Other CWE & Under 10 CVEs & 70&3\\
+      \hline \noalign{\smallskip}
+      Total & & 724 & 27\\
+      \hline \noalign{\smallskip}
+    %   \hline
+
+    %    Obtain Information & Information leakage from kernel & $\triangle$\\
+    %    Gain Privilege & Taking of administrator privilege   & $\checkmark$\\
+    %    Bypass a Restriction & Evading of access control decision & $\checkmark$\\
+    %    Overflow & Overwriting of stack or heap region & $\checkmark$\\
+    %    Denial of Service & Forcing kernel to stop running & $\checkmark$\\
+    %    Memory Corruption & Overwriting or reading of kernel code / data on virtual memory & $\checkmark$\\
+      %  Memory corruption  & Overwriting or reading of kernel code / data on virtual memory & $\checkmark$\\
+      %  Policy violation   & Miss implementation of access control decision & $\checkmark$\\
+      %  Denial of Service  & Forcing kernel to stop running & $\checkmark$\\
+      %  OS information leakage  & Information leakage from uninitialized data variables & $\triangle$\\
+    %    \hline
+    \end{tabular}
+  }
+    \label{tb:kernel_vulnerability_affection}
+  \end{table}
+  
+  \begin{table}[t]
+    \centering
+  \caption{
+  %
+    %The comparison of feature among Blockchain.info, WalletExplorer.com, Bitiodine, and our proposed system.
+    %
+    % Available PoC code for Linux kernel memory vulnerability list
+    Executable PoC code for Linux kernel memory vulnerability list
+    % DoS: Denial of Service, Mem. Corr.: Memory Corruption
+    %among existing systems and proposed system
+    %
+    % CVE-2017-1000112
+    % https://www.exploit-db.com/exploits/43418
+    % CVE-2017-7533
+    % https://www.exploit-db.com/exploits/44302
+    % CVE-2016-9793
+    % https://www.exploit-db.com/exploits/41995
+    % CVE-2016-4997
+    % https://www.exploit-db.com/exploits/40435
+  }
+  %  \vspace{-0.5ex}  
+  \scalebox{0.85}{
+  \begin{tabular}{lll}
+  %\hline
+  \hline \noalign{\smallskip}
+  \begin{tabular}{c}
+    {\bf CVE ID}
+  \end{tabular}
+  &
+  \begin{tabular}{c}
+    {\bf CWE}
+  \end{tabular}
+  &
+%   \begin{tabular}{c}
+%     {\bf Types}
+%   \end{tabular}
+  %& {\bf PoC} & {\bf Publish Date} &
+%   &
+  \begin{tabular}{c}
+    {\bf Description}
+  \end{tabular}  
+      \\
+         \noalign{\smallskip}
+         \hline
+         \noalign{\smallskip}
+         CVE-2016-4997\cite{CVE-2016-4997} & CWE-264 & Boundary check error in setsockopt function\\
+         CVE-2016-9793\cite{CVE-2016-9793} & CWE-119 & Boundary check error in net/core/sock.c\\
+        %  CVE-2017-6074\cite{CVE-2017-6074} & & DoS & Use after free\\% in net/core/sock.c\\                     
+        %  CVE-2017-7533\cite{CVE-2017-7533} & DoS, Mem. Corr. & Race condition\\% in the fsnotify implementation \\
+         CVE-2017-16995\cite{CVE-2017-16995} & CWE-119 & Boundary check error in kernel/bpf/verifier.c\\% occurs memory corruption.\\
+         CVE-2017-1000112\cite{CVE-2017-1000112} & CWE-362 & Race condition in net/ipv4/ip\_output.c\\  
+
+        %  CVE-2016-4997\cite{CVE-2016-4997} & CWE-264 & DoS, Mem. Corr. & Boundary check error in setsockopt function\\
+        %  CVE-2016-9793\cite{CVE-2016-9793} & CWE-119 & DoS, Mem. Corr. & Boundary check error in net/core/sock.c\\
+        % %  CVE-2017-6074\cite{CVE-2017-6074} & & DoS & Use after free\\% in net/core/sock.c\\                     
+        % %  CVE-2017-7533\cite{CVE-2017-7533} & DoS, Mem. Corr. & Race condition\\% in the fsnotify implementation \\
+        %  CVE-2017-16995\cite{CVE-2017-16995} & CWE-119 & DoS, Mem. Corr. & Boundary check error in kernel/bpf/verifier.c\\% occurs memory corruption.\\
+        %  CVE-2017-1000112\cite{CVE-2017-1000112} & CWE-362 & Mem. Corr. & Race condition in net/ipv4/ip\_output.c\\  
+  \hline \noalign{\smallskip}         
+%   \hline
+  \end{tabular}
+  }
+\label{tb:kernel_vulnerability_list}
+\end{table}

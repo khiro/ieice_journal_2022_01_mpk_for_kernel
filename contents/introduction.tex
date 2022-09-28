@@ -18,12 +18,37 @@ vulnerabilities (i.e., vulnerable kernel code), thereby corrupting the memory.
 %resulting in memory corruption.
 %
 The kernel vulnerability is reported by the Common Vulnerabilities and Exposures
-(CVE). The CVE has the Common Platform Enumeration that indicates the naming of
-systems, software, and packages.
+(CVE) \cite{cve}. The CVE has the Common Platform Enumeration (CPE) that indicates the naming of
+systems, software, and packages \cite{cpe}.
 %
-Until August 2022, xx CVE with CPE of Linux and CVE description contains kernel
-memory vulnerabilities were issued in the CVE of National Vulnerability Databse
-(NVD)\cite{nvd}, as shown in \figref{fig:linux_memory_cve}.
+Until August 2022, 724 CVE with CPE of Linux (e.g., \verb|linux_kernel|) and CVE
+description contains specific word (e.g., '' memory'') were issued in the CVE of
+National Vulnerability Database (NVD) \cite{nvd}, as shown in
+\figref{fig:linux_memory_cve}.
+
+\begin{figure}[tb]
+  % \begin{center}
+    % \hspace*{-25.0ex}
+    % \begin{tabular}{cc}
+    % \begin{minipage}[t]{0.80\hsize}      
+      %\begin{figure}[t]
+    %  \vspace{-15ex}  
+    \hspace{-5ex}
+        \begin{center}
+          \includegraphics[bb=0 0 464 296, scale=.500]{./imgs/X001_linux_cve_memory_stats.png}
+        \end{center}
+  %\includegraphics[bb=0 0 645 986, scale=.240]{./imgs/A01X_05_screenshot_2021-06-04_17_29_08.png}  
+  %\includegraphics[scale=.260]{./imgs/05_screenshot_2021-06-04_17_29_08.eps}
+    %  \vspace{-4.5ex}  
+    % \vspace{-1.0ex}    
+        \caption{
+          %
+          Statistics of CVE for Linux kernel memory until August 2022 \cite{nvd}
+          %
+        }
+        \label{fig:linux_memory_cve}
+%\vspace{-5.0ex}        
+\end{figure}
 
 % It achieves the illegal modification of privileged information and alters kernel
 % data of the security mechanism to take full administrator privileges.
@@ -288,7 +313,7 @@ limit the write restriction timing of protected kernel data.
 Further, Implementation 2 allows the protected kernel data to be written only
 when executing a write-permitted kernel code.
 
-\begin{itemize}[topsep=0pt]%\topsep=-1.0ex \itemsep=-1.0ex \parskip=1.0ex
+\begin{itemize}%[topsep=0pt]%\topsep=-1.0ex \itemsep=-1.0ex \parskip=1.0ex
 %   \item {\bf 実現方式1}：特権昇格攻撃の防止のため，ユーザプロセスの権限情報の保護を目
 %   的とし，システムコール単位にて権限情報の書込み制限を制御する手法
 %   \item {\bf 実現方式2}：セキュリティ機能の無効化攻撃の防止のため，カーネルコード単位
@@ -483,7 +508,7 @@ The following are the contributions of this study:
 
 %\vspace{-1.0ex}
 
-\begin{enumerate}[topsep=0pt]%\itemsep=-1.0ex \parskip=1.0ex
+\begin{enumerate}%  [topsep=0pt]%\itemsep=-1.0ex \parskip=1.0ex
 %   \item
 % カーネル脆弱性を利用した特権奪取攻撃，およびセキュリティ機能無効化の緩和のため，
 % 動作中のカーネルにおけるカーネルデータ保護を備えるセキュリティ機構を提案し，設計した．
