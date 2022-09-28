@@ -40,6 +40,9 @@ using the PSU \cite{libmpk}.
 % %
 ERIM is proposed as a separation method for the protected user process data into
 different user processes using PSUs \cite{erim}.
+%
+Cerberus is proposed as a sandbox framework for user application using the PSU
+\cite{Voulimeneas22eurosys}.
 
 % {\bf カーネルにおけるMPKを利用したデータ保護}\\
 {\bf Kernel Data Protection using the MPK:}
@@ -64,6 +67,13 @@ machine monitor (VMM) manages domains via Pkeys \cite{xmp}.
 Additionally, libhermitMPK proposes a security mechanism to protect against
 unauthorized reading and writing by dividing and managing the kernel code and
 data into multiple Pkeys\cite{libhermitmpk}.
+%
+UnderBridge applies MPK for a microkernel between user space and kernel space at
+runtime isolation of IPC mechanism \cite{gu20atc}.
+%
+EPK adopts virtualization features to increase the number of Pkeys in MPK for a
+guestOS of microkernel \cite{gu22atc}.
+
 % and managing them on a per-Pkey basis 
 %
 % libhermitMPK は複数の Protection key にカーネルコードとデータを分割し保護する機
@@ -96,14 +106,19 @@ data into multiple Pkeys\cite{libhermitmpk}.
 % KCoFI では，カーネルへのCFI適用のため，独自アーキテクチャとして非同期
 % 処理発生時におけるコード呼出順の整合性保存機構を提案している
 % \cite{criswell14sp}．
-To prevent illegal kernel code execution in the kernel, the control flow
-integrity (CFI) \cite{abadi05ccs}, which verifies the order of program function
-calls, is applied \cite{cfi-lwn}. 
+To prevent illegal kernel code execution in the kernel or hypervisor, the
+control flow integrity (CFI) \cite{abadi05ccs, wang10sp, ge16eurosp}, which
+verifies the order of program function calls, is applied \cite{cfi-lwn}. 
 % it is being 
 %
 To apply the CFI to the kernel, KCoFI is proposed as a security mechanism for
 preserving the integrity of the order of invoking  kernel codes as the original
 architecture \cite{criswell14sp}.
+%
+Additionally, pointer authentication based CFI achieves the protection of kernel
+execution context with low overhead using ARM hardware feature
+\cite{yoo22usenix}.
+
 % when asynchronous processing occurs 
 
 

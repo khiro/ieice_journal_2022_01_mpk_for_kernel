@@ -5,7 +5,7 @@
     \caption{Top CWE of kernel memory vulnerability \cite{nvd} %\cite{chen11linux}
     }
     % ($\checkmark$ is supported; $\triangle$ is partially supported)}
-    \scalebox{0.65}{  
+    \scalebox{0.62}{  
     \begin{tabular}{llcc}
       %  \hline
         \hline \noalign{\smallskip}
@@ -49,7 +49,7 @@
       CWE-772 	&Missing Release of Resource after Effective Lifetime	&11	&0\\
       NVD-CWE-noinfo 	&Insufficient Information	&11	&1\\
       \hline \noalign{\smallskip}
-      Other CWE & Under 10 CVEs & 70&3\\
+      Other CWE & Under 10 CVE & 70&3\\
       \hline \noalign{\smallskip}
       Total & & 724 & 27\\
       \hline \noalign{\smallskip}
@@ -79,6 +79,8 @@
     %
     % Available PoC code for Linux kernel memory vulnerability list
     Executable PoC code for Linux kernel memory vulnerability list
+    ($\checkmark$ is protection available;)
+    % $\triangle$ is partially supported)
     % DoS: Denial of Service, Mem. Corr.: Memory Corruption
     %among existing systems and proposed system
     %
@@ -92,8 +94,8 @@
     % https://www.exploit-db.com/exploits/40435
   }
   %  \vspace{-0.5ex}  
-  \scalebox{0.85}{
-  \begin{tabular}{lll}
+  \scalebox{0.75}{
+  \begin{tabular}{lllc}
   %\hline
   \hline \noalign{\smallskip}
   \begin{tabular}{c}
@@ -112,16 +114,21 @@
   \begin{tabular}{c}
     {\bf Description}
   \end{tabular}  
+  &
+  \begin{tabular}{c}
+    {\bf KDPM}
+  \end{tabular}  
       \\
          \noalign{\smallskip}
          \hline
          \noalign{\smallskip}
-         CVE-2016-4997\cite{CVE-2016-4997} & CWE-264 & Boundary check error in setsockopt function\\
-         CVE-2016-9793\cite{CVE-2016-9793} & CWE-119 & Boundary check error in net/core/sock.c\\
+         CVE-2016-4997\cite{CVE-2016-4997} & CWE-264 & Boundary check error in setsockopt function & $\checkmark$\\
+         CVE-2016-9793\cite{CVE-2016-9793} & CWE-119 & Boundary check error in net/core/sock.c & $\checkmark$\\
         %  CVE-2017-6074\cite{CVE-2017-6074} & & DoS & Use after free\\% in net/core/sock.c\\                     
         %  CVE-2017-7533\cite{CVE-2017-7533} & DoS, Mem. Corr. & Race condition\\% in the fsnotify implementation \\
-         CVE-2017-16995\cite{CVE-2017-16995} & CWE-119 & Boundary check error in kernel/bpf/verifier.c\\% occurs memory corruption.\\
-         CVE-2017-1000112\cite{CVE-2017-1000112} & CWE-362 & Race condition in net/ipv4/ip\_output.c\\  
+         CVE-2017-16995\cite{CVE-2017-16995} & CWE-119 & Boundary check error in kernel/bpf/verifier.c & $\checkmark$\\
+         % occurs memory corruption.\\
+         CVE-2017-1000112\cite{CVE-2017-1000112} & CWE-362 & Race condition in net/ipv4/ip\_output.c & $\checkmark$\\
 
         %  CVE-2016-4997\cite{CVE-2016-4997} & CWE-264 & DoS, Mem. Corr. & Boundary check error in setsockopt function\\
         %  CVE-2016-9793\cite{CVE-2016-9793} & CWE-119 & DoS, Mem. Corr. & Boundary check error in net/core/sock.c\\
