@@ -1,6 +1,26 @@
 % # -*- coding: utf-8 -*-
 \section{Background} \label{seciton:background}
 
+\begin{figure}[t]
+  \begin{center}
+    \hspace{-5.5ex}
+    \includegraphics[bb=0 0 1311 744, scale=.200]{./imgs/002_screenshot_2021-07-26_19.13.09.png}
+  \end{center}
+  %  \vspace{-4.5ex}
+% \vspace{-2.0ex}  
+  \caption{
+    %
+    Intel memory protection key \cite{intel-mpk}
+    %
+  }
+%  \vspace{-0.5ex}      
+%  \ecaption{
+%    Overview of software based side channel attack
+%  }
+  % \vspace{-3.0ex}
+ \label{fig:mpk_overview}
+\end{figure}
+
 \subsection{Memory Protection Key}
 % MPK は仮想アドレスを構成するPTEに対して読書き権限を操作可能な Intel
 % CPU の機能である．\figref{fig:mpk_overview}に示す通り，PKS はカーネル
@@ -57,25 +77,6 @@ value of bit WD {\it i} $\times$ 2+1 is 1, write is not allowed.
 % operation register. For multiple PTEs, the read restriction can be controlled
 % collectively using the read restriction operation register by specifying Pkey.
 
-\begin{figure}[t]
-  \begin{center}
-    \hspace{-5.5ex}
-    \includegraphics[bb=0 0 1311 744, scale=.200]{./imgs/002_screenshot_2021-07-26_19.13.09.png}
-  \end{center}
-  %  \vspace{-4.5ex}
-% \vspace{-2.0ex}  
-  \caption{
-    %
-    Intel memory protection key \cite{intel-mpk}
-    %
-  }
-%  \vspace{-0.5ex}      
-%  \ecaption{
-%    Overview of software based side channel attack
-%  }
-  % \vspace{-3.0ex}
- \label{fig:mpk_overview}
-\end{figure}
 
 
 
@@ -224,21 +225,47 @@ value of bit WD {\it i} $\times$ 2+1 is 1, write is not allowed.
 % succeeds, any kernel data can be tampered with.
 
 %Kernel vulnerabilities are types of improper implementations that lead to kernel
-Kernel vulnerabilities are improper implementations that lead to kernel
-attacks \cite{chen11linux}.
+Kernel vulnerabilities are improper implementations that lead to kernel attacks
+\cite{chen11linux}. 
+%
+\tabref{tb:kernel_vulnerability_cwe_list} shows the Common Weakness Enumeration
+(CWE) ranking for CWE of kernel memory vulnerability. CWE represents the
+categorized software and hardware weakness type. 
+%
+\tabref{tb:kernel_vulnerability_cwe_list} indicates running kernel can be
+damaged in a variety of ways through a kernel vulnerability attack. 
+% 
+%
+Additionally, Proof of Concept (PoC) codes that achieve the Linux kernel
+compromising for specific CVE. \tabref{tb:kernel_vulnerability_cwe_list}
+indicates 27 PoC codes of kernel memory vulnerability are available in the
+Exploit Database \cite{exploitdb}. 
+%A lot of PoC codes are widely provided 
+
+%
+% for each CWE.
+
+%
 % 特権昇格攻撃では，カーネルにおける権限操作を行うカーネル関数を強制的に呼出し，権
 % 限情報が変更される \cite{CVE-2016-4997,CVE-2016-9793,CVE-2017-1000112}．また，権
 % 限情報を格納するカーネルデータの変数 \verb|cred| を改ざんし，ユーザプロセスのユーザ ID
 % を管理者ユーザへ変更する \cite{CVE-2017-16995}．
 % perform the modification
-Privilege escalation forcibly invokes kernel codes that modify privileged
-information \cite{CVE-2016-4997,CVE-2016-9793,CVE-2017-1000112}. 
+To investigate the which CVE are reproducible, PoC code are introduced from CWE
+ranking (\tabref{tb:kernel_vulnerability_cwe_list}).
+\tabref{tb:kernel_vulnerability_poc_list} shows the result of four PoC codes are
+reproducible of compromising environment for Linux kernel.
+%
+Three PoC codes forcibly invokes kernel codes that modify privileged information
+to achieve the privilege escalation
+\cite{CVE-2016-4997,CVE-2016-9793,CVE-2017-1000112}. 
+%
 % privilege operations in the kernel and 
-Specifically, the variable \verb|cred| of the kernel data that stores privileged
-information is overridden from the normal user to the administrator
-\cite{CVE-2017-16995}.
+Specifically, other one PoC code overwrites the variable \verb|cred| of the
+kernel data that stores privileged information from the normal user to the
+administrator \cite{CVE-2017-16995}.
 % with, and 
-
+%
 % セキュリティ機能である強制アクセス制御の無効化攻撃では，カーネルにおける強制アク
 % セス制御を管理する関数ポインタの一覧\verb|selinux_hooks|の一部を強制アクセス制御
 % を回避するカーネル関数へのポインタへ変更し，セキュリティ機能の無効化を行う
@@ -249,15 +276,17 @@ information is overridden from the normal user to the administrator
 % In the attack to security feature, 
 The defeat of the MAC forcefully modifies the list of function pointers that
 manage the access control decisions in the kernel. Meanwhile, the variable
-\verb|selinux_hooks| that stores function pointers, is modified to the inserted kernel 
+\verb|selinux_hooks| that stores function pointers, is modified to the inserted
+kernel 
 %are changed to inserted kernel
 codes that bypass the access control \cite{nexus5exploit,grsecurity}.
 % , thereby disabling the security feature
 
 % When the mandatory access control is disabled, no restrictions for
 % administrative privilege. 
-The combination of privilege escalation and the MAC being disabled provides full
-administrator capability to the adversary with no restrictions on the kernel.
+Therefore, the combination of privilege escalation and the MAC being disabled
+provides full administrator capability to the adversary with no restrictions on
+the kernel.
 %achieves 
 % lead 
 % privileges can be used freely.
