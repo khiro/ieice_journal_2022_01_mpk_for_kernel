@@ -343,7 +343,7 @@ The process of controlling the write restrictions of the protected kernel data u
 % procedure is used.
 
 % \begin{enumerate}[topsep=0pt]%\itemsep=-1.0ex \parskip=1.0ex  
-\begin{enumerate}[topsep=0pt]%\itemsep=-1.0ex \parskip=1.0ex  
+\begin{enumerate}%[topsep=0pt]%\itemsep=-1.0ex \parskip=1.0ex  
 %   \item ユーザプロセスによるシステムコール呼出しを捕捉．
 \item The kernel identifies a system call invoked by a user process.
   
@@ -351,7 +351,7 @@ The process of controlling the write restrictions of the protected kernel data u
 %   \item 書込み許可システムコールリストに含むシステムコール番号か判定．
 \item The kernel determines if the system call number is included in the list of write-permitted system calls.
 
-\begin{enumerate}[topsep=0pt]%\itemsep=-1.0ex \parskip=1.0ex      
+\begin{enumerate}%[topsep=0pt]%\itemsep=-1.0ex \parskip=1.0ex      
 %   \item 書込み許可システムコールの場合：
 %   PKSによる書込み制限制御を行い，保護対象カーネルデータを書込み許可に設定．
 \item For write-permitted system calls: the kernel sets the protected kernel data with

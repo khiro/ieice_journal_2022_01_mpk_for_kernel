@@ -300,6 +300,37 @@ Filter).
 %  to prevent the CPU and other hardware security functions from being disabled.
 
 \subsubsection{Implementation Limitation:}
+% In addition, each type of kernel data to be protected requires an additional
+% In addition, 
+% Additionally, 
+Although Implementation 1 requires an additional kernel process for the
+invocation point of system call,
+%
+Implementation 2 requires an additional kernel process for the restriction of
+kernel data related functions, which add to the performance load and requires
+kernel modifications. 
+%
+%\reduline{
+  %
+Additionally, the timer of Implementation 2 may induce the kernel instability
+  %effect 
+owing to the write permission being forcefully disabled before the
+write-permitted kernel code is terminated. We require the consideration that the
+investigation for the time of kernel code execution to adjust the actual value
+of the timer setting.
+%
+%}
+
+Moreover, the implementations of multi-CPU cores require the save and restore
+controlling for kernel context switching, because, PKRS is provided for each CPU
+core. KDPM implementations require the management of the PKRS state for each
+kernel context. We consider that the lock mechanism of PKRS state from irregular
+write or exception handling to forcibly prohibit the sharing of PKRS state
+across the multiple kernel task.
+
+
+
+\subsubsection{Hardware Limitation:}
 % 提案するセキュリティ機構の実現方式で
 % 利用する PKS は， 16個のProtection key を指定可能である．0番目のProtection key
 % はPTEの初期値として利用されるため，読書き制限の設定は難しい．保護対象カーネル
@@ -338,23 +369,6 @@ The kernel data to be protected must be managed using 15 Pkeys.
 % places an upper limit on the number of kernel data identifiers to be protected. 
 As the number of types of kernel data to be protected is limited, an appropriate
 classification of kernel data should be considered when applying the KDPM.
-
-% In addition, each type of kernel data to be protected requires an additional
-% In addition, 
-Additionally, Implementation 2 requires an additional kernel process for the restriction
-of kernel data, which adds to the performance load and requires kernel
-modifications. 
-%
-%\reduline{
-  %
-  Additionally, the timer of Implementation 2 may induce the kernel instability
-  %effect 
-  owing to the write permission being forcefully disabled before the
-  write-permitted kernel code is terminated. We require the consideration that the
-  investigation for the time of kernel code execution to adjust the actual value
-  of the timer setting.
-  %
-  %}
 
 % 提案手法において，PKS はレジスタ操作のみで Pkey を指定したページの読書き制限を
 % 制御可能であり，

@@ -32,7 +32,7 @@ we considered the KDPM to satisfy the following requirement:
   % \begin{center}
   % \centering
   % \includegraphics[bb=0 0 1587 852, scale=.280]{./imgs/003_screenshot_2021-07-27_19.37.39.png}
-  \includegraphics[bb=0 0 1587 852, scale=.290]{./imgs/003_screenshot_2021-07-27_19.37.39.png}
+  \includegraphics[bb=0 0 1430 762, scale=.320]{./imgs/003_screenshot_2021-07-27_19.37.39.png}
   % \end{center}
 % \vspace{-1.5ex}      
   \caption{
@@ -58,7 +58,7 @@ we considered the KDPM to satisfy the following requirement:
   % 書込みを許可されたシステムコールに関するカーネルコード，ならびにカーネルコー
   % ドの実行中においてのみ保護対象に指定したカーネルデータへの書込みを可能とす
   % る．
-\item Requirement: Prevent privilege escalation and defeat of security mechanisms
+\item {\bf Requirement}: Prevent privilege escalation and defeat of security mechanisms
  by illegally modifying kernel data via kernel vulnerabilities.
   %
   The kernel must control the write restrictions of kernel data for specific
@@ -138,21 +138,21 @@ vulnerable kernel codes.
 Figure \ref{fig:design_overview} outlines the design overview of 
 % It is 
 %
-KDPM introduces the protection region, protection region id list, the
+KDPM introduces the protected kernel data, identifier list, the
 write-permitted system call list and write-permitted kernel code list.
 
 %
 % that stores the kernel data 
 %the management of linking the identifier to the
-KDPM manages the linking of the identifier of protection region id list to
-control the relationship between the protection region, write-permitted system
-call, and write-permitted kernel code.
+KDPM manages the linking of the identifier that indicates the relationship between
+the protected kernel data, write-permitted system call, and write-permitted kernel
+code.
 %
-KDPM statically registers kernel data of protected region, identifier of
-protection region id, write-permitted system call and write-permitted kernel
-code lists at the source code, then dynamically controls the write restriction
-of kernel data using identifier at the invocation of system call or kernel code
-for the running kernel.
+KDPM statically registers protected kernel data, identifier of protected kerne
+l data, write-permitted system call and write-permitted kernel code lists at the
+source code, then dynamically controls the write restriction of kernel data
+using identifier at the invocation of system call or kernel code for the running
+kernel.
 
 \subsection{Approach}
 % 提案するセキュリティ機構として，要件を満たす設計概要を図
@@ -168,10 +168,9 @@ for the running kernel.
 % （例，権限情報）を予め指定し，識別子を設けて管理する．また，システムコー
 % ルと紐付け，保護対象カーネルデータの読書き制限を管理する．
 %The KDPM supports the kernel data as protected kernel data (e.g., variable or
-The KDPM supports the kernel data of protection region as protected kernel data
-(e.g., variable or function pointer) and the identifier to handle the write
-restrictions that manages the write-permitted system calls and write-permitted
-kernel code.
+The KDPM supports specific kernel data as protected kernel data (e.g., variable
+or function pointer) and the identifier to handle the write restrictions that
+manages the write-permitted system calls and write-permitted kernel code.
 %satisfy the aforementioned requirement.
 %
 % The proposed security mechanism defines and manages the following two types:
