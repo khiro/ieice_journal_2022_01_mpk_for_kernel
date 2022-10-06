@@ -126,12 +126,29 @@ access control decisions are necessary.
 
 % \violetuline{
 %  
-To inspect the performance costs of the implementations, we consider the
-measurements of overheads for practical applications or an evaluation of
-other benchmark software, such as UnixBench and SPEC.
+% To inspect the performance costs of the implementations, we consider the
+% measurements of overheads for practical applications or an evaluation of
+% other benchmark software, such as UnixBench and SPEC.
+
+To inspect the performance costs from the viewpoint of instruction,
+Implementation 1 requires 176 instructions and Implementation 2 requires 137
+instructions.
+%
+The reason of the Implementation 1 is larger than Implementation 2,  
+it depends on the number of system call checking for the write-permitted list in
+the handling of write restriction.
+%
+If Implementations 2 checks the additional write-permitted kernel code, the
+instructions are sequentially increased for the running kernel image.
+%  for the 
+% we consider the
+% measurements of overheads for practical applications or an evaluation of
+% other benchmark software, such as UnixBench and SPEC.
+
 %
 % }
-
+% Additionally, Implementation 1 requires 176 instructions and Implementation 2
+% requires 137 instructions.
 
 % vkTracer identifies the invocation of a vulnerable kernel code under
 % the execution of a PoC code without any infection. It also

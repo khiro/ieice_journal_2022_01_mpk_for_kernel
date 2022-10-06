@@ -69,10 +69,6 @@ Implementation 2.
 
 \begin{enumerate}%[topsep=0pt]%\itemsep=-1.0ex \parskip=1.0ex
 
-\item Measurement of the kernel instruction increasing\\
-To measure the instruction insertion of the Linux kernel with Implementations,
-the disassembling tool indicates the additional instructions. 
-
 % \item カーネル処理におけるオーバヘッド\\
 \item Measurement of the kernel performance overhead\\
 %     %
@@ -91,7 +87,11 @@ time of the PKS operations in the Linux kernel with Implementation 2.
 %Specifically, we measured the processing time of PKS operations in the Linux kernel.
 % We measured the overhead of using PKS in the proposed security mechanism.
 % Specifically, we measured the processing time related to PKS operations.
-    
+
+\item Measurement of the kernel instruction increasing\\
+To measure the instruction insertion of the Linux kernel with Implementations,
+the disassembling tool indicates the additional instructions. 
+
 \end{enumerate}
   
 
@@ -399,34 +399,6 @@ memory corruption of the vulnerable kernel code.
 
 % \subsection{カーネル処理におけるオーバヘッド}
 \subsection{Performance Evaluation Result}
-\subsubsection{Measurement of the Kernel Instruction Increasing:}
-The Linux kernel with implementations require protected kernel data management
-and handling of write restrictions that contain the instructions of PKS
-operations.
-%
-% The original LKM only contains Pkey write, read, PKRS read and write for the
-% measurement of the instructions of PKS operations.
-% that contains Pkey and PKRS read, write.
-%
-For the calculation of the instruction increasing, both implementations extract
-the additional kernel code to the source code file, then vanilla kernel only
-contains the invocation placement (e.g., function call) of both implementations.
-% using same Linux kernel config file.
-The disassemble tool calculates instructions for the object files of each
-implementation.
-
-% %
-Table \ref{tb:evaluation_instructions} shows the increasing instruction.
-Implementation 1 requires xxx instructions and Implementation 2 requires xxx
-instructions.
-%  Additionally, PKS operations requires xxx instructions
-%
-% Additionally, 
-%  for both implementations.
-% the PKS operations.
-% The write of Pkey required 30.5 ns; PKRS read required 22.1 ns, and PKRS
-% write required 1347.9 ns.
-\input{contents/instructions_table} % lmbench
 
 \subsubsection{Measurement of the Kernel Processing Overhead:}
 
@@ -484,6 +456,34 @@ write required 1347.9 ns.
 %\input{contents/two_column_table}
 \input{contents/microbench02} % cpu cycle
 
+\subsubsection{Measurement of the Kernel Instruction Increasing:}
+The Linux kernel with implementations require protected kernel data management
+and handling of write restrictions that contain the instructions of PKS
+operations.
+%
+% The original LKM only contains Pkey write, read, PKRS read and write for the
+% measurement of the instructions of PKS operations.
+% that contains Pkey and PKRS read, write.
+%
+For the calculation of the instruction increasing, both implementations extract
+the additional kernel code to the source code file, then vanilla kernel only
+contains the invocation placement (e.g., function call) of both implementations.
+% using same Linux kernel config file.
+The disassemble tool calculates instructions for the object files of each
+implementation.
+
+% %
+Table \ref{tb:evaluation_instructions} shows the increasing instruction.
+Implementation 1 requires 176 instructions and Implementation 2 requires 137
+instructions.
+%  Additionally, PKS operations requires xxx instructions
+%
+% Additionally, 
+%  for both implementations.
+% the PKS operations.
+% The write of Pkey required 30.5 ns; PKRS read required 22.1 ns, and PKRS
+% write required 1347.9 ns.
+\input{contents/instructions_table} % lmbench
 
 
 % \subsubsection{Implementation}
