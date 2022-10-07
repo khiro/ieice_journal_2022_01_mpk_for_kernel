@@ -6,12 +6,15 @@
   % オペレーティングシステムカーネルへの攻撃として，カーネル脆弱性を利用
   % して権限情報を管理者権限に改ざんする特権奪取攻撃が知られている．
   % A known attack on operating system kernels is the modification of kernel data
-  The kernel data of an operating system kernel can be modified
+  The memory corruption can modify the kernel data of an operating system kernel 
+  through exploiting kernel vulnerabilities
+  that allow privilege escalation and defeats security mechanisms.
+  % can be modified
 %  faces the modification of kernel data 
-  through memory corruption by exploiting kernel vulnerabilities. 
+  %through 
   %
   % It achieves that 
-  Memory corruption allows privilege escalation and defeats security mechanisms.
+  % Memory corruption 
   %
   % メモリ破壊により，
   % %
@@ -22,11 +25,14 @@
   % 戻す事を可能とした．
   % To make it difficult to attack the kernel, 
   % KCoFI 
+  To prevent memory corruption, the several security mechanisms are proposed.
+  %
+  The kernel address space layout randomization randomizes the virtual address
+  layout of the kernel code and data. 
+  %
   The kernel control flow integrity verifies and guarantees the order of
   invoking kernel codes.
   %invocations to guarantee the sequence of kernel code execution, 
-  The kernel address space layout randomization randomizes the virtual address
-  layout of the kernel code and data. 
   %
   % In addition, 
   The additional kernel observer focuses on the unintended privilege
@@ -54,12 +60,20 @@
   % り，特権昇格やセキュリティ機能が無効化される可能性は存在する．
   % However, these existing security mechanisms do not prohibit writing to kernel
   % data. It is still possible to overwrite
-  However, these existing security mechanisms do not prevent writing to the
-  kernel data. Therefore, kernel data can be overwritten by exploiting kernel
-  vulnerabilities. Additionally, privilege escalation and the defeat of security
-  mechanisms are possible.
+  %However, these existing security mechanisms do not prevent writing to the
+  %kernel data. 
+  However, illegal writing of kernel data was not prevented by these existing
+  security mechanisms.
+  % do not prevent writing to the
+    %
+  Therefore, adversary can overwrite kernel data with exploiting kernel
+  vulnerabilities. 
+  % can be overwritten by 
   %
-
+  % Additionally, 
+  It leads that privilege escalation and the defeat of security mechanisms are
+  possible.
+  %
   % Vulnerable kernel codes are a threat to an operating system kernel. An
   % adversary's user process can forcefully invoke a vulnerable kernel
   % code to cause kernel memory corruption or denial of service (DoS) on
@@ -97,11 +111,11 @@
   %
   % In this paper, 
   %We propose a novel security mechanism that restricts the writing of specific
-  We propose a kernel data protection mechanism (KDPM), which is a novel
-  security design that restricts the writing of specific kernel data. 
+  This study proposes a kernel data protection mechanism (KDPM), which is a
+  novel security design that restricts the writing of specific kernel data. 
   %
-  This mechanism protects privileged information and the security mechanism to
-  overcome the limitations of existing approaches.
+  To overcome the limitations of existing approaches, the KDPM protects
+  privileged information and the security mechanism.
   %  the security inadequacy of existing approaches.
   %in order to solve the problems of existing approaches.
   %
@@ -179,8 +193,8 @@
   % した．
   Further, the KDPM is implemented on the latest Linux with an MPK emulator. 
   % For the purpose of evaluation, 
-  We also evaluated the possibility of preventing the writing of privileged
-  information. 
+  The evaluation results indicate the possibility of preventing the writing of
+  privileged information. 
   % by the attacking user process through a kernel vulnerability that can
   % achieve privilege escalation. in an environment where a kernel vulnerability
   % that can be used to steal privileges has been introduced.

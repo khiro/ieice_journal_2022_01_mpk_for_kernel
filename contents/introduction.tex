@@ -131,6 +131,7 @@ escalation attack \cite{yamauchi21ijis}.
 % 情報に対する攻撃自体は可能であり，次の課題があると考えている．
 % Existing techniques 
 %These mitigate illegal modifications of kernel data via kernel vulnerabilities.
+{\bf Research Question.}
 These mitigate the kernel data from being illegally modified via kernel
 vulnerabilities.
 % and malicious code calls in the kernel. 
@@ -170,7 +171,9 @@ overwritten.
 % 攻撃を行うユーザプロセスから脆弱なカーネルコードを実行された場合，権
 % 限情報の改ざんを防ぐことは難しい．
 % We consider the following issue induces 
-We consider that a running kernel does not restrict the writing of kernel data
+Thus, in this paper provides the following questions:
+% We consider that 
+{\it A running kernel does not restrict the writing of kernel data
 in the kernel mode. 
 % If the kernel vulnerability is exploited and memory corruption succeeds,
 % an adversary can rewrite kernel data. 
@@ -178,7 +181,7 @@ in the kernel mode.
 %
 Existing approaches do not control the write restrictions of kernel data related to
 privileged information and security mechanisms. Therefore, an adversary can 
-gain full administrator privileges.
+gain full administrator privileges.}
 % still take 
 % , making it difficult to preventtampering.
 %
@@ -213,7 +216,9 @@ gain full administrator privileges.
 % 本稿では，特権奪取攻撃における，権限情報の改ざんを緩和するため，特定のカーネル
 % データを保護対象（以降，保護対象カーネルデータ）として，書込み制限を動的に制御
 % するセキュリティ機構を提案する．
-In this study, we propose a kernel data protection mechanism (KDPM), which is
+% In this study, we propose 
+{\bf Research Contribution.}
+This paper describes a kernel data protection mechanism (KDPM), which is
 a novel security capability that dynamically controls the write restrictions of
 specific kernel data as protected kernel data. 
 % (hereinafter referred to as "protected kernel data").
@@ -240,6 +245,7 @@ kernel data.
 
 %When a vulnerable kernel code is executed by the user process of an adversary,
 %
+{\bf Research Objectives.}
 The KDPM assumes that the user process of an adversary invokes a vulnerable
 kernel code which attempts to modify the kernel data related to privileged
 information or security mechanism.
@@ -293,6 +299,7 @@ The limitation of the KDPM is a little difficult to support frequently modified 
 % will not succeed unless the kernel disables the write restriction based on the
 % PKS protection key.}
 
+{\bf Implementations.}
 The KDPM has two implementations that focus on the different types of kernel
 attacks.
 % i 1 and Realization 2, depending on the type of attack.
@@ -343,12 +350,14 @@ defeating security mechanism attack.
 % an attempt is made to tamper with
 
 %
-Intel CPUs containing a PKS are not available as of March 2022 and will be implemented
-on the next generation CPUs; however, a PKS is available in the QEMU environment
-\cite{qemu}.
-%
+{\bf Summary of Contributions.}
 This study is an early application of the forthcoming PKS to protect kernel
 data.
+%
+Intel CPUs containing a PKS are not available as of October 2022 and will be
+implemented on the next generation CPUs; however, a PKS is available in the QEMU
+environment \cite{qemu}.
+%
 %
 The following are the contributions of this study:
 %
@@ -517,9 +526,10 @@ The following are the contributions of this study:
 % 報への書込み制限，および，実現方式2として，カーネルコード実行中におけるセキュリ
 % ティ機構に関するカーネルデータの保護を実現した． 
 %\item We designed a novel security mechanism that protects kernel data in the
-\item We designed the KDPM that protects the kernel data in the running kernel to
-prevent privilege escalation and defeat of security mechanism attacks through
-vulnerable kernel code.
+%\item We designed the KDPM that protects the kernel data in the running kernel to
+\item The proposed KDPM is a novel approach that protects the kernel data in the
+running kernel to prevent privilege escalation and defeat of security mechanism
+attacks through vulnerable kernel code.
 % vulnerabilities and disabling security features.
 %
 % In the proposed method, 
@@ -548,11 +558,12 @@ of the kernel code during a specific system call or specific kernel code executi
 % に 22.1 ns，レジスタ操作の読込みに 30.5 ns，および書込みに1347.9 ns の処理負荷が
 % かかることを示した．
 % As an evaluation of the KDPM,
-To evaluate the KDPM,
 %we introduced a kernel vulnerability occurs privilege escalation and 
-we confirmed that the kernel with Implementation 1 can prevent the modification of privileged
-information by the adversary's user process. Additionally, we confirmed that the kernel
-with Implementation 2 can prevent the defeat of security mechanisms.
+% To evaluate the KDPM, we confirmed that 
+The security capability evaluation indicates that the kernel with Implementation
+1 can prevent the modification of privileged information by the adversary's user
+process. Additionally, the kernel with Implementation 2 can prevent the defeat
+of security mechanisms.
 %
 The overhead of Implementation 1 requires latency of system call ranging from
 2.96\% to 9.01\%, 

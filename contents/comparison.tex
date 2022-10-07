@@ -97,8 +97,9 @@ code, kernel memory corruption is not covered.
 If an attacker executes an arbitrary code in the kernel mode, the KDPM
 protection may be defeated.
 %
-We recommend applying the CFI to the kernel with the KDPM to prevent hardware
-security defeat. 
+% We recommend applying the CFI to the kernel with the KDPM to prevent hardware
+The recommendation is the applying of the CFI to the kernel with the KDPM to
+prevent hardware security defeat. 
 %
 Therefore, the CFI verifies the order of invocation of kernel codes to prevent
 the illegal execution of the kernel code, which attempts to controls hardware

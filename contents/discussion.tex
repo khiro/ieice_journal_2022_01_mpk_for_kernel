@@ -7,9 +7,10 @@
 % 提案するセキュリティ機構を適用したカーネルにおいて，特権奪取攻撃に利用可能なカー
 % ネル脆弱性を用いた PoC コードに対し，権限情報へ PKS を適切に設定することで，権限
 % 情報の改ざんを捕捉し，保護可能なことを示した．
-We demonstrated that the kernel with the KDPM can prevent PoC code through a
-kernel vulnerability with a privilege escalation attack and an LKM with a defeat
-of security mechanisms.
+% We demonstrated that the kernel with the KDPM can prevent PoC code through a
+From security capability evaluation results indicate the kernel with the KDPM
+can prevent PoC code through a kernel vulnerability with a privilege escalation
+attack and an LKM with a defeat of security mechanisms.
 %
 The carefully consideration of kernel with KDPM that can cover other PoC
 codes of kernel vulnerabilities when the vulnerable kernel code is invoked
@@ -25,8 +26,8 @@ codes of kernel vulnerabilities when the vulnerable kernel code is invoked
 % 込みのみ許可した場合においても，カーネルおよびユーザプロセスの動作には
 % 影響を及ぼしていないことを確認した．
 %
-In addition, we confirmed that the kernel and user process operations were not
-affected by the operation that restricts the writing of kernel data. 
+In addition, the kernel and user process operations were not affected by the
+operation that restricts the writing of kernel data was confirmed.
 %
 % The evaluation results 
 The evaluation result confirms that the KDPM can
@@ -120,12 +121,15 @@ privileged information of the user process.
 % 的な負荷はアクセス制御の判定が必要となる場合に限定されると考えている．
 % On the other hand
 Meanwhile, Implementation 2 determines the write-permitted kernel code for
-processing each access control mechanism.
+processing each access control mechanism. 
+%
+The kernel with Implementation 2 has an impact on kernel processing when access
+control decisions are necessary.
 % the security function.
 %
 % Although 
-We consider that Implementation 2 has an impact on kernel processing when
-access control decisions are necessary.
+% We consider that 
+% Implementation 2 
 % direct load on user processes will be limited to cases 
 %
 
@@ -269,7 +273,9 @@ instructions are sequentially increased for the running kernel image.
 % identification of undiscovered vulnerable kernel codes for latest attacks.
 
 % PKS can be used in the kernel as a lightweight, easy-to-implement kernel data
-We consider that the PKS is lightweight for protecting kernel data.
+% We consider that 
+The performance evaluation results shows the PKS is lightweight for protecting
+kernel data.
 %
 %  we believe  On the other hand
 However, if multiple kernel data share a Pkey, 
@@ -294,9 +300,11 @@ allows the modification of protected kernel data.
 The design of the KDPM retains the static information in the list of write-permitted system
 calls and that of write-permitted kernel codes for the kernel. %It is hard to
 Customizing both lists is difficult and requires additional permissions for the
-running kernel or kernel modules. We consider the modification of both lists
-through a kernel component (e.g., kernel module or extended Berkley Packet
-Filter). 
+running kernel or kernel modules. 
+%
+% We consider 
+The approache of the modification of both lists through a kernel component
+(e.g., kernel module or extended Berkley Packet Filter).
 % }
 
  
@@ -337,18 +345,22 @@ kernel modifications.
 Additionally, the timer of Implementation 2 may induce the kernel instability
   %effect 
 owing to the write permission being forcefully disabled before the
-write-permitted kernel code is terminated. We require the consideration that the
-investigation for the time of kernel code execution to adjust the actual value
-of the timer setting.
+write-permitted kernel code is terminated. 
+% We require 
+The consideration is necessary that the investigation for the time of kernel
+code execution to adjust the actual value of the timer setting.
 %
 %}
 
-Moreover, the implementations of multi-CPU cores require the save and restore
+Moreover, the implementation of multi-CPU cores requires the save and restore
 controlling for kernel context switching, because, PKRS is provided for each CPU
 core. KDPM implementations require the management of the PKRS state for each
-kernel context. We consider that the lock mechanism of PKRS state from irregular
-write or exception handling to forcibly prohibit the sharing of PKRS state
-across the multiple kernel task.
+kernel context. 
+%
+% We consider that 
+The lock mechanism of PKRS is necessary from irregular write or exception
+handling to forcibly prohibit the sharing of PKRS state across the multiple
+kernel task.
 
 
 

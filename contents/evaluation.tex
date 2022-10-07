@@ -29,14 +29,15 @@ KDPM adequately protects privileged information.
 A kernel vulnerability that can be exploited for a privilege escalation attack is
 introduced into the Linux kernel.
 %
-We evaluate the kernel with Implementation 1, which enables the write
-restriction of the privileged information of user processes. This prevents an adversary
-from performing a privilege escalation attack.
+% We evaluate 
+The evaluation of the kernel with Implementation 1 enables the write
+restriction of the privileged information of user processes. This prevents an
+adversary from performing a privilege escalation attack.
 % to prevent an adversary's
 % user process, which performs a privilege escalation attack. 
 
 \item Preventing the defeat of security mechanism\\
-We evaluate the kernel with Implementation 2, which enables the write
+The evaluation of the kernel with Implementation 2 enables the write
 restriction of kernel data of the LSM to prevent MAC defeat.%the defeat of MAC. 
 
 
@@ -56,9 +57,10 @@ restriction of kernel data of the LSM to prevent MAC defeat.%the defeat of MAC.
 % セスへの動作影響有無の調査，および実現方式2で用いるPKS操作による性能への影響を
 % 確認した．評価項目と内容を以下に示す．
 
-In performance evaluation, we investigate whether the kernel and user processes
-are affected by Implementation 1 and the effect of the PKS operations used in
-Implementation 2.
+% In performance evaluation, we investigate whether the kernel and user processes
+In performance evaluation, investigation results indicate whether the kernel and
+user processes are affected by Implementation 1 and the effect of the PKS
+operations used in Implementation 2.
 % both
 % in implementation 2.
 
@@ -82,8 +84,10 @@ software calculates the overhead of the system call invocation latency.
 %     %
 %     提案するセキュリティ機構で用いる PKS の利用にかかるオーバヘッドとして，PKS 操
 %     作に関する処理時間を測定した．
-To measure the performance of the PKS in the KDPM, we measure the processing
-time of the PKS operations in the Linux kernel with Implementation 2.
+% To measure the performance of the PKS in the KDPM, we measure the processing
+To measure the performance of the PKS in the KDPM, the measurement result
+indicates the processing time of the PKS operations in the Linux kernel with
+Implementation 2.
 %Specifically, we measured the processing time of PKS operations in the Linux kernel.
 % We measured the overhead of using PKS in the proposed security mechanism.
 % Specifically, we measured the processing time related to PKS operations.
@@ -148,8 +152,10 @@ the disassembling tool indicates the additional instructions.
 % The environment for the PoC code, kernel for 
 % measuring the performance cost was implemented 
 % The evaluation environment for 
-We evaluated the PoC code and kernel using a physical machine equipped with an
-Intel (R) Core (TM) i7-7700HQ (2.80 GHz, x86\_64) processor with 16 GB memory.
+% We evaluated the PoC code and kernel using a physical machine equipped with an
+The evaluation environment for PoC code and kernel using a physical machine
+equipped with an Intel (R) Core (TM) i7-7700HQ (2.80 GHz, x86\_64) processor
+with 16 GB memory.
 %
 % The web client machine was equipped with an Intel (R) Core (TM)
 % i5-4200U (1.6 GHz) processor with 8 GB of memory, running on Windows 10.
@@ -297,10 +303,11 @@ indicates a write protection violation of a page protected by Pkey.
 % み制限（WD1）を無効化し，特権奪取が成功することを確認している．
 % In the evaluation, %we confirmed the operation of the privilege escalation attack,
 
-From the security evaluation results, we confirmed that the Linux kernel with the
-KDPM prevents privilege escalation attacks and avoids the defeat of security mechanism.
-The KDPM correctly manages the Pkey and detect
-memory corruption of the vulnerable kernel code.
+%From the security evaluation results, we confirmed that the Linux kernel with the
+From the security evaluation results, the Linux kernel with the KDPM prevents
+privilege escalation attacks and avoids the defeat of security mechanism were
+confirmed. The KDPM correctly manages the Pkey and detect memory corruption of
+the vulnerable kernel code.
 
 % \begin{figure}[t]
 %   \begin{center}
