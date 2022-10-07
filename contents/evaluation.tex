@@ -130,7 +130,7 @@ the disassembling tool indicates the additional instructions.
 
 \subsection{Evaluation Environment}
 
-\subsubsection{Equipment:}
+\subsubsection{Equipment}
 % PKSに対応したCPUは2022年1月時点では提供されていない．評価には CPU Intel(R)
 % Core(TM) i7-7700HQ（2.80GHz，4コア），Memory 16 GBytes を備えた計算機を用い，性
 % 能評価を行う仮想計算機環境として PKS に対応したQEMU 6.0.91を用いた \cite{qemu}．
@@ -176,7 +176,7 @@ measurement program that required 165 lines for Linux kernel 5.3.18.
 
 % \subsubsection{特権奪取攻撃に利用可能なカーネル脆弱性}
 
-\subsubsection{Implementation:}
+\subsubsection{Implementation}
 %
 %\reduline{
 % vkTracer was implemented on the Linux x86\_64 CPU kernel.
@@ -228,7 +228,7 @@ defeat the MAC on the running kernel:
 
 % \subsubsection{特権奪取攻撃を行う独自システムコールの捕捉}
 \subsection{Security Capability Evaluation Result}
-\subsubsection{Prevention of Privilege Escalation Attack:}
+\subsubsection{Prevention of Privilege Escalation Attack}
 % 攻撃を行うユーザプロセスによる独自のシステムコール捕捉時の動作結果を
 % \figref{fig:kvuln1_1_04}に示す．
 % of the operation when an original system call
@@ -266,7 +266,7 @@ indicates a write protection violation of a page protected by the Pkey. In line
 % 1 after the page fault is caught, from line 14 to 15.
 
 % \subsubsection{Prevention of Defeating Security Mechanism:}
-\subsubsection{Preventing the Defeat of Security Mechanism:}
+\subsubsection{Preventing the Defeat of Security Mechanism}
 % 攻撃を行うユーザプロセスによる独自のシステムコール捕捉時の動作結果を
 % \figref{fig:kvuln1_1_04}に示す．
 % of the operation when an original system call
@@ -400,7 +400,7 @@ memory corruption of the vulnerable kernel code.
 % \subsection{カーネル処理におけるオーバヘッド}
 \subsection{Performance Evaluation Result}
 
-\subsubsection{Measurement of the Kernel Processing Overhead:}
+\subsubsection{Measurement of the Kernel Processing Overhead}
 
 % 実現方式1のカーネル負荷として，システムコールのオーバヘッドの測定をベンチマーク
 % ソフトウェア LMbench により評価した．LMbenchを実現方式1の適用前のLinux kernel と
@@ -432,7 +432,7 @@ respectively.
 \input{contents/microbench01} % lmbench
 
 % \subsection{PKS操作におけるオーバヘッド}
-\subsubsection{Measurement of PKS Operations:}
+\subsubsection{Measurement of PKS Operations}
 
 % PKSの利用にかかる性能評価として，PKS操作に関するオーバヘッドを測定した．専用の測
 % 定プログラムにおいて，カーネルにおけるPTEへのPkeyの設定ならびに PKRS 読書きを
@@ -456,7 +456,7 @@ write required 1347.9 ns.
 %\input{contents/two_column_table}
 \input{contents/microbench02} % cpu cycle
 
-\subsubsection{Measurement of the Kernel Instruction Increasing:}
+\subsubsection{Measurement of the Kernel Instruction Increasing}
 The Linux kernel with implementations require protected kernel data management
 and handling of write restrictions that contain the instructions of PKS
 operations.

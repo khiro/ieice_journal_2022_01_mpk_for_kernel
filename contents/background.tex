@@ -53,7 +53,7 @@ and write restrictions on a page basis, that is, page table entry (PTE)
 % in virtual memory space 
 %
 The MPK includes protection keys for userspace (PKU) and the protection key
-right for user mode register for the user mode.
+right for user mode register (hereinafter, PKRU) for the user mode.
 % the There are 
 In addition, the MPK includes PKS and \verb|IA32_PKRS_MSR| register
 (hereinafter, PKRS) for the kernel mode.
@@ -61,10 +61,10 @@ In addition, the MPK includes PKS and \verb|IA32_PKRS_MSR| register
 %the PTE has a 4-bit protection key (Pkey) for 16 Pkeys, 
 As shown in Figure \ref{fig:mpk_overview}, the PTE has 16 4-bit protection keys
 (Pkeys), and the 32-bit flag (two bits per Pkey: write disable (WD) and access
-disable (AD)) controls the read and write restriction for each Pkey 
+disable (AD)) controls the read and write restriction for each Pkey.
 % basis via 
 % In addition, read restriction is
-
+%
 The read and write restriction for Pkey {\it i} ($0 \leq i \leq 15$) is performed via the
 register. If the value of bit AD {\it i} $\times$ 2 is 0, read is allowed. In contrast,
 if the value of bit AD {\it i} $\times$ 2 is 1, read is not allowed.
@@ -73,8 +73,9 @@ if the value of bit AD {\it i} $\times$ 2 is 1, read is not allowed.
 Additionally, if the value of bit WD {\it i} $\times$ 2+1 is 0, write is allowed; and if the
 value of bit WD {\it i} $\times$ 2+1 is 1, write is not allowed.
 
-% In MPK, read and write limits can be controlled separately in the read limit
-% operation register. For multiple PTEs, the read restriction can be controlled
+In MPK, read and write limits can be controlled separately in the specific
+register (e.g., PKRU and PKRS). For multiple PTEs, the read and write
+restriction can be controlled by specifying Pkey.
 % collectively using the read restriction operation register by specifying Pkey.
 
 
