@@ -17,12 +17,12 @@ The user process of the adversary exploits the kernel code containing
 vulnerabilities (i.e., vulnerable kernel code), thereby corrupting the memory.
 %resulting in memory corruption.
 %
-The kernel vulnerability is reported by the Common Vulnerabilities and Exposures
-(CVE) \cite{cve}. The CVE has the Common Platform Enumeration (CPE) that indicates the naming of
-systems, software, and packages \cite{cpe}.
+Kernel vulnerability is reported by the Common Vulnerabilities and Exposures
+(CVE) \cite{cve}. The CVE has the Common Platform Enumeration (CPE) that
+indicates the naming of systems, software, and packages \cite{cpe}.
 %
 Until August 2022, 724 CVE with CPE of Linux (e.g., \verb|linux_kernel|) and CVE
-description contains specific word (e.g., ``memory'') were issued in the CVE of
+description containing specific words (e.g., ``memory'') were issued in the CVE of
 National Vulnerability Database (NVD) \cite{nvd}, as shown in
 \figref{fig:linux_memory_cve}.
 
@@ -53,7 +53,7 @@ National Vulnerability Database (NVD) \cite{nvd}, as shown in
 % It achieves the illegal modification of privileged information and alters kernel
 % data of the security mechanism to take full administrator privileges.
 %
-Therefore, privileged information can be modified and kernel data of the security
+Therefore, privileged information can be modified and the kernel data of the security
 mechanism can be altered to gain full administrator privileges.
 %  bypass security functions.
 % %
@@ -63,7 +63,7 @@ mechanism can be altered to gain full administrator privileges.
 % 攻撃事例として，アクセス制御に関するカーネルデータを改ざんの後，管理者権限に昇
 % 格し，制限の回避が試みられる\cite{nexus5exploit,grsecurity}．
 % From and actual attack case, 
-The actual kernel memory corruption cases indicate that the modifying the kernel data
+Actual kernel memory corruption cases indicate that modifying the kernel data
 related to mandatory access control (MAC), the user acquires administrator
 privileges and circumvents the MAC restrictions \cite{nexus5exploit,grsecurity}.
 
@@ -132,7 +132,8 @@ escalation attack \cite{yamauchi21ijis}.
 % Existing techniques 
 %These mitigate illegal modifications of kernel data via kernel vulnerabilities.
 {\bf Research Question.}
-These mitigate the kernel data from being illegally modified via kernel
+% These mitigate the kernel data from being illegally modified via kernel
+These mitigate the illegal modification of kernel data via kernel
 vulnerabilities.
 % and malicious code calls in the kernel. 
 However, if the kernel memory is successfully corrupted, kernel data can be
@@ -171,7 +172,7 @@ overwritten.
 % 攻撃を行うユーザプロセスから脆弱なカーネルコードを実行された場合，権
 % 限情報の改ざんを防ぐことは難しい．
 % We consider the following issue induces 
-Thus, in this paper provides the following questions:
+Thus, this paper considers the following:
 % We consider that 
 {\it A running kernel does not restrict the writing of kernel data
 in the kernel mode. 
@@ -235,7 +236,7 @@ Figure \ref{fig:approach_overview} provides an overview of the KDPM,
 which determines whether system calls and kernel codes have write permission of
 the kernel data in the kernel layer.
 %
-To ensure kernel data protection and managing write restrictions, the KDPM
+To ensure kernel data protection and manage write restrictions, the KDPM
 adopts the Intel memory protection key (MPK), which is a protection keys for
 supervisor (PKS).
 %
@@ -247,10 +248,10 @@ kernel data.
 %
 {\bf Research Objectives.}
 The KDPM assumes that the user process of an adversary invokes a vulnerable
-kernel code which attempts to modify the kernel data related to privileged
+kernel code that attempts to modify the kernel data related to privileged
 information or security mechanism.
 %
-The KDPM focuses the mitigation of the illegal overwritten of these kernel
+The KDPM focuses on the mitigation of the illegal overwrite of these kernel
 data.
 %as protected kernel data.}
 % through the kernel memory corruption vulnerability. 
@@ -265,7 +266,8 @@ design of the kernel data protection. Additionally, the KDPM combines the
 characteristics of system calls, kernel code behavior, and hardware features. 
 %}
 %
-The limitation of the KDPM is a little difficult to support frequently modified kernel data. 
+%The limitation of the KDPM is a little difficult to support frequently modified kernel data. 
+The limitation of the KDPM is its inability to support frequently modified kernel data. 
 
 
 \begin{figure}[tb]
@@ -304,9 +306,11 @@ The KDPM has two implementations that focus on the different types of kernel
 attacks.
 % i 1 and Realization 2, depending on the type of attack.
 %
-Implementation 1 is a general purpose for the protection of privileged
-information to prevent privilege escalation. This allows user processes to write
-to protected kernel data only when write-permitted system calls are invoked.
+Implementation 1 is a general purpose implementation for the protection of privileged
+information to prevent privilege escalation. 
+%
+This allows user processes to write to protected kernel data only when
+write-permitted system calls are invoked.
 %
 % 実現方式2として，カーネルデータの書き込み制限対象領域の細粒度化とオーバヘッド
 % 低減を可能とする，セキュリティ機能の無効化攻撃を防止のためのセキュリティ機能保
@@ -314,8 +318,12 @@ to protected kernel data only when write-permitted system calls are invoked.
 % の実行時のみに保護対象カーネルデータへの書込みを許可する．
 Implementation 2 protects the kernel data of the security mechanism (e.g., MAC)
 %protection function
-to prevent security mechanism from being defeated. This reduces overheads to
-limit the write restriction timing of protected kernel data.
+%to prevent the security mechanism from being defeated. 
+% to prevent the security mechanism 
+from the defeating of security mechanism. 
+%
+This reduces overheads to limit the write restriction timing of protected kernel
+data.
 %granularity and
 Further, Implementation 2 allows the protected kernel data to be written only
 when executing a write-permitted kernel code.
@@ -336,7 +344,7 @@ write-permitted system call to protect the privileged information of user proces
 % on security functions, a method to 
 Implementation 2 controls the write restriction of the kernel data related to
 the security mechanism in each write-permitted kernel code to prevent the
-defeating security mechanism attack.
+defeating by security mechanism attack.
 
 
 \end{itemize}
@@ -528,7 +536,7 @@ The following are the contributions of this study:
 %\item We designed a novel security mechanism that protects kernel data in the
 %\item We designed the KDPM that protects the kernel data in the running kernel to
 \item The proposed KDPM is a novel approach that protects the kernel data in the
-running kernel to prevent privilege escalation and defeat of security mechanism
+running kernel to prevent privilege escalation and defeat by security mechanism
 attacks through vulnerable kernel code.
 % vulnerabilities and disabling security features.
 %

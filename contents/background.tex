@@ -75,7 +75,7 @@ value of bit WD {\it i} $\times$ 2+1 is 1, write is not allowed.
 
 In MPK, read and write limits can be controlled separately in the specific
 register (e.g., PKRU and PKRS). For multiple PTEs, the read and write
-restriction can be controlled by specifying Pkey.
+restriction can be controlled by specifying the Pkey.
 % collectively using the read restriction operation register by specifying Pkey.
 
 
@@ -233,7 +233,7 @@ Kernel vulnerabilities are improper implementations that lead to kernel attacks
 (CWE) ranking for CWE of kernel memory vulnerability. CWE represents the
 categorized software and hardware weakness type. 
 %
-\tabref{tb:kernel_vulnerability_cwe_list} indicates running kernel can be
+\tabref{tb:kernel_vulnerability_cwe_list} indicates a running kernel can be
 damaged in a variety of ways through a kernel vulnerability attack. 
 % 
 %
@@ -252,17 +252,18 @@ Exploit Database \cite{exploitdb}.
 % 限情報を格納するカーネルデータの変数 \verb|cred| を改ざんし，ユーザプロセスのユーザ ID
 % を管理者ユーザへ変更する \cite{CVE-2017-16995}．
 % perform the modification
-To investigate the which CVE are reproducible, PoC code are introduced from CWE
+To investigate which CVE are reproducible, PoC codes are introduced from CWE
 ranking (\tabref{tb:kernel_vulnerability_cwe_list}).
 \tabref{tb:kernel_vulnerability_poc_list} shows the result of four PoC codes are
-reproducible of compromising environment for Linux kernel.
+reproducible and can compromise the environment for Linux kernel.
 %
 Three PoC codes forcibly invokes kernel codes that modify privileged information
 to achieve the privilege escalation
 \cite{CVE-2016-4997,CVE-2016-9793,CVE-2017-1000112}. 
 %
 % privilege operations in the kernel and 
-Specifically, other one PoC code overwrites the variable \verb|cred| of the
+% Specifically, other 
+One PoC code overwrites the variable \verb|cred| of the
 kernel data that stores privileged information from the normal user to the
 administrator \cite{CVE-2017-16995}.
 % with, and 
@@ -277,7 +278,7 @@ administrator \cite{CVE-2017-16995}.
 % In the attack to security feature, 
 The defeat of the MAC forcefully modifies the list of function pointers that
 manage the access control decisions in the kernel. Meanwhile, the variable
-\verb|selinux_hooks| that stores function pointers, is modified to the inserted
+\verb|selinux_hooks|, which stores function pointers, is modified to the inserted
 kernel 
 %are changed to inserted kernel
 codes that bypass the access control \cite{nexus5exploit,grsecurity}.

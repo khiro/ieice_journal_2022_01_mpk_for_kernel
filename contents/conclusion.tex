@@ -19,8 +19,8 @@ prevent the threat of kernel attacks.
 However, vulnerable kernel codes can still modify the kernel data at the kernel layer.
 
 %
-In this paper proposed a novel security design of a KDPM that manages write
-restrictions on specific kernel data.
+In this paper, a novel security design of a KDPM that manages write
+restrictions on specific kernel data is proposed
 %and enables protection of authorization information. 
 The KDPM enables the kernel to control write privileges on PTEs using the MPK PKS
 in the running kernel by the CPU.
@@ -99,7 +99,7 @@ defeat of security mechanisms.
 % とを明らかにした．
 %
 % In the evaluation, we introduced a kernel vulnerability that can be exploited for
-The security capability evaluation indicates a kernel vulnerability that can be
+The security capability evaluation indicated a kernel vulnerability that can be
 exploited for privilege escalation attacks and demonstrated the restriction
 capability for the writing of privileged information of the user processes.
 %
@@ -107,13 +107,13 @@ capability for the writing of privileged information of the user processes.
 % evaluation, and showed that it is feasible to restrict the writing of privilege
 % information by privilege-grabbing attacks from user processes.
 % %
-The performance evaluation showed that the overhead for invoking system call 
+The performance evaluation showed that the overhead for invoking system calls 
 on Linux with Implementation 1 ranged from 2.96\% to 9.01\%, and the PKS
 operations overhead on Linux with Implementation 2 ranged from 22.1 ns to 1347.9
 ns.
 %
-Additionally, the increasing of instructions indicates that implementations
-require 137 to 176 instructions.
+Additionally, the increase in number of instructions indicates that
+implementations require 137 to 176 instructions.
 
 %
 In future studies, to prevent vulnerable kernel code execution and illegal

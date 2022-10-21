@@ -17,7 +17,7 @@
 To manage write restrictions on specified kernel data, 
 % we designed the KDPM to satisfy the following requirement: 
 % we considered 
-the KDPM to satisfy the following requirement: 
+the KDPM should satisfy the following requirement: 
 % in order to manage write restrictions on specified kernel data in the kernel.
 
 % User processes rely on kernel features to control system resources and hardware
@@ -149,11 +149,11 @@ KDPM manages the linking of the identifier that indicates the relationship betwe
 the protected kernel data, write-permitted system call, and write-permitted kernel
 code.
 %
-KDPM statically registers protected kernel data, identifier of protected kerne
-l data, write-permitted system call and write-permitted kernel code lists at the
-source code, then dynamically controls the write restriction of kernel data
-using identifier at the invocation of system call or kernel code for the running
-kernel.
+KDPM statically registers protected kernel data, identifiers of protected kerne
+l data, write-permitted system call, and write-permitted kernel code lists at
+the source code. After that, KDPM dynamically controls the write restriction of
+kernel data using identifier at the invocation of system call or kernel code for
+the running kernel.
 
 \subsection{Approach}
 % 提案するセキュリティ機構として，要件を満たす設計概要を図
@@ -328,7 +328,7 @@ to the protected kernel data.
 % タへの書込みを許可する．その後，システムコール終了時，およびカーネルコード実行後
 % に保護対象カーネルデータへの書込みを制限する．
 
-The KDPM disables write restrictions during a write-permitted system
+The KDPM disables write restrictions when a write-permitted system
 call is issued or write-permitted kernel code is executed.
 % at the time of issuing at the time of 
 % invthe write control function at the 

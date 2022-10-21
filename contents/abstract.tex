@@ -6,7 +6,7 @@
   % オペレーティングシステムカーネルへの攻撃として，カーネル脆弱性を利用
   % して権限情報を管理者権限に改ざんする特権奪取攻撃が知られている．
   % A known attack on operating system kernels is the modification of kernel data
-  The memory corruption can modify the kernel data of an operating system kernel 
+  Memory corruption can modify the kernel data of an operating system kernel 
   through exploiting kernel vulnerabilities
   that allow privilege escalation and defeats security mechanisms.
   % can be modified
@@ -27,7 +27,7 @@
   % KCoFI 
   To prevent memory corruption, the several security mechanisms are proposed.
   %
-  The kernel address space layout randomization randomizes the virtual address
+  Kernel address space layout randomization randomizes the virtual address
   layout of the kernel code and data. 
   %
   The kernel control flow integrity verifies and guarantees the order of
@@ -62,16 +62,17 @@
   % data. It is still possible to overwrite
   %However, these existing security mechanisms do not prevent writing to the
   %kernel data. 
-  However, illegal writing of kernel data was not prevented by these existing
+  However, illegal writing of kernel data is not prevented by these existing
   security mechanisms.
   % do not prevent writing to the
     %
-  Therefore, adversary can overwrite kernel data with exploiting kernel
+  Therefore, an adversary can overwrite kernel data by exploiting kernel
   vulnerabilities. 
   % can be overwritten by 
   %
   % Additionally, 
-  It leads that privilege escalation and the defeat of security mechanisms are
+  % It leads that 
+  As a result, privilege escalation and the defeat of security mechanisms are
   possible.
   %
   % Vulnerable kernel codes are a threat to an operating system kernel. An
@@ -205,7 +206,7 @@
   was from 2.96\% to 9.01\% of system call invocations, whereas the performance load
   on the MPK operations was 22.1 ns to 1347.9 ns.
   %
-  Additionally, the KDPM requires 137 to 176 instructions for the
+  Additionally, the KDPM requires 137 to 176 instructions for its
   implementations.
   %
   % The evaluation results indicated that vkTracer could trace PoC code
