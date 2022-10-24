@@ -1,0 +1,272 @@
+% -*- coding: utf-8 -*-
+\documentclass[11pt,a4paper]{article}
+%
+\usepackage{listings}
+\usepackage{amsmath,amssymb}
+\usepackage{bm}
+%\usepackage{graphicx}
+\usepackage[dvipdfmx]{graphicx,color}
+\usepackage{ascmac}
+\usepackage[hyphens]{url}
+
+\lstset{
+  basicstyle={\ttfamily},
+  identifierstyle={\small},
+  commentstyle={\smallitshape},
+  keywordstyle={\small\bfseries},
+  ndkeywordstyle={\small},
+  stringstyle={\small\ttfamily},
+  frame={tb},
+  breaklines=true,
+  columns=[l]{fullflexible},
+  numbers=left,
+  xrightmargin=0zw,
+  xleftmargin=3zw,
+  numberstyle={\scriptsize},
+  stepnumber=1,
+  numbersep=1zw,
+  lineskip=-0.5ex
+}
+%
+%\setlength{\textwidth}{\fullwidth}
+%\setlength{\textheight}{40\baselineskip}
+%\addtolength{\textheight}{\topskip}
+%\setlength{\voffset}{-0.2in}
+%\setlength{\topmargin}{0pt}
+%\setlength{\headheight}{0pt}
+%\setlength{\headsep}{0pt}
+%
+%\newcommand{\divergence}{\mathrm{div}\,}  %ダイバージェンス
+%\newcommand{\grad}{\mathrm{grad}\,}  %グラディエント
+%\newcommand{\rot}{\mathrm{rot}\,}  %ローテーション
+
+\renewcommand\UrlFont{\color{blue}\rmfamily}
+
+%
+\title{Cover Letter for the Review}
+%\author{Hiroki KUZUNO}
+\author{}
+\date{November 29, 2022}
+%\date{}
+\begin{document}
+\maketitle
+%
+%
+\section*{}
+\noindent
+%IEEE Access - Decision on Manuscript ID Access-2020-49301\\
+
+
+\noindent
+%Manuscript Number: Access-2020-49301\\
+%Paper/Letter: Paper\\
+%Issue: ED\\
+%Regular/Special: Special\\
+%Title of Special Section: Information and Communication System Security\\
+%Title: Mitigation of Kernel Memory Corruption Using Multiple Kernel Memory Mechanism\\
+%Date of Evaluation: December 15, 2020.\\
+
+\noindent
+Dear Editor-in-Chief, IPSJ Journal of Information Processing,\\
+
+\vskip\baselineskip
+\noindent
+Firstly, we would like to thank you for taking the time to review our
+manuscript.
+%and providing us with valuable feedback for improving our paper.
+
+\vskip\baselineskip
+\noindent
+%We have now accommodated the comments received from the Editor-in-Chief
+We have now accommodated in our manuscript and provided detailed
+explanations concerning our choices.
+
+\vskip\baselineskip
+\noindent
+We have taken the reprints and permissions of license (License Number:
+XXXXXXXXX) for the conference paper \cite{kuzuno22iwsec} from the
+copyright of Springer Nature and Copyright Clearance Center.
+
+\vskip\baselineskip
+\noindent
+The following pages present our explanations to the review process.
+
+%% Licensee:	Hiroki Kuzuno
+%% Order Date:	Oct 8, 2021
+%% Order Number:	5164050348920
+
+\begin{flushright} 
+Your sincerely\\
+%Hiroki KUZUNO^{\dag}^{\ddag}, Toshihiro YAMAUCHI^{\dag}\\
+Hiroki KUZUNO${}^{\dag}$, Toshihiro YAMAUCHI${}^{\ddag}$\\
+ ${}^{\dag}$Kobe University / ${}^{\ddag}$Okayama University\\
+\end{flushright}
+
+\newpage
+
+\section{For Editor-in-Chief and Reviewers}
+
+%% \begin{itembox}[l]{Comment}
+%% Your manuscript was read with interest, however; we found that
+%% significant portions of the text within your article are replicated
+%% from previous publications, which may or may not be referenced.
+%% Please note that this is poor scientific practice and should be
+%% avoided, even if the content is replicated from your own previous
+%% work.
+
+%% Given the potential issues noted with your paper, at this point in
+%% time, we are rejecting your article.
+
+%% If you revise your article so that it is original work, you may
+%% resubmit and we will reevaluate at that point. Be sure to explain in
+%% your revised article how this new work builds on previous referenced
+%% publication(s). As a reminder, IEEE Access does not have a page limit.
+%% \end{itembox}
+%% \vspace*{1pt}
+
+%% \noindent
+%%     {\bf Response:}
+%% \vspace*{1pt}
+
+\noindent
+%We appreciate your comment. 
+%
+%We have now carefully addressed the received comments. To insert the
+We have carefully indicated the additional work of the manuscript. To introduce
+the clear explanation sentences and evaluation, these indicate the different
+points between the manuscript and conference publication
+\cite{kuzuno22iwsec}.% as following.
+
+%We have summrized explanation which contents are
+%new work in the manuscript. It helps the review process.
+%
+%The label of EN-01 denotes the explanation of new study to the
+%manuscript for the review process.
+%
+%% \begin{itemize}
+%% %% \item In \cite{kuzuno21iwsec},  
+%% %% we provide the design and implementation of the kernel page
+%% %% restriction, then evaluated the performance overhead and security
+%% %% capability to tackle with the kernel memory corruption.
+%% %%     %
+%% %% This manuscript focuses on the the kernel page restriction with the
+%% %% additional approach that identifies vulnerabile kernel code to
+%% %% forcibly support on the proposed mechanism.
+
+%% \item The conference paper \cite{kuzuno21iwsec} covers the manuscript.
+%% %  However, it is a lack of our kernel page restriction that could not
+%% %  collect and investigate vulnerabile kernel code. In additionan, it
+%% %  requires the performance evaluation of latest benchmark software,
+%% %  and additional disucssion.
+%%   %
+%%   We have carefully inserted additional sentences provide the lack of
+%%   conference paper to fully revise the sentences and figures for the
+%%   journal article.
+%% \end{itemize}
+
+
+\begin{itembox}[l]{Explanation of new study in our manuscript}
+%   this paper highlights the contribution.
+
+In a previous paper that was authored for a conference \cite{kuzuno22iwsec},
+this study proposed an additional kernel security mechanism design,
+implementations, and evaluation results.  The clear differences between this
+paper and the previous paper are identified and listed below \cite{kuzuno22iwsec}.
+
+\begin{itemize}
+  \item First, this paper investigated the kernel vulnerabilities statistics,
+  types, and actual Proof-of-Code (PoC) to evaluate the 
+  KDPM (kernel data protection mechanism) capability.
+  % supports other OSes (e.g., FreeBSD and XNU kernel) and architectures
+  % (e.g., ARM and RISC-V) 
+  
+  \item Second, this latest paper aims to clearly establish the approach of
+  kernel memory protection approach. It discusses the kernel data and hardware
+  security control requirement from the viewpoint of actual implementations
+  to obtain a more technical detail on the discussion.
+% vulnerable kernel code and protected kernel data.
+
+\item Additionally, this paper discusses the feasibility of implementing of KDPM
+  that relies on the instruction increase of KDPM for latest Linux kernel 
+
+\end{itemize}
+  
+%This shows that KPRM is one of the countermeasures against kernel
+%vulnerability attacks.
+
+\end{itembox}
+
+We have appreciated the Editor-in-Chief's review again. We fully revised
+figures, sentences, and evaluations that are the explanation of design,
+implementation, feasibility, and comparison from previous researches.
+%\cite{kuzuno21iwsec}.
+
+%\newpage
+
+%% \section{New study in our manuscript}
+%% We have inserted the sentence of explanation to the following sections
+%% and revised our manuscript from the previous paper
+%% \cite{kuzuno21iwsec}. To denote the changes to our manuscript, these
+%% are indicated by using: N-01 to N-11 (N is a new study) with red
+%% highlighted for the review process. In addition, The figures and not
+%% highlighted sentences are also rewritten for this submission.
+
+%% \begin{itemize}
+%% \item {\bf [N-01]:} Abstract. It is fully revised, we have highlighted the research problem, additional proposed mechanism, and latest evaluation.
+%% \item {\bf [N-02]:} Introduction. We have rewritten the introduction that indicates the research problem, the characteristics of the proposed mechanism , and evaluation results.
+%% \item {\bf [N-03]:} Memory corruption and Countermeasures. We have investigated the Proof-of-Concept  (PoC) code of kernel vulnerabilities to occur kernel memory corruption for the privilege escalation.
+%% \item {\bf [N-04]:} Threat Model. We have revised the threat model to explain the environment of the adversary and the condition of the proposed mechanism.
+%% \item {\bf [N-05]:} The design of MKM. Due to a lack of cleary explanation in previous paper \cite{kuzuno21iwsec}.  The highlighted places with sentences are revised for the explanation of the research requirement and solution. Additionally, we have redesigned the proposed mechanism's behavior to reduce the processing steps for the kernel component.
+%% \item {\bf [N-06]:} MKM Implementation. This section contains actual information with new figures.
+%% \item {\bf [N-07]:} Case study. In the attack case, we have written the detail of flow for the proposed mechanism that mitigates the kernel memory corruption at the kernel layer.
+%% \item {\bf [N-08]:} Evaluation. We have evaluated the feasibility of the proposed method has low overhead for the user's environment.
+%% \item {\bf [N-09]:} Discussion. Due to a lack of discussion. We have calculated the actual cost of kernel observation mechanism \cite{kuzuno21ispec} is low overhead for the evaluation. Additionally, for the portability of the proposed mechanism, we have investigated the applying process at the source code level of other OSes.  Moreover, we have considered the benefit of hardware requirements to help the implementation of the proposed mechanism.
+%% \item {\bf [N-10]:} Related Works We have surveyed the related work and the comparison with existing works again. It indicates the detail of our contribution in the system security field that is a lack in the previous paper \cite{kuzuno21iwsec}.
+%% \item {\bf [N-11]:} Conclusion. It is also fully revised. We have summarized the research problem, proposed mechanism, and evaluation.
+%% \end{itemize}
+
+%% We have thankful for your review again. We have summarized the main
+%% reason for this submission. The revising process and additional
+%% contents indicate the new study (e.g.,
+%% %
+%% abstract and all sections are revised, 5 figures are rewritten, 3
+%% figures are new, and 2 tables are new).
+%% %
+%% We carefully revised the whole of the paper is to contain new
+%% contributions for the research community.
+%% %
+%% The denoted places are part of the main difference point between our
+%% manuscript and the previous paper \cite{kuzuno21iwsec}.
+
+
+
+%\newpage
+\bibliographystyle{ieicetr}% bib style
+\begin{thebibliography}{99}
+
+%% \bibitem{kuzuno21ispec}
+%%   H. Kuzuno, and T, Yamauchi,
+%%   ``KMO: Kernel Memory Observer to Identify Memory Corruption by Secret Inspection Mechanism,''
+%%   in {\it Proc. the 15th International Conference on Information Security Practice and Experience}, vol. 11879, pp. 75-94, Nov. 2019, \url{https://doi.org/10.1007/978-3-030-34339-2_5}
+
+\bibitem{kuzuno22iwsec}
+
+  Kuzuno, H. and Yamauchi, T.: KDPM: Kernel Data Protection Mechanism Using a Memory Protection Key,
+  \textit{Proc. the 17th International Workshop on Security}, LNCS, Vol. 13504, pp. 66--84 (online),
+  \url{https://doi.org/10.1007/978-3-031-15255-9_4} (2022).
+  % Kuzuno, H., and Yamauchi, T.: KPRM: Kernel Page Restriction Mechanism to Prevent Kernel Memory Corruption,
+  % \textit{Proc. the 16th International Workshop on Security}, LNCS, vol. 12835, pp. 45--63 (2021).
+  % \url{https://doi.org/10.1007/978-3-030-85987-9_3}  
+  %% H. Kuzuno, and T, Yamauchi,  
+  %% ``KPRM: Kernel Page Restriction Mechanism to Prevent Kernel Memory Corruption,''
+  %% in {\it Proc. the 16th International Workshop on Security}, LNCS, vol. 12835, pp. 45-63, Sep. 2021.
+  %% doi: \url{https://doi.org/10.1007/978-3-030-85987-9_3}
+%  H. Kuzuno, and T, Yamauchi,  
+%  ``MKM: Multiple Kernel Memory for Protecting Page Table Switching Mechanism Against Memory Corruption,''
+%  in {\it Proc. th 15th International Workshop on Security}, vol. 12231, pp. 97-116, Sep. 2020,
+%  doi: \url{https://doi.org/10.1007/978-3-030-58208-1_6}
+
+  
+\end{thebibliography}
+
+\end{document}
