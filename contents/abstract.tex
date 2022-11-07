@@ -1,5 +1,6 @@
 % # -*- coding: utf-8 -*-
 % \begin{abstract}
+\begin{summary}
   % オペレーティングシステムカーネルへの攻撃として，カーネル脆弱性を利用したメモ
   % リ破壊によるカーネルデータの改ざんが知られており，特権昇格攻撃やセキュリティ
   % 機能の無効化が可能とされている．
@@ -116,14 +117,19 @@
   % In this paper, 
   %We propose a novel security mechanism that restricts the writing of specific
   This study proposes a kernel data protection mechanism (KDPM), which is a
-  novel security design that restricts the writing of specific kernel data. 
+  novel security design that restricts the writing of specific kernel data.
+  % using a memory protection key (MPK).
   %
   The KDPM adopts a memory protection key (MPK) to control the write
   restriction of kernel data. 
   %
-  To overcome the limitations of existing approaches, the KDPM with the MPK
-  ensures that the writing of privileged information for user processes and the
-  writing of kernel data related to the mandatory access control.
+  % To overcome the limitations of existing approaches, 
+  The KDPM with the MPK ensures that the writing of privileged information for
+  user processes and the writing of kernel data related to the mandatory access
+  control.
+  %
+  These are dynamically restricted during the invocation of specific system
+  calls and the execution of specific kernel codes.
   %  the KDPM protects
   %privileged information and the security mechanism.
   %  the security inadequacy of existing approaches.
@@ -137,8 +143,6 @@
   % the proposed security mechanism dynamically restricts writing
   %
   %
-  These are dynamically restricted during the invocation of specific system
-  calls and the execution of specific kernel codes.
   % during the execution of specific kernel codes.
   % The KDPM with the MPK ensures that the writing of privileged information for user
   % processes is dynamically restricted during the invocation of specific system
@@ -205,8 +209,9 @@
   % した．
   Further, the KDPM is implemented on the latest Linux with an MPK emulator. 
   % For the purpose of evaluation, 
-  The evaluation results indicate the possibility of preventing the writing of
-  privileged information. 
+  The evaluation results indicate the possibility of preventing the 
+  illegal writing of kernel data.
+  % privileged information. 
   % by the attacking user process through a kernel vulnerability that can
   % achieve privilege escalation. in an environment where a kernel vulnerability
   % that can be used to steal privileges has been introduced.
@@ -219,6 +224,7 @@
   %
   Additionally, the KDPM requires 137 to 176 instructions for its
   implementations.
+\end{summary}  
   %
   % The evaluation results indicated that vkTracer could trace PoC code
   % executions (e.g., kernel memory corruption and DoS), identify vulnerable
