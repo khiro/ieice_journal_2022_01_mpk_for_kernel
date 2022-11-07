@@ -6,9 +6,9 @@
   % オペレーティングシステムカーネルへの攻撃として，カーネル脆弱性を利用
   % して権限情報を管理者権限に改ざんする特権奪取攻撃が知られている．
   % A known attack on operating system kernels is the modification of kernel data
-  Memory corruption can modify the kernel data of an operating system kernel 
-  through exploiting kernel vulnerabilities
-  that allow privilege escalation and defeats security mechanisms.
+  Memory corruption can modify the kernel data of an operating system kernel
+  through exploiting kernel vulnerabilities that allow privilege escalation and
+  defeats security mechanisms.
   % can be modified
 %  faces the modification of kernel data 
   %through 
@@ -28,15 +28,17 @@
   To prevent memory corruption, the several security mechanisms are proposed.
   %
   Kernel address space layout randomization randomizes the virtual address
-  layout of the kernel code and data. 
+  layout of the kernel.
+  % code and data. 
   %
-  The kernel control flow integrity verifies and guarantees the order of
-  invoking kernel codes.
+  % The kernel control flow integrity verifies and guarantees the order of
+  The kernel control flow integrity verifies the order of invoking kernel codes.
   %invocations to guarantee the sequence of kernel code execution, 
   %
   % In addition, 
   The additional kernel observer focuses on the unintended privilege
-  modifications to restore the original privileges.
+  modifications.
+  % to restore the original privileges.
   % , when performing privilege
   % revocation, the focusing on changes in authorization information, the system
   % detects changes in authorization information at unintended times and writes
@@ -66,14 +68,15 @@
   security mechanisms.
   % do not prevent writing to the
     %
-  Therefore, an adversary can overwrite kernel data by exploiting kernel
-  vulnerabilities. 
+  Therefore, an adversary can achieve the privilege escalation and the defeat of
+  security mechanisms.
+  % overwrite kernel data by exploiting kernel vulnerabilities to 
   % can be overwritten by 
   %
   % Additionally, 
   % It leads that 
-  As a result, privilege escalation and the defeat of security mechanisms are
-  possible.
+  % As a result, privilege escalation and the defeat of security mechanisms are
+  % possible.
   %
   % Vulnerable kernel codes are a threat to an operating system kernel. An
   % adversary's user process can forcefully invoke a vulnerable kernel
@@ -115,13 +118,17 @@
   This study proposes a kernel data protection mechanism (KDPM), which is a
   novel security design that restricts the writing of specific kernel data. 
   %
-  To overcome the limitations of existing approaches, the KDPM protects
-  privileged information and the security mechanism.
+  The KDPM adopts a memory protection key (MPK) to control the write
+  restriction of kernel data. 
+  %
+  To overcome the limitations of existing approaches, the KDPM with the MPK
+  ensures that the writing of privileged information for user processes and the
+  writing of kernel data related to the mandatory access control.
+  %  the KDPM protects
+  %privileged information and the security mechanism.
   %  the security inadequacy of existing approaches.
   %in order to solve the problems of existing approaches.
   %
-  The KDPM adopts a memory protection key (MPK) to control the write
-  restriction of kernel data. 
   %
   % The proposed security mechanism provides protection capability for user
   % process authorization information and kernel code related to security
@@ -129,15 +136,19 @@
   %  
   % the proposed security mechanism dynamically restricts writing
   %
-  The KDPM with the MPK ensures that the writing of privileged information for user
-  processes is dynamically restricted during the invocation of specific system
-  calls. 
+  %
+  These are dynamically restricted during the invocation of specific system
+  calls and the execution of specific kernel codes.
+  % during the execution of specific kernel codes.
+  % The KDPM with the MPK ensures that the writing of privileged information for user
+  % processes is dynamically restricted during the invocation of specific system
+  % calls. 
   % the dynamic restriction of the writing of privileged information of user processes 
   %
   %In addition, 
-  To prevent the security mechanisms from being defeated, the KDPM dynamically
-  restricts the writing of kernel data related to the mandatory access control
-  during the execution of specific kernel codes.
+  % To prevent the security mechanisms from being defeated, the KDPM dynamically
+  % restricts the writing of kernel data related to the mandatory access control
+  % during the execution of specific kernel codes.
   %
   % The extensibility of the proposed security mechanism was examined, and the
   % granularity of the write-restricted area and functions to reduce the load were
