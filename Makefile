@@ -1,4 +1,4 @@
-TARGET := journal_2022_jip_04_mpk_for_kernel.pdf
+TARGET := ieice_journal_2022_01_mpk_for_kernel.pdf
 
 .PHONY: all clean distclean
 
